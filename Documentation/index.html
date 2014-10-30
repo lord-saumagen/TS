@@ -1,0 +1,501 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Typescript LINQ library</title>
+    <link rel="stylesheet" href="index.css" type="text/css" />
+  </head>
+  <body>
+    <h1>TS.Linq</h1>
+    <div id="navigation" style="float: left; width: 20%; min-width: 200px; vertical-align: top;">
+      <ul>
+        <li><a href="#Preface">Preface</a></li>
+        <li><a href="#Introduction">Introduction</a></li>
+        <li><a href="#Utils">Utils</a></li>
+        <li><a href="#Linq">LINQ</a></li>
+        <li><a href="#Exceptions">Exceptions</a></li>
+      </ul>
+    </div>
+    <div id="content" style="float: left; width: 80%; vertical-align: top;">
+      <div id="Preface">
+        <h2>Preface</h2>
+        This library brings the <a href="http://msdn.microsoft.com/en-us/library/bb397926.aspx" target="_blank">LINQ</a> extensions to TypeScript. 
+        <br />
+        <br />
+        From a programmers perspective, LINQ was one of the most exciting .NET framework extensions in the past 10 years.
+        Suddenly you got rid of the awkward SQL query languages in it&#39;s different flavours, which had in common to scatter all over
+        your code and tiers. They were also annoyingly compiler resistent and blew always in your face when you least expected it.
+        With LINQ that all came to an end and it turned out that LINQ was also a swiss knife for every problem which has to deal with<br />
+        collections, semi structured or structured data in any way.<br />
+        <br />
+        Time went by and javascript went into the spotlight of every web programmer. To be honest, javascript was always part of the
+        job, but every OOP programmer has at least an ambivalent relationship to javascript. That programming language has 5 times
+        more desing flaws than instructions. Even well established javascript libraries, which claim for themselfe to be professionel,
+        look more like a result of a hacker contest than professionel code. But all attempts to establish a better language for client-side 
+        programming have failed. Even worse, the language itself evolves with the speed of continental plates. There is no hope that
+        the language will reach a mature state in the next 5000 years. Those which are responsible
+        for the language specification 
+        have also no intention to get rid of the ages old errors. Offically because they won&#39;t brake
+        backward compatibility.<br />
+        <br />
+        Who ever came up with that crap shall burn in hell for eterniyt.
+        <br />
+        <br />
+        But then came <a href="http://en.wikipedia.org/wiki/Anders_Hejlsberg">Anders Hejlsberg</a>, my personal hero and inventor of <a href="http://en.wikipedia.org/wiki/TypeScript">TypeScript.</a><br />
+        <br />
+        He showed us a way out of the misery. He created a language which looks and feels almost like a real programming language.
+        You do not longer have to deal with all the crap and hacks and well known errors to keep your javascript programs running. 
+        Now you can program your script code just
+        like you always did in C#. You also get full intellisense and error messages at compile
+        time. At least when you use visual studio for
+        your programming task.
+        <br />
+        <br />
+        But how could Anders Hejlsberg establish a new cliend-side script language when all others (even google and god) failed. The
+        simple answer is:<br />
+        <br />
+        &quot;Because he didn&#39;t even try.&quot;<br />
+        <br />
+        TypeScript code compiles ( or transpiles, if you like ) to javascript. This way your browser won&#39;t even notice that you are
+        already a lightyear ahead of the lame script engine restriction. Someday, somebody should investigate why one of the
+        worst programming languages was the only thing the browser vendors could agree on, during the dark ages of the
+        browser war in the last millenium.
+        <br />
+        <br />
+        An now, it comes all together.<br />
+        <br />
+        That&#39;s the part where I come into play. Anders did a great job and gave us lambda expressions, inheritance, something like
+        a type system, typed function arguments, access modifiers and much much more. All that stuff you always wanted to have in
+        javascript but didn&#39;t dare to ask for. Unfortunately he didn&#39;t have time to implement LINQ yet.
+        <br />
+        <br />
+        You may alredy have noticed that I like LINQ and have to deal with javascript more an more. This gave birth to the idea to
+        reprogram the LINQ extension in TypeScript. I&#39;m aware that there are already other libraries doing the same job.
+        The most popular would be the one called <a href="https://linqjs.codeplex.com/">&#39;ling.js&#39;</a> which is hosted on <a href="http://www.codeplex.com/">Codeplex</a>. Unfortunately the code is plain javascript with
+        an additional TypeScript declaration file (&quot;d.ts&quot;). Those &quot;d.ts&quot; files work much like header files in C or C++. They introduce the
+        library functions to TypeScript so that you can use them from within your TypeScript code. But I had a different vision. I would
+        like to see more libraries written in TypeScript in the first place. That way, the &quot;d.ts&quot; files become obsolet and those which
+        are not enlightened can still use your code, because after compiling it is plain javascript for them.<br />
+        <br />
+        After all,&nbsp; I must say it was fun to write the library. I had already lost my hope and didn&#39;t belive that there will one day fun
+        in javascript programming. But the great visionary and master of superb programming languages disabused me.
+        I take a deep bow in front of him and I hope you will have as much fun in using my library as I had in writing it.<br />
+        <br />
+        <br />
+      </div>
+      <div id="Introduction">
+        <h2>Introduction</h2>
+        This library is a reprogrammed version of the default C# LINQ library in TypeScript.<br />
+        Below is a link to the description of the standard query operators as they are defined by microsoft:<br />
+        <br />
+        <a href="http://msdn.microsoft.com/en-us/library/bb397896.aspx">http://msdn.microsoft.com/en-us/library/bb397896.aspx</a><br />
+        <br />
+        There are other libraries available which offer the same functionality as this one. They may even be faster or offer
+        more extensions than this one. But as far as I can tell, they were designed with different design goals in mind. Even if the 
+        design
+        goals are not explicitly named, you can tell hat by looking at their code.<br />
+        <br />
+        First of all, those libraries which I know are all written in plain javascript. But I would like to see more libraries and
+        programs written in TypeScript in the first place. So I started my own project.<br />
+        <br />
+        Second, I like a <a href="https://cleancoders.com/">"Clean Code"</a> coding style. Unfortunately most javascript programmers don't bother for a clean coding style.
+        The prefer the "Hacker Style" which makes it always a nighmare if it comes to a situation where you have to debug through their
+        code.<br />
+        <br />
+        Third, I always vote for robustness over speed. All my functions implement an expensive parameter checking and fail gracefulley
+        by throwing meaningfull exceptions.<br />
+        <br />
+        To make my point clear. There are faster implementations and there are implementations which offer a lot more extensions. But if
+        you need a robust and well designed implementation your are at the right place.
+
+        <br />
+        <br />
+        All my classes and functions got a code comment which shows up in the editor during typing. At leas if you use visual studio
+        for development. That feature makes it a lot more easier to write code in javascript then you might expect. Check it out and you
+        will never want to miss it.
+        <br />
+        <br />
+        Even with that design goals in mind and extensive testing, there might be errors in this library. For that reason I would like to hear
+        from you
+        when you find one.
+        <br />
+        &nbsp;  
+      </div>
+      <div id="Utils">
+      </div>
+      <div id="LINQ">
+        <h2>LINQ</h2>
+        All classes, modules and interfaces which belong to the 'TS.Linq' namespace can be found in the corresponding subdirectory called 'Linq'.<br />
+        <br />
+        The extension functions are all defined in the 'TS.Linq.Extensions' module. The corresponding source file is the 'Extensions.ts' file in
+        the
+        'Linq' directory. The module functions resemble the public static functions defined in C#.
+        <br />
+        <br />
+        Most of the extension functions are also bound to the 'TS.Linq.Enumerable' class which you can find in file 'Enumerable.ts'. This way you can
+        use the fluid interface for the LINQ extensions which you may already know from C#.<br />
+        <br />
+        The table below shows all of the implemented LINQ extensions and their execution behavior.<br />
+        <br />
+&nbsp;<table>
+          <thead>
+            <tr>
+              <th colspan="3">
+                Implemented LINQ extensions.
+              </th>
+              </tr>
+            <tr>
+              <th style="width:12em;">Name</th>
+              <th style="width:12em;">Execution behavior</th>
+              <th style="width:12em;">Overloads</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                aggregate
+              </td>
+              <td>
+                Immediate execution
+              </td>
+              <td>
+                1 overload
+              </td>
+            </tr>
+            <tr>
+              <td>
+                all
+              </td>
+              <td>
+                Immediate execution
+              </td>
+              <td>
+                &nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td>
+                any
+              </td>
+              <td>
+                Immediate execution
+              </td>
+              <td>
+                1 overload
+              </td>
+            </tr>
+            <tr>
+              <td>
+                average
+              </td>
+              <td>
+                Immediate execution
+              </td>
+              <td>
+                &nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td>
+                concat
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>
+                &nbsp;
+              </td>
+            </tr>
+            <tr>
+              <td>
+                contains
+              </td>
+              <td>
+                Immediate execution
+              </td>
+              <td>
+                1 overload
+              </td>
+            </tr>
+            <tr>
+              <td>
+                count
+              </td>
+              <td>
+                Immediate execution
+              </td>
+              <td>
+                1 overload
+              </td>
+            </tr>
+            <tr>
+              <td>
+                defaultIfEmpty
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                distinct
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>1 overload</td>
+            </tr>
+            <tr>
+              <td>
+                elementAt
+              </td>
+              <td>
+                Immediate execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                elementAtOrDefault
+              </td>
+              <td>
+                Immediate execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                empty
+              </td>
+              <td>
+                Immediate execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                except
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>1 overload</td>
+            </tr>
+            <tr>
+              <td>
+                first
+              </td>
+              <td>
+                Immediate execution
+              </td>
+              <td>1 overload</td>
+            </tr>
+            <tr>
+              <td>
+                firstOrDefault
+              </td>
+              <td>
+                Immediate execution
+              </td>
+              <td>1 overload</td>
+            </tr>
+            <tr>
+              <td>
+                join
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                orderBy
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>1 overload</td>
+            </tr>
+            <tr>
+              <td>
+                orderByDescending
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>1 overload</td>
+            </tr>
+            <tr>
+              <td>
+                repeat
+              </td>
+              <td>
+                Immediate execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                reverse
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                select
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                selectMany
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                skip
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                skipWhile
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                take
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                takeWhile
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                toArray
+              </td>
+              <td>
+                Immediate execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                thenBy
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                thenByDescending
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                union
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                where
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+        There are also some extensions which are not standard query operators but may still be of interst for you.
+        </p>    
+        <table>
+          <thead>
+            <tr>
+              <th colspan="3">Additional extensions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                cycle
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                fromArray
+              </td>
+              <td>
+                Immediate execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                random
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                shuffle
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

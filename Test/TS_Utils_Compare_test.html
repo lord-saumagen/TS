@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <link href="../Scripts/qunit-1.15.0.css" rel="stylesheet" />
+    <script src="../Scripts/jquery-2.1.1.js"></script>
+    <script src="../Scripts/qunit-1.15.0.js"></script>
+    <script src="../Scripts/qunit-once.js"></script>
+
+    <script src="../Exception/Exception.js"></script>
+    <script src="../Utils/Utils.js"></script>
+    <script src="../Utils/TypeInfo.js"></script>
+    <script src="../Utils/Compare.js"></script>
+    <title>TS_Utils_Compare_test</title>
+  </head>
+  <body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script src="TS_Utils_Compare_test.js" type="text/javascript">
+    
+    </script>
+    <script type="text/javascript">
+      var TS_Utils_Compare_test;
+      (function (TS_Utils_Compare_test)
+      {
+
+        QUnit.module("TS.Utils.Compare", {
+          setup: function ()
+          {
+            // prepare something for all following tests
+          },
+          teardown: function ()
+          {
+            // clean up after each test
+          }
+        });
+
+        QUnit.test("objects", function (assert)
+        {
+          var _testComplexObj1;
+          var _testComplexObj2;
+          var _result;
+
+          _testComplexObj1 = createComplexObject();
+          _testComplexObj2 = TS_Utils_Compare_test.createEquivObject(_testComplexObj1);
+          _result = TS.Utils.Compare.objects(_testComplexObj1, _testComplexObj2, 5);
+          assert.ok(_result, "Should return true for 2 equivalent objects of the same type.");
+
+          _testComplexObj2.array[1] = "NO DATE";
+          _result = TS.Utils.Compare.objects(_testComplexObj1, _testComplexObj2, 5) 
+          assert.ok(!_result, "Should return false for 2 inequivalent objects of the same type.");
+        });
+
+        function createComplexObject() 
+        {
+          var _dateString = new Date().toISOString();
+          //
+          //Create a sparse array with elements of 
+          //different types.
+          //
+          var _testArray = ["green", _dateString];
+          _testArray[4] = "blue";
+          _testArray[6] = 5
+          _testArray[8] = /^d/gi;
+          _testArray[10] = new Array(1, 2, 3);
+          return new TS_Utils_Compare_test.ComplexObject("ComplexObj", 42, _testArray, new TS_Utils_Compare_test.SimpleObject("SimpleObj", ["one", 2, (2 + 1)]));
+        }
+
+        
+      })(TS_Utils_Compare_test || (TS_Utils_Compare_test = {})); //END module
+    </script>
+  </body>
+</html>

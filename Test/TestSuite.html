@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <!-- jQuery, qUnit and qUnit-once setup -->
+    <link href="../Scripts/qunit-1.15.0.css" rel="stylesheet" />
+    <script src="../Scripts/jquery-2.1.1.js"></script>
+    <script src="../Scripts/qunit-1.15.0.js"></script>
+    <script src="../Scripts/qunit-once.js"></script>
+
+    <!-- Test data setup  -->
+    <script src="./Data/Person400_JSONScript.js"></script>
+    <script src="./Data/Get_NY_JSONScript.js"></script>
+    <script src="./Data/MM_JSONScript.js"></script>
+    <script src="./Data/Orders_JSONScript.js"></script>
+    <script src="./Data/Customers_JSONScript.js"></script>
+
+    <!-- Links to the libraries to test  -->
+    <script src="../Utils/Utils.js"></script>
+    <script src="../Utils/TypeInfo.js"></script>
+    <script src="../Utils/Compare.js"></script>
+    <script src="../Encoding/Base64.js"></script>
+    <script src="../Exception/Exception.js"></script>
+    <script src="../Linq/Exception.js"></script>
+    <script src="../Linq/Extensions.js"></script>
+    <script src="../Linq/IEnumerator.js"></script>
+    <script src="../Linq/IEnumerable.js"></script>
+    <script src="../Linq/IOrderedEnumerable.js"></script>
+    <script src="../Linq/ChoiceGenerator.js"></script>
+    <script src="../Linq/CycleGenerator.js"></script>
+    <script src="../Linq/Enumerator.js"></script>
+    <script src="../Linq/ArrayEnumerator.js"></script>
+    <script src="../Linq/Enumerable.js"></script>
+    <script src="../Linq/ArrayEnumerable.js"></script>
+    <script src="../Linq/OrderedEnumerable.js"></script>
+    <script src="../Linq/RandomGenerator.js"></script>
+    <title>TestSuite</title>
+  </head>
+  <body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+
+    <!-- List of all test programs to run  -->
+    <script src="TS_Exception_test.js"></script>
+    <script src="TS_Linq_Exception_test.js"></script>
+    <script src="TS_Linq_Extensions_test.js"></script>
+    <script src="TS_Linq_Extensions_test_plainjs.js"></script>
+    <script src="TS_Utils_Compare_test.js"></script>
+    <script src="TS_Utils_TypeInfo_test.js"></script>
+    <script src="TS_Utils_TypeInfo_test_plainjs.js"></script>
+    <script src="TS_Encoding_Base64_test.js"></script>
+  </body>
+</html>
