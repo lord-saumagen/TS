@@ -117,8 +117,7 @@
         <br />
         <br />
         Even with that design goals in mind and extensive testing, there might be errors in this library. For that reason I would like to hear
-        from you
-        when you find one.
+        from you when you find one. Please drop a note at "lord.saumagen@gmail.com" with a full description of the error.
         <br />
         &nbsp;  
       </div>
@@ -458,13 +457,13 @@
           </thead>
           <tbody>
             <tr>
-              <td>
+              <td style="width:12em;">
                 cycle
               </td>
-              <td>
+              <td style="width:12em;">
                 Deferred execution
               </td>
-              <td>&nbsp;</td>
+              <td style="width:12em;">&nbsp;</td>
             </tr>
             <tr>
               <td>
@@ -495,6 +494,49 @@
             </tr>
           </tbody>
         </table>
+        <h3>
+          How to use
+        </h3>
+        If you want to use the extension functions you have to create an instance of "Enumerable&lt;T&gt" in the first place. You get one by casting
+        an array of any type into an enumerable by calling the function "fromArray" which is defined in the "TS.Linq.Extensions" module. Since there 
+        are no other collection types available in javascript, there is also no other typ you could cast to an enumerable.
+        <br /><br />
+        <code>
+          newEnumerable = TS.Linq.Extensions.fromArray([anyArray]);
+        </code>
+        <br /><br />
+        Since that function is also assigned to the "Enumerable&lt;T&gt" class as a static function, you can call that function from that class or any
+        instance of that class too. 
+        <br /><br />
+        <code>
+          newEnumerable1 = TS.Liney.Enumerable.fromArray([anyArray]);
+        </code>
+        <br /><br />
+        <code>
+          newEnumerable2 = newEnumerable1.fromArray([anyArray]);
+        </code>
+        <br /><br />
+        Once you have an enumerable, you can use the LINQ extension functions to work on that enumerable. You can either call the static extension functions
+        which require an enumerable as argument, or you can use the fluid interface on the enumerable instance. <br />
+        Here is an example which calls a static function:
+        <br /><br />
+        <code>
+          _testResultCarEnumerable = TS.Linq.Extensions.distinct(_testInputCarEnumerable, (first: Car, second: Car) => first.name == second.name);
+        </code>
+        <br /><br />
+        The same call using the fluid interface:
+        <br /><br />
+        <code>
+          _testResultCarEnumerable = _testInputCarEnumerable.distinct((first: Car, second: Car) => first.name == second.name);
+        </code>
+        <br /><br />
+        If you are familiar with LINQ in C#, there is nothing new for you. The function above retuns an enumerable as a result to the call of "distinct".
+        You can go on with that enumerable and use other LINQ extension function on it, or you can call the "toArray" function wich casts the result into
+        a javascript array of the result type. 
+        From that place on, you can work with the result array as you would with any other javascript array.<br />
+        <br />
+        So that&#39;s all to say about this library. If you are curious about the deffered execution behavior or if you are new to LINQ alt all you should read about it in one or the online tutorials or at <a href="https://social.msdn.microsoft.com/search/en-US?query=linq">MSDN</a>. There are also a vast amount of books which cover this topic.&nbsp;
+
       </div>
     </div>
   </body>
