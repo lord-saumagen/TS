@@ -15,10 +15,12 @@
       DATE,
       FUNCTION,
       NAN,
+      NEGATIVE_INFINITY,
       NULL,
       NUMBER_OBJECT,
       NUMBER_VALUE,
       OBJECT,
+      POSITIVE_INFINITY,
       REGEX,
       STRING_OBJECT,
       STRING_VALUE,
@@ -92,6 +94,18 @@
           return TypeEnum.NAN
         }//END if
 
+        //
+        //Check infinity
+        //
+        if (this.isNegativInfiniteNumber(obj))
+        {
+          return TypeEnum.NEGATIVE_INFINITY;
+        }//END if
+
+        if (this.isPositiveInfiniteNumber(obj))
+        {
+          return TypeEnum.POSITIVE_INFINITY;
+        }//END if
 
         //
         // Check number
@@ -581,9 +595,6 @@
       *    TS.Utils.TypeInfo.isNumber
       *
       *  @see
-      *    TS.Utils.TypeInfo.isNumber
-      *
-      *  @see
       *    TS.Utils.TypeInfo.isNumberObject
       *
       *  @param  source
@@ -611,6 +622,87 @@
         }//END if
 
         return false;
+      }
+
+
+      /**
+      *  @description  
+      *    Returns true if the type of
+      *    the argument 'source' is a
+      *    infinite number value type, otherwise false.
+      *
+      *  @see
+      *    TS.Utils.TypeInfo.isNumber
+      *
+      *  @see
+      *    TS.Utils.TypeInfo.isNumberValue
+      *
+      *  @see
+      *    TS.Utils.TypeInfo.isNumberObject
+      *
+      *  @param  source
+      *    The argument to check.
+      *
+      *  @returns  boolean
+      *    The result value true or false.
+      */
+      public static isInfiniteNumber(source: any): boolean
+      {
+        return this.isNumberValue(source) && (source === Number.POSITIVE_INFINITY || source === Number.NEGATIVE_INFINITY);
+      }
+
+
+      /**
+      *  @description  
+      *    Returns true if the type of
+      *    the argument 'source' is a positive
+      *    infinite number value type, otherwise false.
+      *
+      *  @see
+      *    TS.Utils.TypeInfo.isNumber
+      *
+      *  @see
+      *    TS.Utils.TypeInfo.isNumberValue
+      *
+      *  @see
+      *    TS.Utils.TypeInfo.isNumberObject
+      *
+      *  @param  source
+      *    The argument to check.
+      *
+      *  @returns  boolean
+      *    The result value true or false.
+      */
+      public static isPositiveInfiniteNumber(source: any): boolean
+      {
+        return this.isNumberValue(source) && (source === Number.POSITIVE_INFINITY);
+      }
+
+
+      /**
+      *  @description  
+      *    Returns true if the type of
+      *    the argument 'source' is a negative
+      *    infinite number value type, otherwise false.
+      *
+      *  @see
+      *    TS.Utils.TypeInfo.isNumber
+      *
+      *  @see
+      *    TS.Utils.TypeInfo.isNumberValue
+      *
+      *  @see
+      *    TS.Utils.TypeInfo.isNumberObject
+      *
+      *  @param  source
+      *    The argument to check.
+      *
+      *  @returns  boolean
+      *    The result value true or false.
+      */
+      public static isNegativInfiniteNumber(source: any): boolean
+      {
+        return this.isNumberValue(source) && (source === Number.NEGATIVE_INFINITY);
       }
 
 

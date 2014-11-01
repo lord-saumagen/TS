@@ -7,53 +7,26 @@
 module TS_Exception_test
 {
 
+
   QUnit.module("TS.Exceptions",
-  {
-    setupOnce: function ()
     {
-      // runs once before anything else in the module
-    },
-    setup: function ()
-    {
-      // prepare something for all following tests
-    },
-    teardown: function ()
-    {
-      // clean up after each test
-    },
-    teardownOnce: function ()
-    {
-      // runs once after all unit tests finished (including teardown)
-    }
-  });
-
-
-  QUnit.test("Exception", function (assert)
-  {
-    var ExceptionMessage = "Exception message";
-
-    assert.throws(function ()
-    {
-      throw new TS.Exception(ExceptionMessage);
-    }, new TS.Exception(ExceptionMessage), "Should raise an exception instance that matched with the expected instance.");
-
-    assert.throws(function ()
-    {
-      throw new TS.Exception(ExceptionMessage, GetInnerException());
-    },
-      function (err)
+      setupOnce: function ()
       {
-        if (err.message == ExceptionMessage)
-        {
-          if (CheckInnerException(err))
-          {
-            return true;
-          }//END if
-        }//END if
-        return false;
-      }, "Should raise an exception instance of the expected type with an inner exception.");
-  });
-
+        // runs once before anything else in the module
+      },
+      setup: function ()
+      {
+        // prepare something for all following tests
+      },
+      teardown: function ()
+      {
+        // clean up after each test
+      },
+      teardownOnce: function ()
+      {
+        // runs once after all unit tests finished (including teardown)
+      }
+    });
 
   QUnit.test("ArgumentException", function (assert)
   {
@@ -80,7 +53,6 @@ module TS_Exception_test
         return false;
       }, "Should raise an exception instance of the expected type with an inner exception.");
   });
-
 
   QUnit.test("ArgumentNullException", function (assert)
   {
@@ -189,6 +161,84 @@ module TS_Exception_test
       }, "Should raise an exception instance of the expected type with an inner exception.");
   });
 
+  QUnit.test("ArithmeticException", (assert) => 
+  {
+    var ExceptionMessage = "Arithmetic exception message";
+
+    assert.throws(function ()
+    {
+      throw new TS.ArithmeticException(ExceptionMessage);
+    }, new TS.ArithmeticException(ExceptionMessage), "Should raise an exception instance that matched with the expected instance.");
+
+    assert.throws(function ()
+    {
+      throw new TS.ArithmeticException(ExceptionMessage, GetInnerException());
+    },
+      function (err)
+      {
+        if (err.message == ExceptionMessage)
+        {
+          if (CheckInnerException(err))
+          {
+            return true;
+          }//END if
+        }//END if
+        return false;
+      }, "Should raise an exception instance of the expected type with an inner exception.");
+  });
+
+  QUnit.test("DivideByZeroException", (assert) => 
+  {
+    var ExceptionMessage = "Divide by zero exception message";
+
+    assert.throws(function ()
+    {
+      throw new TS.DivideByZeroException(ExceptionMessage);
+    }, new TS.DivideByZeroException(ExceptionMessage), "Should raise an exception instance that matched with the expected instance.");
+
+    assert.throws(function ()
+    {
+      throw new TS.DivideByZeroException(ExceptionMessage, GetInnerException());
+    },
+      function (err)
+      {
+        if (err.message == ExceptionMessage)
+        {
+          if (CheckInnerException(err))
+          {
+            return true;
+          }//END if
+        }//END if
+        return false;
+      }, "Should raise an exception instance of the expected type with an inner exception.");
+  });
+
+  QUnit.test("Exception", function (assert)
+  {
+    var ExceptionMessage = "Exception message";
+
+    assert.throws(function ()
+    {
+      throw new TS.Exception(ExceptionMessage);
+    }, new TS.Exception(ExceptionMessage), "Should raise an exception instance that matched with the expected instance.");
+
+    assert.throws(function ()
+    {
+      throw new TS.Exception(ExceptionMessage, GetInnerException());
+    },
+      function (err)
+      {
+        if (err.message == ExceptionMessage)
+        {
+          if (CheckInnerException(err))
+          {
+            return true;
+          }//END if
+        }//END if
+        return false;
+      }, "Should raise an exception instance of the expected type with an inner exception.");
+  });
+
 
   QUnit.test("IndexOutOfRangeException", function (assert)
   {
@@ -273,7 +323,7 @@ module TS_Exception_test
 
   QUnit.test("InvalidOperationException", function (assert)
   {
-    var ExceptionMessage = "InvalidOperation exception message";
+    var ExceptionMessage = "Invalid operation exception message";
 
     assert.throws(function ()
     {
@@ -296,6 +346,87 @@ module TS_Exception_test
         return false;
       }, "Should raise an exception instance of the expected type with an inner exception.");
   });
+
+  QUnit.test("InvalidTypeException", function (assert)
+  {
+    var ExceptionMessage = "Invalid type exception message";
+
+    assert.throws(function ()
+    {
+      throw new TS.InvalidTypeException("ArgName", "NOP", ExceptionMessage);
+    }, new TS.InvalidTypeException("ArgName", "NOP", ExceptionMessage), "Should raise an exception instance that matched with the expected instance.");
+
+    assert.throws(function ()
+    {
+      throw new TS.InvalidTypeException("ArgName", "NOP", ExceptionMessage, GetInnerException());
+    },
+      function (err)
+      {
+        if (err.message == ExceptionMessage)
+        {
+          if (CheckInnerException(err))
+          {
+            return true;
+          }//END if
+        }//END if
+        return false;
+      }, "Should raise an exception instance of the expected type with an inner exception.");
+  });
+
+  QUnit.test("NotFiniteNumberException", (assert) => 
+  {
+    var ExceptionMessage = "Not finite number exception message";
+
+    assert.throws(function ()
+    {
+      throw new TS.NotFiniteNumberException(ExceptionMessage);
+    }, new TS.NotFiniteNumberException(ExceptionMessage), "Should raise an exception instance that matched with the expected instance.");
+
+    assert.throws(function ()
+    {
+      throw new TS.NotFiniteNumberException(ExceptionMessage, GetInnerException());
+    },
+      function (err)
+      {
+        if (err.message == ExceptionMessage)
+        {
+          if (CheckInnerException(err))
+          {
+            return true;
+          }//END if
+        }//END if
+        return false;
+      }, "Should raise an exception instance of the expected type with an inner exception.");
+  });
+
+
+  QUnit.test("OverflowException", (assert) => 
+  {
+    var ExceptionMessage = "Overflow exception message";
+
+    assert.throws(function ()
+    {
+      throw new TS.OverflowException(ExceptionMessage);
+    }, new TS.OverflowException(ExceptionMessage), "Should raise an exception instance that matched with the expected instance.");
+
+    assert.throws(function ()
+    {
+      throw new TS.OverflowException(ExceptionMessage, GetInnerException());
+    },
+      function (err)
+      {
+        if (err.message == ExceptionMessage)
+        {
+          if (CheckInnerException(err))
+          {
+            return true;
+          }//END if
+        }//END if
+        return false;
+      }, "Should raise an exception instance of the expected type with an inner exception.");
+  });
+
+
 
 
 

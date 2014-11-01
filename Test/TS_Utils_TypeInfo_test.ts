@@ -61,6 +61,10 @@ module TS_Utils_TypeInfo_test
     assert.equal(TS.Utils.TypeEnum.STRING_VALUE, TS.Utils.TypeInfo.getType("StringValue"), "Should return a type that matches with 'TS.Utils.TypeEnum.STRING_VALUE'.");
     assert.equal(TS.Utils.TypeEnum.UNDEFINED, TS.Utils.TypeInfo.getType(_undefined), "Should return a type that matches with 'TS.Utils.TypeEnum.UNDEFINED'.");
     assert.equal(TS.Utils.TypeEnum.UNKNOWN, TS.Utils.TypeInfo.getType(document.all), "Should return a type that matches with 'TS.Utils.TypeEnum.UNKNOWN'.");
+    assert.equal(TS.Utils.TypeEnum.POSITIVE_INFINITY, TS.Utils.TypeInfo.getType(Number.MAX_VALUE * 2), "Should return a type that matches with 'TS.Utils.TypeEnum.POSITIVE_INFINITY'.");
+    assert.equal(TS.Utils.TypeEnum.POSITIVE_INFINITY, TS.Utils.TypeInfo.getType(Infinity), "Should return a type that matches with 'TS.Utils.TypeEnum.POSITIVE_INFINITY'.");
+    assert.equal(TS.Utils.TypeEnum.NEGATIVE_INFINITY, TS.Utils.TypeInfo.getType(Number.MAX_VALUE * -2), "Should return a type that matches with 'TS.Utils.TypeEnum.NEGATIVE_INFINITY'.");
+    assert.equal(TS.Utils.TypeEnum.NEGATIVE_INFINITY, TS.Utils.TypeInfo.getType(-Infinity), "Should return a type that matches with 'TS.Utils.TypeEnum.NEGATIVE_INFINITY'.");
   });
 
   QUnit.test("isArguments", (assert) => 
@@ -189,6 +193,20 @@ module TS_Utils_TypeInfo_test
     assert.ok(TS.Utils.TypeInfo.isFunction(String), "Should return true on the javascript 'String' constructor function value as argument.");
   });
 
+  QUnit.test("isInfiniteNumber", (assert) =>
+  {
+    var _undefined;
+    var _null;
+
+    _null = null;
+
+    assert.ok(!TS.Utils.TypeInfo.isInfiniteNumber(_undefined), "Should return false on an undefined value as argument.");
+    assert.ok(!TS.Utils.TypeInfo.isInfiniteNumber(_null), "Should return false on a null value as argument.");
+    assert.ok(!TS.Utils.TypeInfo.isInfiniteNumber(42), "Should return false on a finite number value as argument.");
+    assert.ok(TS.Utils.TypeInfo.isInfiniteNumber(Number.MAX_VALUE * 2), "Should return true on a positive infinite value as argument.");
+    assert.ok(TS.Utils.TypeInfo.isInfiniteNumber(Number.MAX_VALUE * -2), "Should return true on a negative infinite value as argument.");
+    assert.ok(TS.Utils.TypeInfo.isInfiniteNumber(Infinity), "Should return true on a value which holds the constant 'Infinity' as argument.");
+  });
 
   QUnit.test("isIntegerNumber", (assert) =>
   {
@@ -218,6 +236,21 @@ module TS_Utils_TypeInfo_test
     assert.ok(TS.Utils.TypeInfo.isNaN(NaN), "Should return true on a NaN value as argument.");
   });
 
+
+  QUnit.test("isNegativInfiniteNumber", (assert) =>
+  {
+    var _undefined;
+    var _null;
+
+    _null = null;
+
+    assert.ok(!TS.Utils.TypeInfo.isNegativInfiniteNumber(_undefined), "Should return false on an undefined value as argument.");
+    assert.ok(!TS.Utils.TypeInfo.isNegativInfiniteNumber(_null), "Should return false on a null value as argument.");
+    assert.ok(!TS.Utils.TypeInfo.isInfiniteNumber(42), "Should return false on a finite number value as argument.");
+    assert.ok(!TS.Utils.TypeInfo.isNegativInfiniteNumber(Number.MAX_VALUE * 2), "Should return false on a positive infinite value as argument.");
+    assert.ok(TS.Utils.TypeInfo.isNegativInfiniteNumber(Number.MAX_VALUE * -2), "Should return true on a negative infinite value as argument.");
+    assert.ok(TS.Utils.TypeInfo.isNegativInfiniteNumber(-Infinity), "Should return true on a value which holds the negative constant 'Infinity' as argument.");
+  });
 
   QUnit.test("isNull", (assert) =>
   {
@@ -356,6 +389,22 @@ module TS_Utils_TypeInfo_test
   });
 
 
+  QUnit.test("isPositiveInfiniteNumber", (assert) =>
+  {
+    var _undefined;
+    var _null;
+
+    _null = null;
+
+    assert.ok(!TS.Utils.TypeInfo.isPositiveInfiniteNumber(_undefined), "Should return false on an undefined value as argument.");
+    assert.ok(!TS.Utils.TypeInfo.isPositiveInfiniteNumber(_null), "Should return false on a null value as argument.");
+    assert.ok(!TS.Utils.TypeInfo.isInfiniteNumber(42), "Should return false on a finite number value as argument.");
+    assert.ok(TS.Utils.TypeInfo.isPositiveInfiniteNumber(Number.MAX_VALUE * 2), "Should return true on a positive infinite value as argument.");
+    assert.ok(!TS.Utils.TypeInfo.isPositiveInfiniteNumber(Number.MAX_VALUE * -2), "Should return false on a negative infinite value as argument.");
+    assert.ok(TS.Utils.TypeInfo.isPositiveInfiniteNumber(Infinity), "Should return true on a value which holds the constant 'Infinity' as argument.");
+  });
+
+
   QUnit.test("isPositiveIntegerNumber", (assert) =>
   {
     var _undefined;
@@ -450,6 +499,8 @@ module TS_Utils_TypeInfo_test
     assert.ok(!TS.Utils.TypeInfo.isUndefined(0), "Should return false on an arbitrary value as argument.");
     assert.ok(!TS.Utils.TypeInfo.isUndefined(NaN), "Should return false on a NaN value as argument.");
   });
+
+
 
 
 }//END module

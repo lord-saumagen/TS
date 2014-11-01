@@ -169,6 +169,8 @@
       *    Calculates and returns the average of all elements of the 
       *    current enumerable.
       *
+      *    Immediate execution.
+      *
       *  @see {@link http://msdn.microsoft.com/en-us/library/bb354760.aspx | MSDN}
       *
       *  @number
@@ -178,8 +180,10 @@
       *    TS.Linq.EmptyEnumerableException
       *
       *  @throws
-      *    TS.ArgumentException
+      *    TS.InvalidTypeException
       *
+      *  @throws
+      *    TS.OverflowException
       */
       public average(): number
       {
@@ -195,10 +199,10 @@
 
         while (_enumerator.moveNext())
         {
-          if (isNaN(Number(_enumerator.current)))
+          if (!TS.Utils.TypeInfo.isNumber(_enumerator.current))
           {
             _enumerator.dispose();
-            throw new TS.ArgumentException("this", this, "The LINQ operation 'average' is only applicable on enumerables of type 'Enumerable<number>'.");
+            throw new TS.InvalidTypeException("this", this, "The LINQ operation 'average' is only applicable on enumerables of type 'Enumerable<number>'.");
           }//END if
           _numberArray.push(Number(_enumerator.current));
         }//END while
@@ -842,6 +846,58 @@
       public skipWhile(predicate: (item: T) => boolean): Enumerable<T>
       {
         return Extensions.skipWhile(this, predicate);
+      }
+
+
+      /**
+      *  @description
+      *    Computes the sum of the sequence of numeric values that are obtained by 
+      *    invoking a selector function on each element of the input sequence.
+      *    
+      *    Computes the sum of a sequence of numeric values if the selector is null
+      *    or undefined.
+      *
+      *    Immediate execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.sum.aspx | MSDN}
+      *
+      *  @returns
+      *    number, the result value.
+      *
+      *  @throws
+      *    TS.Linq.EmptyEnumerableException.
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      *
+      *  @throws
+      *    TS.OverflowException
+      */
+      public sum(): number
+      {
+        var _numberArray: Array<number>;
+        var _enumerator: IEnumerator<T>;
+
+        if (this.count() == 0)
+        {
+          throw new TS.Linq.EmptyEnumerableException(this, "The LINQ operation 'sum' is not applicable on empty enumerables'.");
+        }//END if
+
+        _enumerator = this.getEnumerator();
+
+        while (_enumerator.moveNext())
+        {
+          if (!TS.Utils.TypeInfo.isNumber(_enumerator.current))
+          {
+            _enumerator.dispose();
+            throw new TS.InvalidTypeException("this", this, "The LINQ operation 'sum' is only applicable on enumerables of type 'Enumerable<number>'.");
+          }//END if
+          _numberArray.push(Number(_enumerator.current));
+        }//END while
+
+        _enumerator.dispose();
+
+        return Extensions.sum(Enumerable.fromArray(_numberArray));
       }
 
 

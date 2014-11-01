@@ -415,7 +415,15 @@ module TS
             throw new TS.InvalidTypeException("this", this, "The LINQ operation 'average' is only applicable on enumerables of type 'Enumerable<number>' in function 'TS.Linq.Extensions.average'.");
           }//END if
           _sum += _enumerator.current;
+
+          if (_sum < -Number.MAX_VALUE || _sum > Number.MAX_VALUE)
+          {
+            _enumerator.dispose();
+            throw new TS.OverflowException("An overflow occured in function 'TS.Linq.Extensions.average'.");
+          }//END if
+
           _count++;
+
         }//END while
 
         if (_count > 0)
@@ -1886,6 +1894,70 @@ module TS
         }//END callback
 
         return new Enumerable<TResult>(_callback);
+      }
+
+
+      /**
+      *  @description
+      *    Computes the sum of a sequence of numeric values.
+      *
+      *    Immediate execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.sum.aspx | MSDN}
+      *
+      *  @returns
+      *    number, the result value.
+      *
+      *  @throws
+      *    TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.Linq.EmptyEnumerableException.
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      *
+      *  @throws
+      *    TS.OverflowException
+      */
+      export function sum(enumerable: Enumerable<number>): number
+      {
+        var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
+        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
+
+        var _sum = 0;
+        var _count = 0;
+        var _enumerator: IEnumerator<number>;
+        var _currentNumber: any;
+
+        _checkEnumerable(enumerable, "TS.Linq.Extensions.sum");
+
+        if (enumerable.count() == 0)
+        {
+          throw new TS.Linq.EmptyEnumerableException(enumerable, "The argument 'enumerable' must not be an empty enumerable in function 'TS.Linq.Extensions.sum'.");
+        }//END if
+
+        _enumerator = enumerable.getEnumerator();
+
+        while (_enumerator.moveNext())
+        {
+          if (!TS.Utils.TypeInfo.isNumber(_enumerator.current))
+          {
+            _enumerator.dispose();
+            throw new TS.InvalidTypeException("this", this, "The LINQ operation 'sum' is only applicable on enumerables of type 'Enumerable<number>' in function 'TS.Linq.Extensions.sum'.");
+          }//END if
+
+          _sum += _enumerator.current;
+
+          if (_sum < -Number.MAX_VALUE || _sum > Number.MAX_VALUE)
+          {
+            _enumerator.dispose();
+            throw new TS.OverflowException("An overflow occured in function 'TS.Linq.Extensions.sum'.");
+          }//END if
+        }//END while
+
+        return _sum;
+
       }
 
 

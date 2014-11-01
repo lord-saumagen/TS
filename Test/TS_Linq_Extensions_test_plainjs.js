@@ -2,20 +2,6 @@
 (function (TS_Linq_Extensions_test)
 {
 
-  QUnit.test("average", function (assert)
-  {
-
-    assert.throws(function ()
-    {
-      TS.Linq.Extensions.average(TS.Linq.Enumerable.fromArray(TS_Linq_Extensions_test.CreateStringArray()));
-    }, function (err)
-    {
-      return (err.name == "TS.InvalidTypeException") ? true : false;
-    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'enumerable' argument type.");
-
-  });
-
-
   QUnit.test("aggregate", function (assert)
   {
     assert.throws(function ()
@@ -56,6 +42,26 @@
 
   });
 
+  QUnit.test("average", function (assert)
+  {
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.sum({});
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'enumerable' argument type.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.sum(TS.Linq.Enumerable.fromArray([1, 2, 3, {}, ""]), {});
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'enumerable' argument type.");
+
+  });
 
   QUnit.test("concat", function (assert)
   {
@@ -586,6 +592,28 @@
     {
       return (err.name == "TS.InvalidTypeException") ? true : false;
     }, "Should throw a 'TS.InvalidTypeException' for an invalid 'predicate' argument type.");
+
+  });
+
+
+  QUnit.test("sum", function (assert)
+  {
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.sum({});
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'enumerable' argument type.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.sum(TS.Linq.Enumerable.fromArray([1,2,3,{},""]), {});
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'enumerable' argument type.");
 
   });
 

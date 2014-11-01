@@ -175,11 +175,13 @@ module TS_Linq_Extensions_test
 
   QUnit.test("average", (assert) =>
   {
+    var _testNumberArray: Array<number>;
     var _testResult: number;
     var _undefined;
 
-    _testResult = TS.Linq.Extensions.average(TS.Linq.Enumerable.fromArray(CreateNumberArray()));
-    assert.equal(_testResult, 5.5, "Sshould return expected average.");
+    _testNumberArray = CreateNumberArray();
+    _testResult = TS.Linq.Extensions.average(TS.Linq.Extensions.fromArray(_testNumberArray));
+    assert.equal(_testResult, 5.5, "Should return expected average.");
 
     assert.throws(() =>
     {
@@ -195,6 +197,14 @@ module TS_Linq_Extensions_test
     {
       TS.Linq.Extensions.average(_undefined);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for undefined 'enumerable' argument.");
+
+    _testNumberArray.push(Number.MAX_VALUE / 2);
+    _testNumberArray.push(Number.MAX_VALUE);
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.average(TS.Linq.Extensions.fromArray(_testNumberArray));
+    }, (err) => ((err.name == "TS.OverflowException") ? true : false), "Should throw a 'TS.OverflowException' for an 'Enumerable<number>' which exceeds the number range in sum in the 'enumerable' argument.");
   });
 
 
@@ -1061,6 +1071,41 @@ module TS_Linq_Extensions_test
     {
       TS.Linq.Extensions.skipWhile(_numberEnumerable, _undefined);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'predicate' argument.");
+  });
+
+
+  QUnit.test("sum", (assert) =>
+  {
+    var _testNumberArray: Array<number>;
+    var _testResult: number;
+    var _undefined;
+
+    _testNumberArray = CreateNumberArray();
+    _testResult = TS.Linq.Extensions.sum(TS.Linq.Enumerable.fromArray(_testNumberArray));
+    assert.equal(_testResult, 55, "Should return expected sum.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.sum(TS.Linq.Extensions.empty<number>());
+    }, (err) => ((err.name == "TS.Linq.EmptyEnumerableException") ? true : false), "Should throw a 'TS.Linq.EmptyEnumerableException' for an empty 'enumerable' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.sum(null);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for null 'enumerable' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.sum(_undefined);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for undefined 'enumerable' argument.");
+
+    _testNumberArray.push(Number.MAX_VALUE / 2);
+    _testNumberArray.push(Number.MAX_VALUE);
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.average(TS.Linq.Extensions.fromArray(_testNumberArray));
+    }, (err) => ((err.name == "TS.OverflowException") ? true : false), "Should throw a 'TS.OverflowException' for an 'Enumerable<number>' which exceeds the number range in sum in the 'enumerable' argument.");
   });
 
 

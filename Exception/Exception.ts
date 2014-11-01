@@ -298,9 +298,7 @@
     /**
     *  @constructs
     */
-    constructor(message?: string, innerException?: Exception)
     constructor(argumentName: string, argumentValue: any, message?: string, innerException?: Exception)
-    constructor(argumentName?: string, argumentValue?: any, message?: string, innerException?: Exception)
     {
       super(message, innerException);
       (TS.Utils.TypeInfo.isNullOrUndefined(argumentName)) ? this._argumentName = "" : this._argumentName = argumentName;
@@ -308,4 +306,118 @@
     }
   }//END class
 
+  //********************************************************************************
+  // ArithmeticException
+  //********************************************************************************
+
+  /**
+  *  @description
+  *    The exception that is thrown for errors in an arithmetic, casting, or conversion operation.
+  *    ArithmeticException is the base class for DivideByZeroException, NotFiniteNumberException, 
+  *    and OverflowException. In general, use one of the derived classes of ArithmeticException 
+  *    to more precisely indicate the exact nature of the error. Throw an ArithmeticException if 
+  *    you are only interested in capturing a general arithmetic error.
+  */
+  export class ArithmeticException extends Exception
+  {
+
+    /**
+    *  @overwrite
+    */
+    public get type(): string
+    {
+      return "TS.ArithmeticException";
+    }
+
+
+    /**
+    *  @constructs
+    */
+    constructor(message?: string, innerException?: Exception)
+    {
+      super(message, innerException);
+    }
+
+  }//END class
+
+
+  /**
+  *  @description
+  *    The exception that should be thrown when an arithmetic, casting, or 
+  *    conversion operation results in an overflow.
+  */
+  export class OverflowException extends ArithmeticException
+  {
+
+    /**
+    *  @overwrite
+    */
+    public get type(): string
+    {
+      return "TS.OverflowException";
+    }
+
+    /**
+    *  @constructs
+    */
+    constructor(message?: string, innerException?: Exception)
+    {
+      super(message, innerException);
+    }
+
+  }//END class
+
+  /**
+  *  @description
+  *    The exception that should be thrown when there is an attempt to divide a 
+  *    number value by zero.
+  */
+  export class DivideByZeroException extends ArithmeticException
+  {
+
+    /**
+    *  @overwrite
+    */
+    public get type(): string
+    {
+      return "TS.DivideByZeroException";
+    }
+
+    /**
+    *  @constructs
+    */
+    constructor(message?: string, innerException?: Exception)
+    {
+      super(message, innerException);
+    }
+
+  }//END class
+
+
+  /**
+  *  @description
+  *    The exception that should be thrown when a number value is positive infinity, 
+  *    negative infinity, or Not-a-Number (NaN).
+  */
+  export class NotFiniteNumberException extends ArithmeticException
+  {
+
+    /**
+    *  @overwrite
+    */
+    public get type(): string
+    {
+      return "TS.NotFiniteNumberException";
+    }
+
+    /**
+    *  @constructs
+    */
+    constructor(message?: string, innerException?: Exception)
+    {
+      super(message, innerException);
+    }
+
+  }//END class
+  
 }//END module 
