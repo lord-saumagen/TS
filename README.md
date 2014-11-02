@@ -1,4 +1,4 @@
-#TS
+#TS - A TypeScript module collection
 
 This project is a collection of some TypeScript libraries which I wrote. Most of them are reprogrammed modules which are already available in some other javascript libraries. But I don't like that plain javascript libraries which often enough come with a bad coding style. I have the hope and vision that there will come more libraries which are written in TypeScript in the first place. My hope is, that this will bring a more professional coding style to the javascript community.
 

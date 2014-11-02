@@ -309,6 +309,9 @@
 
     _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
 
+    _testResultCar = TS.Linq.Extensions.firstOrDefault(_testInputCarEnumerable, TS_Linq_Extensions_test.Car, function (item) { return item.NOP == "NOP" });
+    assert.deepEqual(_testResultCar, new TS_Linq_Extensions_test.Car(), "Should return a default object if the predicate is erroneous.");
+
     assert.throws(function ()
     {
       TS.Linq.Extensions.firstOrDefault({}, TS_Linq_Extensions_test.Car, function (item) { return true; });
@@ -431,6 +434,66 @@
     }, "Should throw a 'TS.InvalidTypeException' for an invalid 'resultSelector' argument.");
   });
 
+
+  QUnit.test("last", function (assert)
+  {
+    var _testInputCarEnumerable;
+    var _testResultCar;
+
+    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.last({}, function (item) { return true; });
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'enumerable' argument type.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.last(_testInputCarEnumerable, {});
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'predicate' argument type.");
+
+  });
+
+  QUnit.test("lastOrDefault", function (assert)
+  {
+    var _testInputCarEnumerable;
+    var _testResultCar;
+
+    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
+
+    _testResultCar = TS.Linq.Extensions.lastOrDefault(_testInputCarEnumerable, TS_Linq_Extensions_test.Car, function (item) { return item.NOP == "NOP" });
+    assert.deepEqual(_testResultCar, new TS_Linq_Extensions_test.Car(), "Should return a default object if the predicate is erroneous.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.lastOrDefault({}, TS_Linq_Extensions_test.Car, function (item) { return true; });
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'enumerable' argument type.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.lastOrDefault(_testInputCarEnumerable, {}, function (item) { return true; });
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'defaultConstructor' argument type.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.lastOrDefault(_testInputCarEnumerable, TS_Linq_Extensions_test.Car, {});
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'predicate' argument type.");
+  });
 
   QUnit.test("orderBy", function (assert)
   {

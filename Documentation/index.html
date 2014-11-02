@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="index.css" type="text/css" />
   </head>
   <body>
-    <h1>TS.Linq</h1>
+    <h1>TS - A TypeScript module collection.</h1>
     <div id="navigation" style="float: left; width: 20%; min-width: 200px; vertical-align: top;">
       <ul>
         <li><a href="#Preface">Preface</a></li>
@@ -20,20 +20,11 @@
     <div id="content" style="float: left; width: 80%; vertical-align: top;">
       <div id="Preface">
         <h2>Preface</h2>
-        This library brings the <a href="http://msdn.microsoft.com/en-us/library/bb397926.aspx" target="_blank">LINQ</a> extensions to TypeScript. 
+        The recent years I had to deal more and more with javascript as a web programmer. Javascript was always part of the job, but it required more and more attention since it became popular to create single page web application which are all build on top of Ajax. The same time the number of libraries which tried to circumvent the design flaws of the javascript language grew. There are also attempts to establisch a better language for client-side programming in web applications. Unfortunately they all failed.
         <br />
-        <br />
-        From a programmers perspective, LINQ was one of the most exciting .NET framework extensions in the past 10 years.
-        Suddenly you got rid of the awkward SQL query languages in it&#39;s different flavours, which had in common to scatter all over
-        your code and tiers. They were also annoyingly compiler resistent and blew always in your face when you least expected it.
-        With LINQ that all came to an end and it turned out that LINQ was also a swiss knife for every problem which has to deal with<br />
-        collections, semi structured or structured data in any way.<br />
-        <br />
-        Time went by and javascript went into the spotlight of every web programmer. To be honest, javascript was always part of the
-        job, but every OOP programmer has at least an ambivalent relationship to javascript. That programming language has 5 times
+        As a programmer who relies on the object oriented programming paradigm, I have at least an ambivalent relationship to javascript. That programming language has 5 times
         more desing flaws than instructions. Even well established javascript libraries, which claim for themselfe to be professionel,
-        look more like a result of a hacker contest than professionel code. But all attempts to establish a better language for client-side 
-        programming have failed. Even worse, the language itself evolves with the speed of continental plates. There is no hope that
+        look more like a result of a hacker contest than professionel code. Even worse, the language itself evolves with the speed of continental plates. There is no hope that
         the language will reach a mature state in the next 5000 years. Those which are responsible
         for the language specification 
         have also no intention to get rid of the ages old errors. Offically because they won&#39;t brake
@@ -44,7 +35,7 @@
         <br />
         But then came <a href="http://en.wikipedia.org/wiki/Anders_Hejlsberg">Anders Hejlsberg</a>, my personal hero and inventor of <a href="http://en.wikipedia.org/wiki/TypeScript">TypeScript.</a><br />
         <br />
-        He showed us a way out of the misery. He created a language which looks and feels almost like a real programming language.
+        He showed us a way out of the misery. He created a language which looks and feels almost like a real OO programming language.
         You do not longer have to deal with all the crap and hacks and well known errors to keep your javascript programs running. 
         Now you can program your script code just
         like you always did in C#. You also get full intellisense and error messages at compile
@@ -59,34 +50,25 @@
         <br />
         TypeScript code compiles ( or transpiles, if you like ) to javascript. This way your browser won&#39;t even notice that you are
         already a lightyear ahead of the lame script engine restriction. Someday, somebody should investigate why one of the
-        worst programming languages was the only thing the browser vendors could agree on, during the dark ages of the
+        worst programming languages man invented,&nbsp; was the only thing the browser vendors could agree on, during the dark ages of the
         browser war in the last millenium.
         <br />
         <br />
-        An now, it comes all together.<br />
+        Anders did a great job and gave us lambda expressions, inheritance, something like a type system, typed function arguments, access modifiers and much much more. All that stuff you always wanted to have in javascript but didn&#39;t dare to ask for. Since the language is all new&nbsp; he is still focused on developing the language itself and the compiler. So he didn&#39;t have time to create a full blown ecosystem around that language like you may know from &quot;Phyton&quot; or &quot;Node.js&quot;. You can use existing javasript libraries in TypeScript with the help of TypeScript definition files (&quot;d.ts&quot;). Those &quot;d.ts&quot; files work much like header files in C or C++. They introduce the javscript library functions to TypeScript so that you can use them from within your TypeScript code. That gives you a headstart when you want to use TypeScript for serious coding, but don&#39;t have the time to wirte all necessary libraries by yourself. But you shouldnt settle for this. With TypeScript you have the tool to write much 
+        more robust javascript code than ever before. My vision is, that there will come a time where those libraries are written in typescript in the first place. That will give us more robust libraries, code which is much easier to understand and you get also rid of the &quot;d.ts&quot; files. Event those which are not enlightened can still use your code, because after compiling it is plain javascript for them. That&#39;s the reason why I started this project.<br />
         <br />
-        That&#39;s the part where I come into play. Anders did a great job and gave us lambda expressions, inheritance, something like
-        a type system, typed function arguments, access modifiers and much much more. All that stuff you always wanted to have in
-        javascript but didn&#39;t dare to ask for. Unfortunately he didn&#39;t have time to implement LINQ yet.
+        Since I&#39;m a great fan of LINQ in C#, it was a natural choice for me to start with a LINQ library. There are also some modules which are not LINQ specific at all, but build the foundation of a robust and eloquent coding style. Namely that are the type info function in the &quot;TS.Utils&quot; module and the exception classes.
         <br />
         <br />
-        You may alredy have noticed that I like LINQ and have to deal with javascript more an more. This gave birth to the idea to
-        reprogram the LINQ extension in TypeScript. I&#39;m aware that there are already other libraries doing the same job.
-        The most popular would be the one called <a href="https://linqjs.codeplex.com/">&#39;ling.js&#39;</a> which is hosted on <a href="http://www.codeplex.com/">Codeplex</a>. Unfortunately the code is plain javascript with
-        an additional TypeScript declaration file (&quot;d.ts&quot;). Those &quot;d.ts&quot; files work much like header files in C or C++. They introduce the
-        library functions to TypeScript so that you can use them from within your TypeScript code. But I had a different vision. I would
-        like to see more libraries written in TypeScript in the first place. That way, the &quot;d.ts&quot; files become obsolet and those which
-        are not enlightened can still use your code, because after compiling it is plain javascript for them.<br />
-        <br />
-        After all,&nbsp; I must say it was fun to write the library. I had already lost my hope and didn&#39;t belive that there will one day fun
+        After all,&nbsp; I must say it is fun to write code in TypeScript. I had already lost my hope and didn&#39;t belive that there will one day fun
         in javascript programming. But the great visionary and master of superb programming languages disabused me.
-        I take a deep bow in front of him and I hope you will have as much fun in using my library as I had in writing it.<br />
-        <br />
-        <br />
+        I take a deep bow in front of him and I hope you will have as much fun in using my library as I have in writing it.<br />
       </div>
       <div id="Introduction">
         <h2>Introduction</h2>
-        This library is a reprogrammed version of the default C# LINQ library in TypeScript.<br />
+        This library is mainly a reprogrammed version of the default C# LINQ library in TypeScript. 
+        The library may grow over time, but at the time of this writing the development is focused on the LINQ extensions.<br />
+        <br />
         Below is a link to the description of the standard query operators as they are defined by microsoft:<br />
         <br />
         <a href="http://msdn.microsoft.com/en-us/library/bb397896.aspx">http://msdn.microsoft.com/en-us/library/bb397896.aspx</a><br />
@@ -100,27 +82,28 @@
         programs written in TypeScript in the first place. So I started my own project.<br />
         <br />
         Second, I like a <a href="https://cleancoders.com/">"Clean Code"</a> coding style. Unfortunately most javascript programmers don't bother for a clean coding style.
-        The prefer the "Hacker Style" which makes it always a nighmare if it comes to a situation where you have to debug through their
+        They prefer the "Hacker Style" which makes it always a nighmare if it comes to a situation where you have to debug through their
         code.<br />
         <br />
         Third, I always vote for robustness over speed. All my functions implement an expensive parameter checking and fail gracefulley
         by throwing meaningfull exceptions.<br />
         <br />
-        To make my point clear. There are faster implementations and there are implementations which offer a lot more extensions. But if
-        you need a robust and well designed implementation your are at the right place.
+        To make my point clear. There are javascript libraries which run much faster and there are libraries which offer a lot more 
+        functionality. But if
+        you need a robust and well designed library your are at the right place.
 
         <br />
         <br />
-        All my classes and functions got a code comment which shows up in the editor during typing. At leas if you use visual studio
+        All my public classes and functions got a code comment which shows up in the editor during typing. At leas if you use visual studio
         for development. That feature makes it a lot more easier to write code in javascript then you might expect. Check it out and you
-        will never want to miss it.
-        <br />
+        will never want to miss it. <br />
         <br />
         Even with that design goals in mind and extensive testing, there might be errors in this library. For that reason I would like to hear
         from you when you find one. Please drop a note at "lord.saumagen@gmail.com" with a full description of the error.
         <br />
         &nbsp;  
-      </div>
+        <br />
+        Since this is a work in progress, you will find modules, classes or functions which are not supposed to be used in business code, because of their immature state. Those functions which pass their unit tests are considered to be stable. Run the test suite in the &quot;Test&quot; directory to get a better understanding of which of the library functions are stable and can be used.</div>
       <div id="Linq">
         <h2>LINQ</h2>
         All classes, modules and interfaces which belong to the 'TS.Linq' namespace can be found in the corresponding subdirectory called 'Linq'.<br />
@@ -308,6 +291,22 @@
             </tr>
             <tr>
               <td>
+                last</td>
+              <td>
+                Immediate execution
+              </td>
+              <td>1 overload</td>
+            </tr>
+            <tr>
+              <td>
+                lastOrDefault</td>
+              <td>
+                Immediate execution
+              </td>
+              <td>1 overload</td>
+            </tr>
+            <tr>
+              <td>
                 orderBy
               </td>
               <td>
@@ -371,11 +370,17 @@
             </tr>
             <tr>
               <td>
-                skipWhile
-              </td>
+                skipWhile</td>
               <td>
                 Deferred execution
               </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                sum</td>
+              <td>
+                Immediate execution</td>
               <td>&nbsp;</td>
             </tr>
             <tr>
@@ -444,7 +449,7 @@
           </tbody>
         </table>
         <p>
-          There are also some extensions which are not standard query operators but may still be of interst for you.
+          There are also some extensions which are not standard query operators. The extension function &quot;fromArray&quot; is essential for the use of the &quot;TS.Linq&quot; module. The others are useful for test scenarios. The &quot;cycle&quot; and &quot;random&quot; extension functions are no query operators at all. They are generators and should only be used in conjuntion with a following &quot;take&quot; operator to limit their output. Otherwise you will run into a memory leak.&nbsp;
         </p>
         <table>
           <thead>
@@ -500,14 +505,14 @@
         </h3>
         If you want to use the extension functions you have to create an instance of "Enumerable&lt;T&gt" in the first place. You get one by casting
         an array of any type into an enumerable by calling the function "fromArray" which is defined in the "TS.Linq.Extensions" module. Since there 
-        are no other collection types available in javascript, there is also no other typ you could cast to an enumerable.
+        are no other collection types available in javascript, there is also no other type you could cast to an enumerable.
         <br />
         <br />
         <code>newEnumerable = TS.Linq.Extensions.fromArray([anyArray]);
         </code>
         <br />
         <br />
-        Since that function is also assigned to the "Enumerable&lt;T&gt" class as a static function, you can call that function from that class or any
+        That function is also assigned to the "Enumerable&lt;T&gt" class as a static function, you can call that function from that class or any
         instance of that class too. 
         <br />
         <br />
@@ -521,6 +526,7 @@
         <br />
         Once you have an enumerable, you can use the LINQ extension functions to work on that enumerable. You can either call the static extension functions
         which require an enumerable as argument, or you can use the fluid interface on the enumerable instance.
+        <br />
         <br />
         Here is an example which calls a static function:
         <br />
@@ -537,7 +543,7 @@
         <br />
         <br />
         If you are familiar with LINQ in C#, there is nothing new to you. The function above retuns an enumerable as a result to the call of "distinct".
-        You can go on with that enumerable and use other LINQ extension function on it, or you can call the "toArray" function wich casts the result into
+        You can go on with that enumerable and use other LINQ extension functions on it, or you can call the "toArray" function wich casts the result into
         a javascript array of the result type. 
         From that moment on, you can work with the result array as you would with any other javascript array.<br />
         <br />
