@@ -114,7 +114,7 @@
         <br />
         <br />
         Most of the extension functions are also bound to the 'TS.Linq.Enumerable' class which you can find in file 'Enumerable.ts'. This way you can
-        use the fluid interface for the LINQ extensions which you may already know from C#.<br />
+        use the fluent interface for the LINQ extensions which you may already know from C#.<br />
         <br />
         The table below shows all of the implemented LINQ extensions and their execution behavior.<br />
         <br />
@@ -525,7 +525,7 @@
         <br />
         <br />
         Once you have an enumerable, you can use the LINQ extension functions to work on that enumerable. You can either call the static extension functions
-        which require an enumerable as argument, or you can use the fluid interface on the enumerable instance.
+        which require an enumerable as argument, or you can use the fluent interface on the enumerable instance.
         <br />
         <br />
         Here is an example which calls a static function:
@@ -535,7 +535,7 @@
         </code>
         <br />
         <br />
-        The same call using the fluid interface:
+        The same call using the fluent interface:
         <br />
         <br />
         <code>_testResultCarEnumerable = _testInputCarEnumerable.distinct((first: Car, second: Car) => first.name == second.name);
