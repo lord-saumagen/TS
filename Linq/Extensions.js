@@ -689,6 +689,78 @@
             }
             Extensions.fromArray = fromArray;
 
+            
+
+            
+            function groupJoin(outerEnumerable, innerEnumerable, outerKeySelector, innerKeySelector, resultSelector, equalityComparer) {
+                var _checkEnumerable = checkEnumerable;
+                var _checkFunctionParameter = checkFunctionParameter;
+                var _checkParameter = checkParameter;
+
+                var _pairCtor = Pair;
+                var _joinArray;
+                var _index;
+                var _enumeratorOuter;
+                var _enumeratorInner;
+                var _resultArray;
+                var _callback;
+                var _outerKey;
+                var _groupArray;
+
+                _checkEnumerable(outerEnumerable, "TS.Linq.Extensions.groupJoin");
+                _checkEnumerable(innerEnumerable, "TS.Linq.Extensions.groupJoin");
+
+                _checkParameter(outerKeySelector, "outerKeySelector", "TS.Linq.Extensions.groupJoin");
+                _checkFunctionParameter(outerKeySelector, "outerKeySelector", "TS.Linq.Extensions.groupJoin");
+
+                _checkParameter(innerKeySelector, "innerKeySelector", "TS.Linq.Extensions.groupJoin");
+                _checkFunctionParameter(innerKeySelector, "innerKeySelector", "TS.Linq.Extensions.groupJoin");
+
+                _checkParameter(resultSelector, "resultSelector", "TS.Linq.Extensions.groupJoin");
+                _checkFunctionParameter(resultSelector, "resultSelector", "TS.Linq.Extensions.groupJoin");
+
+                if (!TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer)) {
+                    _checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.contains");
+                } else {
+                    equalityComparer = function (outerKey, innerKey) {
+                        return outerKey === innerKey;
+                    };
+                }
+
+                _callback = function () {
+                    _resultArray = new Array();
+                    _joinArray = new Array();
+                    _enumeratorOuter = outerEnumerable.getEnumerator();
+
+                    while (_enumeratorOuter.moveNext()) {
+                        _outerKey = outerKeySelector(_enumeratorOuter.current);
+                        _enumeratorInner = innerEnumerable.where(function (Item) {
+                            return equalityComparer(_outerKey, innerKeySelector(Item));
+                        }).getEnumerator();
+                        _groupArray = new Array();
+                        while (_enumeratorInner.moveNext()) {
+                            _groupArray.push(_enumeratorInner.current);
+                        }
+
+                        if (_groupArray.length > 0) {
+                            _joinArray.push(new Pair(_enumeratorOuter.current, Linq.Enumerable.fromArray(_groupArray)));
+                        } else {
+                            _joinArray.push(new Pair(_enumeratorOuter.current, TS.Linq.Extensions.empty()));
+                        }
+                    }
+
+                    for (_index = _joinArray.length - 1; _index > -1; _index--) {
+                        _resultArray.push(resultSelector(_joinArray[_index].first, _joinArray[_index].second));
+                    }
+
+                    _joinArray = null;
+                    return new Linq.ArrayEnumerator(_resultArray);
+                };
+
+                return new Linq.Enumerable(_callback);
+            }
+            Extensions.groupJoin = groupJoin;
+
             function join(outerEnumerable, innerEnumerable, outerKeySelector, innerKeySelector, resultSelector) {
                 var _checkEnumerable = checkEnumerable;
                 var _checkFunctionParameter = checkFunctionParameter;

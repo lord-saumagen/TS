@@ -352,6 +352,97 @@
   });
 
 
+  QUnit.test("groupJoin", function (assert)
+  {
+    var _customersEnumerable;
+    var _ordersEnumerable;
+    var _undefined;
+
+    _customersEnumerable = TS.Linq.Extensions.fromArray(Customers.getData());
+    _ordersEnumerable = TS.Linq.Extensions.fromArray(Orders.getData());
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.groupJoin(null, _ordersEnumerable, function (outerItem) { return outerItem.CustomerID; }, function (innerItem) { return innerItem.CustomerID; }, function (outerItem, group) { return { Customer: outerItem, OrderGroup: group }; });
+    }, function (err)
+    {
+      return (err.name == "TS.ArgumentNullOrUndefinedException") ? true : false;
+    }, "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'outerEnumerable' argument.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.groupJoin(_undefined, _ordersEnumerable, function (outerItem) { return outerItem.CustomerID; }, function (innerItem) { return innerItem.CustomerID; }, function (outerItem, group) { return { Customer: outerItem, OrderGroup: group }; });
+    }, function (err)
+    {
+      return (err.name == "TS.ArgumentNullOrUndefinedException") ? true : false;
+    }, "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'outerEnumerable' argument.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.groupJoin({}, _ordersEnumerable, function (outerItem) { return outerItem.CustomerID; }, function (innerItem) { return innerItem.CustomerID; }, function (outerItem, group) { return { Customer: outerItem, OrderGroup: group }; });
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'outerEnumerable' argument.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.groupJoin(_customersEnumerable, null, function (outerItem) { return outerItem.CustomerID; }, function (innerItem) { return innerItem.CustomerID; }, function (outerItem, group) { return { Customer: outerItem, OrderGroup: group }; });
+    }, function (err)
+    {
+      return (err.name == "TS.ArgumentNullOrUndefinedException") ? true : false;
+    }, "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'innerEnumerable' argument.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.groupJoin(_customersEnumerable, _undefined, function (outerItem) { return outerItem.CustomerID; }, function (innerItem) { return innerItem.CustomerID; }, function (outerItem, group) { return { Customer: outerItem, OrderGroup: group }; });
+    }, function (err)
+    {
+      return (err.name == "TS.ArgumentNullOrUndefinedException") ? true : false;
+    }, "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'innerEnumerable' argument.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.groupJoin(_customersEnumerable, {}, function (outerItem) { return outerItem.CustomerID; }, function (innerItem) { return innerItem.CustomerID; }, function (outerItem, group) { return { Customer: outerItem, OrderGroup: group }; });
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'innerEnumerable' argument.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.groupJoin(_customersEnumerable, _ordersEnumerable, {}, function (innerItem) { return innerItem.CustomerID; }, function (outerItem, group) { return { Customer: outerItem, OrderGroup: group }; });
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'outerKeySelector' argument.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.groupJoin(_customersEnumerable, _ordersEnumerable, function (outerItem) { return outerItem.CustomerID; }, {}, function (outerItem, group) { return { Customer: outerItem, OrderGroup: group }; });
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'innerKeySelector' argument.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.groupJoin(_customersEnumerable, _ordersEnumerable, function (outerItem) { return outerItem.CustomerID; }, function (innerItem) { return innerItem.CustomerID; }, {});
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'resultSelector' argument.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.groupJoin(_customersEnumerable, _ordersEnumerable, function (outerItem) { return outerItem.CustomerID; }, function (innerItem) { return innerItem.CustomerID; }, function (outerItem, group) { return { Customer: outerItem, OrderGroup: group }; }, {});
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'equalityComparer' argument.");
+  });
+
+
   QUnit.test("join", function (assert)
   {
     var _customersEnumerable;

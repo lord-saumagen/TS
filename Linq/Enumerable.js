@@ -113,6 +113,10 @@
                 return this._callback();
             };
 
+            Enumerable.prototype.groupJoin = function (outerEnumerable, innerEnumerable, outerKeySelector, innerKeySelector, resultSelector, equalityComparer) {
+                return Linq.Extensions.groupJoin(this, innerEnumerable, outerKeySelector, innerKeySelector, resultSelector);
+            };
+
             Enumerable.prototype.join = function (innerEnumerable, outerKeySelector, innerKeySelector, resultSelector) {
                 return Linq.Extensions.join(this, innerEnumerable, outerKeySelector, innerKeySelector, resultSelector);
             };

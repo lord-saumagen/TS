@@ -738,6 +738,112 @@ var TS_Linq_Extensions_test;
         }, "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'sourceArray' argument.");
     });
 
+    QUnit.test("groupJoin", function (assert) {
+        var _jointEnum;
+        var _jointArray;
+        var _undefined;
+        var _index;
+        var _orders;
+
+        _jointEnum = TS.Linq.Extensions.groupJoin(customersEnumerable, ordersEnumerable, function (outerItem) {
+            return outerItem.CustomerID;
+        }, function (innerItem) {
+            return innerItem.CustomerID;
+        }, function (outerItem, group) {
+            return ({ CustID: outerItem.CustomerID, CustName: outerItem.ContactName, OrderGroup: group });
+        });
+
+        _jointArray = _jointEnum.toArray();
+        _orders = 0;
+        for (_index = _jointArray.length - 1; _index > -1; _index--) {
+            _jointArray[_index].OrderGroup = _jointArray[_index].OrderGroup.toArray();
+            _orders += _jointArray[_index].OrderGroup.length;
+        }
+
+        assert.ok(_jointArray.length == 91, "Should return 91 joined records for the executed expression.");
+        assert.ok(_orders == 830, "Should return 830 order records for the executed expression.");
+
+        _jointEnum = TS.Linq.Extensions.groupJoin(customersEnumerable, ordersEnumerable, function (outerItem) {
+            return outerItem;
+        }, function (innerItem) {
+            return innerItem;
+        }, function (outerItem, group) {
+            return ({ CustID: outerItem.CustomerID, CustName: outerItem.ContactName, OrderGroup: group });
+        }, function (outerKey, innerKey) {
+            return outerKey.CustomerID === innerKey.CustomerID;
+        });
+
+        _jointArray = _jointEnum.toArray();
+        _orders = 0;
+        for (_index = _jointArray.length - 1; _index > -1; _index--) {
+            _jointArray[_index].OrderGroup = _jointArray[_index].OrderGroup.toArray();
+            _orders += _jointArray[_index].OrderGroup.length;
+        }
+
+        assert.ok(_jointArray.length == 91, "Should return 91 joined records for the executed expression.");
+        assert.ok(_orders == 830, "Should return 830 order records for the executed expression.");
+
+        assert.throws(function () {
+            TS.Linq.Extensions.groupJoin(customersEnumerable, ordersEnumerable, null, function (innerItem) {
+                return innerItem.CustomerID;
+            }, function (outerItem, group) {
+                return ({ Customer: outerItem, OrderGroup: group });
+            });
+        }, function (err) {
+            return ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false);
+        }, "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'outerKeySelector' argument.");
+
+        assert.throws(function () {
+            TS.Linq.Extensions.groupJoin(customersEnumerable, ordersEnumerable, _undefined, function (innerItem) {
+                return innerItem.CustomerID;
+            }, function (outerItem, group) {
+                return ({ Customer: outerItem, OrderGroup: group });
+            });
+        }, function (err) {
+            return ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false);
+        }, "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'outerKeySelector' argument.");
+
+        assert.throws(function () {
+            TS.Linq.Extensions.groupJoin(customersEnumerable, ordersEnumerable, function (outerItem) {
+                return outerItem.CustomerID;
+            }, null, function (outerItem, group) {
+                return ({ Customer: outerItem, OrderGroup: group });
+            });
+        }, function (err) {
+            return ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false);
+        }, "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'innerKeySelector' argument.");
+
+        assert.throws(function () {
+            TS.Linq.Extensions.groupJoin(customersEnumerable, ordersEnumerable, function (outerItem) {
+                return outerItem.CustomerID;
+            }, _undefined, function (outerItem, group) {
+                return ({ Customer: outerItem, OrderGroup: group });
+            });
+        }, function (err) {
+            return ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false);
+        }, "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'innerKeySelector' argument.");
+
+        assert.throws(function () {
+            TS.Linq.Extensions.groupJoin(customersEnumerable, ordersEnumerable, function (outerItem) {
+                return outerItem.CustomerID;
+            }, function (innerItem) {
+                return innerItem.CustomerID;
+            }, null);
+        }, function (err) {
+            return ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false);
+        }, "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'resultSelector' argument.");
+
+        assert.throws(function () {
+            TS.Linq.Extensions.groupJoin(customersEnumerable, ordersEnumerable, function (outerItem) {
+                return outerItem.CustomerID;
+            }, function (innerItem) {
+                return innerItem.CustomerID;
+            }, _undefined);
+        }, function (err) {
+            return ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false);
+        }, "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'resultSelector' argument.");
+    });
+
     QUnit.test("join", function (assert) {
         var _jointEnum;
         var _jointArray;
