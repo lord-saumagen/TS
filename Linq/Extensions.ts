@@ -274,7 +274,7 @@ module TS
         var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
 
         var _resultValue = true;
-        var _enumerator;
+        var _enumerator : IEnumerator<TSource>
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.all");
         _checkParameter(predicate, "predicate", "TS.Linq.Extensions.all");
@@ -338,7 +338,8 @@ module TS
         var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
 
         var _resultValue = false;
-        var _enumerator;
+        var _enumerator: IEnumerator<TSource>
+
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.any");
 
@@ -402,6 +403,7 @@ module TS
         var _sum = 0;
         var _count = 0;
         var _enumerator: IEnumerator<number>;
+        var _tempCurrent: any;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.average");
 
@@ -411,8 +413,9 @@ module TS
         {
           if (!TS.Utils.TypeInfo.isNumber(_enumerator.current))
           {
+            _tempCurrent = _enumerator.current;
             _enumerator.dispose();
-            throw new TS.InvalidTypeException("this", this, "The LINQ operation 'average' is only applicable on enumerables of type 'Enumerable<number>' in function 'TS.Linq.Extensions.average'.");
+            throw new TS.InvalidTypeException("enumerable", _tempCurrent, "All elements in argument 'enumerable' must be of type 'number' in function 'TS.Linq.Extensions.average'.");
           }//END if
           _sum += _enumerator.current;
 
@@ -1432,6 +1435,123 @@ module TS
 
       /**
       *  @description
+      *    Correlates the elements of two sequences based on equality of keys and groups 
+      *    the results. The default equality comparer is used to compare keys.
+      *
+      *    Deferred execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.groupjoin.aspx | MSDN} 
+      *
+      *  @returns
+      *    Enumerable<TResult>, the result enumerable.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      */
+      export function groupJoin<TOuter, TInner, TKey, TResult>(outerEnumerable: Enumerable<TOuter>, innerEnumerable: Enumerable<TInner>, outerKeySelector: (outerItem: TOuter) => TKey, innerKeySelector: (innerItem: TInner) => TKey, resultSelector: (outerItem: TOuter, group: IEnumerable<TInner>) => TResult): Enumerable<TResult>
+      /**
+      *  @description
+      *    Correlates the elements of two sequences based on key equality and groups the results. 
+      *    A specified equalityComparer is used to compare keys.
+      *
+      *    Deferred execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.groupjoin.aspx | MSDN} 
+      *
+      *  @returns
+      *    Enumerable<TResult>, the result enumerable.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      */
+      export function groupJoin<TOuter, TInner, TKey, TResult>(outerEnumerable: Enumerable<TOuter>, innerEnumerable: Enumerable<TInner>, outerKeySelector: (outerItem: TOuter) => TKey, innerKeySelector: (innerItem: TInner) => TKey, resultSelector: (outerItem: TOuter, group: IEnumerable<TInner>) => TResult, equalityComparer: <TKey>(outerKey: TKey, innerKey: TKey) => boolean): Enumerable<TResult>
+      export function groupJoin<TOuter, TInner, TKey, TResult>(outerEnumerable: Enumerable<TOuter>, innerEnumerable: Enumerable<TInner>, outerKeySelector: (outerItem: TOuter) => TKey, innerKeySelector: (innerItem: TInner) => TKey, resultSelector: (outerItem: TOuter, group: IEnumerable<TInner>) => TResult, equalityComparer?: <TKey>(outerKey: TKey, innerKey: TKey) => boolean) : Enumerable<TResult>
+      {
+        var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
+        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
+        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
+
+        var _pairCtor = Pair;
+        var _joinArray: Array<Pair<TOuter, Enumerable<TInner>>>;
+        var _index: number;
+        var _enumeratorOuter: IEnumerator<TOuter>;
+        var _enumeratorInner: IEnumerator<TInner>;
+        var _resultArray: Array<TResult>;
+        var _callback: () => IEnumerator<TResult>;
+        var _outerKey: any;
+        var _groupArray: Array<TInner>;
+
+        _checkEnumerable(outerEnumerable, "TS.Linq.Extensions.groupJoin");
+        _checkEnumerable(innerEnumerable, "TS.Linq.Extensions.groupJoin");
+
+        _checkParameter(outerKeySelector, "outerKeySelector", "TS.Linq.Extensions.groupJoin");
+        _checkFunctionParameter(outerKeySelector, "outerKeySelector", "TS.Linq.Extensions.groupJoin");
+
+        _checkParameter(innerKeySelector, "innerKeySelector", "TS.Linq.Extensions.groupJoin");
+        _checkFunctionParameter(innerKeySelector, "innerKeySelector", "TS.Linq.Extensions.groupJoin");
+
+        _checkParameter(resultSelector, "resultSelector", "TS.Linq.Extensions.groupJoin");
+        _checkFunctionParameter(resultSelector, "resultSelector", "TS.Linq.Extensions.groupJoin");
+
+        if (!TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer))
+        {
+          _checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.contains");
+        }//END if
+        else
+        {
+          equalityComparer = (outerKey: TKey, innerKey: TKey) =>
+          {
+            return outerKey === innerKey;
+          }
+        }//END else
+
+        _callback = () =>
+        {
+          _resultArray = new Array<TResult>();
+          _joinArray = new Array<Pair<TOuter, Enumerable<TInner>>>();
+          _enumeratorOuter = outerEnumerable.getEnumerator();
+
+          while (_enumeratorOuter.moveNext())
+          {
+            _outerKey = outerKeySelector(_enumeratorOuter.current);
+            _enumeratorInner = innerEnumerable.where(Item => equalityComparer( _outerKey, innerKeySelector(Item))).getEnumerator();
+            _groupArray = new Array<TInner>();
+            while (_enumeratorInner.moveNext())
+            {
+              _groupArray.push(_enumeratorInner.current);
+            }//END while
+
+            if (_groupArray.length > 0)
+            {
+              _joinArray.push( new Pair<TOuter, Enumerable<TInner>>(_enumeratorOuter.current, Enumerable.fromArray(_groupArray)));
+            }//END if
+            else
+            {
+              _joinArray.push(new Pair<TOuter, Enumerable<TInner>>(_enumeratorOuter.current, TS.Linq.Extensions.empty<TInner>()));
+            }//END else
+          }//END while
+
+          for (_index = _joinArray.length - 1; _index > -1; _index--)
+          {
+            _resultArray.push(resultSelector(_joinArray[_index].first, _joinArray[_index].second));
+          }//END for
+
+          _joinArray = null;
+          return new ArrayEnumerator<TResult>(_resultArray);
+        };
+
+        return new Enumerable<TResult>(_callback);
+      }
+
+
+      /**
+      *  @description
       *    Correlates the elements of two sequences based on matching keys.
       *
       *    Deferred execution.
@@ -1499,6 +1619,334 @@ module TS
         };
 
         return new Enumerable<TResult>(_callback);
+      }
+
+
+      /**
+      *  @description
+      *    Returns the last element of a sequence.
+      *
+      *    Immediate execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.last.aspx | MSDN}
+      *
+      *  @returns
+      *    Enumerable<TResult>, the result enumerable.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      *
+      *  @throws
+      *    TS.Linq.EmptyEnumerableException
+      */
+      export function last<TSource>(enumerable: Enumerable<TSource>): TSource
+      /**
+      *  @description
+      *    Returns the last element of a sequence that satisfies a specified condition.
+      *
+      *    Immediate execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.last.aspx | MSDN}
+      *
+      *  @returns
+      *    Enumerable<TResult>, the result enumerable.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      *
+      *  @throws
+      *    TS.Linq.EmptyEnumerableException
+      *
+      *  @throws
+      *    TS.InvalidOperationException
+      */
+      export function last<TSource>(enumerable: Enumerable<TSource>, predicate: (item: TSource) => boolean): TSource
+      export function last<TSource>(enumerable: Enumerable<TSource>, predicate?: (item: TSource) => boolean): TSource
+      {
+        var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
+        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
+        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
+
+        var _enumerator: IEnumerator<TSource>;
+        var _result: TSource;
+        var _resultAssigned: boolean;
+
+        _result = null;
+        _checkEnumerable(enumerable, "last");
+
+        if (enumerable.count() == 0)
+        {
+          throw new TS.Linq.EmptyEnumerableException(enumerable, "Argument 'enumerable' must not be empty in function 'TS.Linq.Extensions.first'.");
+        }//END if
+
+        if (!TS.Utils.TypeInfo.isNullOrUndefined(predicate))
+        {
+          _checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.last");
+        }//END if
+
+        _enumerator = enumerable.getEnumerator();
+
+        if (TS.Utils.TypeInfo.isNullOrUndefined(predicate))
+        {
+          while (_enumerator.moveNext())
+          {
+            _result = _enumerator.current;
+          }//END if
+          _enumerator.dispose();
+          return _result;
+        }//END if
+        else
+        {
+          _resultAssigned = false;
+          while (_enumerator.moveNext())
+          {
+            if (predicate(_enumerator.current))
+            {
+              _result = _enumerator.current;
+              _resultAssigned = true;
+            }//END if
+          }//END if
+
+          _enumerator.dispose();
+
+          if (_resultAssigned)
+          {
+            return _result;
+          }//END if
+
+          throw new TS.InvalidOperationException("There is no element in the current enumerable which matches the given predicate in function 'TS.Linq.Extensions.last'.");
+        }//END else
+
+      }
+
+
+      /**
+      *  @description
+      *    Returns the last element of a sequence, or a default value if the sequence contains no elements.
+      *
+      *    Immediate execution.
+      *
+      *    That function differs from the .NET counterpart in that way that is has a 
+      *    'defaultConstructor' in the singnature. That argument is needed because
+      *    javascript doesn't offer reflection or a type system which you can rely on
+      *    at runtime. So there is no way to tell which constructor to use for the
+      *    default value exept the constructor it is already available as function parameter.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.lastordefault.aspx | MSDN}
+      *
+      *  @returns
+      *     TSource, the result element.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException.
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      */
+      export function lastOrDefault<TSource>(enumerable: Enumerable<TSource>, defaultConstructor: { new (): TSource; }): TSource
+      /**
+      *  @description
+      *    Returns the last element of a sequence that satisfies a condition 
+      *    or a default value if no such element is found.
+      *
+      *    Immediate execution.
+      *
+      *    That function differs from the .NET counterpart in that way that is has a 
+      *    'defaultConstructor' in the singnature. That argument is needed because
+      *    javascript doesn't offer reflection or a type system which you can rely on
+      *    at runtime. So there is no way to tell which constructor to use for the
+      *    default value exept the constructor it is already available as function parameter.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.lastordefault.aspx | MSDN}
+      *
+      *  @returns
+      *     TSource, the result element.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException.
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      */
+      export function lastOrDefault<TSource>(enumerable: Enumerable<TSource>, defaultConstructor: { new (): TSource; }, predicate: (item: TSource) => boolean): TSource
+      export function lastOrDefault<TSource>(enumerable: Enumerable<TSource>, defaultConstructor: { new (): TSource; }, predicate?: (item: TSource) => boolean): TSource
+      {
+        var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
+        var _checkConstructor: (constructorToCheck: any, paramName: string, functionName: string) => void = checkConstructor;
+        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
+
+        var _enumerator: IEnumerator<TSource>;
+        var _result: TSource;
+        var _resultAssigned: boolean;
+
+        _checkEnumerable(enumerable, "lastOrDefault");
+        _checkConstructor(defaultConstructor, "defaultConstructor", "TS.Linq.Extensions.lastOrDefault");
+
+        if (enumerable.count() == 0)
+        {
+          return new defaultConstructor();
+        }//END if
+
+        if (!TS.Utils.TypeInfo.isNullOrUndefined(predicate))
+        {
+          _checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.lastOrDefault");
+        }//END if
+
+        _enumerator = enumerable.getEnumerator();
+
+        if (TS.Utils.TypeInfo.isNullOrUndefined(predicate))
+        {
+          while (_enumerator.moveNext())
+          {
+            _result = _enumerator.current;
+          }//END if
+
+          _enumerator.dispose();
+          return _result;
+        }//END if
+        else
+        {
+          _resultAssigned = false;
+
+          while (_enumerator.moveNext())
+          {
+            if (predicate(_enumerator.current))
+            {
+              _result = _enumerator.current;
+              _resultAssigned = true;
+            }//END if
+          }//END while
+
+          _enumerator.dispose();
+
+          if (_resultAssigned)
+          {
+            return _result;
+          }//END if
+
+          return new defaultConstructor();
+
+        }//END else
+      }
+
+
+      /**
+      *  @description
+      *    Returns the maximum value in a sequence of values.
+      *
+      *    Immediate execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.max.aspx | MSDN}
+      *
+      *  @returns
+      *    number, the maximum number.
+      *
+      *  @throws
+      *    TS.Linq.EmptyEnumerableException.
+      *
+      *  @throws
+      *    TS.ArgumentNullOrUndefinedException.
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      */
+      export function max<number>(enumerable: Enumerable<number>): number
+      {
+        var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
+
+        var _tempMax: number;
+        var _tempCurrent: any;
+        var _enumerator: IEnumerator<number>;
+
+        _checkEnumerable(enumerable, "TS.Linq.Extensions.max");
+
+        if (enumerable.count() == 0)
+        {
+          throw new TS.Linq.EmptyEnumerableException(enumerable, "The argument 'enumerable' must not be an empty enumerable in function 'TS.Linq.Extensions.max'.");
+        }//END if
+
+        _tempMax = Number.MIN_VALUE;
+        _enumerator = enumerable.getEnumerator();
+
+        while (_enumerator.moveNext())
+        {
+          if (!TS.Utils.TypeInfo.isNumber(_enumerator.current))
+          {
+            _tempCurrent = _enumerator.current;
+            _enumerator.dispose();
+            throw new TS.InvalidTypeException("enumerable", _tempCurrent, "All elements in argument 'enumerable' must be of type 'number' in function 'TS.Linq.Extensions.max'.");
+          }//END if
+
+          if (_enumerator.current > _tempMax)
+          {
+            _tempMax = _enumerator.current;
+          }//END if
+        }//END while
+
+        return _tempMax;
+      }
+
+
+      /**
+      *  @description
+      *    Returns the minimum value in a sequence of values.
+      *
+      *    Immediate execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.min.aspx | MSDN}
+      *
+      *  @returns
+      *    number, the minimum number.
+      *
+      *  @throws
+      *    TS.Linq.EmptyEnumerableException.
+      *
+      *  @throws
+      *    TS.ArgumentNullOrUndefinedException.
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      */
+      export function min<number>(enumerable: Enumerable<number>): number
+      {
+        var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
+
+        var _tempMin: number;
+        var _tempCurrent: any;
+        var _enumerator: IEnumerator<number>;
+
+        _checkEnumerable(enumerable, "TS.Linq.Extensions.min");
+
+        if (enumerable.count() == 0)
+        {
+          throw new TS.Linq.EmptyEnumerableException(enumerable, "The argument 'enumerable' must not be an empty enumerable in function 'TS.Linq.Extensions.min'.");
+        }//END if
+
+        _tempMin = Number.MAX_VALUE;
+        _enumerator = enumerable.getEnumerator();
+
+        while (_enumerator.moveNext())
+        {
+          if (!TS.Utils.TypeInfo.isNumber(_enumerator.current))
+          {
+            _tempCurrent = _enumerator.current;
+            _enumerator.dispose();
+            throw new TS.InvalidTypeException("enumerable", _tempCurrent, "All elements in argument 'enumerable' must be of type 'number' in function 'TS.Linq.Extensions.min'.");
+          }//END if
+
+          if (_enumerator.current < _tempMin)
+          {
+            _tempMin = _enumerator.current;
+          }//END if
+        }//END while
+
+        return _tempMin;
       }
 
 
@@ -1789,7 +2237,9 @@ module TS
         var _resultArray: Array<TResult>;
         var _selectorResult: TResult;
         var _callback: () => IEnumerator<TResult>;
-        var _enumerator;
+        var _enumerator: IEnumerator<TSource>;
+        var _tempCurrent: any;
+
 
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.select");
@@ -1809,14 +2259,9 @@ module TS
 
             if (TS.Utils.TypeInfo.isUndefined(_selectorResult))
             {
-              try
-              {
-                throw new TS.Linq.SelectorException(selector, _enumerator.current, "The selector: '" + selector.toString() + "' failed in function 'TS.Linq.Extensions.select' on item: '" + _enumerator.current.toString() + "'.");
-              }//END try
-              finally
-              {
-                _enumerator.dispose();
-              }//END finally
+              _tempCurrent = _enumerator.current;
+              _enumerator.dispose();
+              throw new TS.Linq.SelectorException(selector, _tempCurrent, "The selector: '" + selector.toString() + "' failed in function 'TS.Linq.Extensions.select' on item: '" + _tempCurrent.toString() + "'.");
             }//END if
 
             _resultArray.push(_selectorResult);
@@ -1861,6 +2306,8 @@ module TS
         var _enumerator: IEnumerator<TSource>;
         var _resultArray: Array<TResult>;
         var _selectorResult: Array<TResult>;
+        var _tempCurrent: any;
+
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.selectMany");
         _checkParameter(selector, "selector", "TS.Linq.Extensions.selectMany");
@@ -1877,14 +2324,9 @@ module TS
 
             if (TS.Utils.TypeInfo.isUndefined(_selectorResult))
             {
-              try
-              {
-                throw new TS.Linq.SelectorException(selector, _enumerator.current, "The selector: '" + selector.toString() + "' failed in function 'TS.Linq.Extensions.selectMany' on item: '" + _enumerator.current.toString() + "'.");
-              }//END try
-              finally
-              {
-                _enumerator.dispose();
-              }//END finally
+              _tempCurrent = _enumerator.current;
+              _enumerator.dispose();
+              throw new TS.Linq.SelectorException(selector, _tempCurrent, "The selector: '" + selector.toString() + "' failed in function 'TS.Linq.Extensions.selectMany' on item: '" + _tempCurrent.toString() + "'.");
             }//END if
 
             _resultArray = _resultArray.concat(_selectorResult);
@@ -1928,7 +2370,7 @@ module TS
         var _sum = 0;
         var _count = 0;
         var _enumerator: IEnumerator<number>;
-        var _currentNumber: any;
+        var _tempCurrent: any;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.sum");
 
@@ -1943,8 +2385,9 @@ module TS
         {
           if (!TS.Utils.TypeInfo.isNumber(_enumerator.current))
           {
+            _tempCurrent = _enumerator.current;
             _enumerator.dispose();
-            throw new TS.InvalidTypeException("this", this, "The LINQ operation 'sum' is only applicable on enumerables of type 'Enumerable<number>' in function 'TS.Linq.Extensions.sum'.");
+            throw new TS.InvalidTypeException("enumerable", _tempCurrent, "All elements in argument 'enumerable' must be of type 'number' in function 'TS.Linq.Extensions.sum'.");
           }//END if
 
           _sum += _enumerator.current;
@@ -2045,7 +2488,8 @@ module TS
         var _index = 0;
         var _resultArray: Array<TSource>;
         var _callback: () => IEnumerator<TSource>;
-        var _enumerator;
+        var _enumerator: IEnumerator<TSource>
+
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.skip");
 
@@ -2111,7 +2555,8 @@ module TS
 
         var _resultArray: Array<TSource>;
         var _callback: () => IEnumerator<TSource>;
-        var _enumerator;
+        var _enumerator: IEnumerator<TSource>
+
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.skipWhile");
         _checkParameter(predicate, "predicate", "TS.Linq.Extensions.skipWhile");

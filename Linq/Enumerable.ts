@@ -1,4 +1,11 @@
-﻿module TS
+﻿//
+//Requires:
+// TS.Exception,
+// TS.Linq.Exception
+// TS.Linq.Extensions
+// TS.Utils.TypeInfo
+//
+module TS
 {
   "use strict";
 
@@ -495,21 +502,9 @@
       *  @description
       *    Returns the first element of a sequence.
       *
-      *    Immediate execution.
+      *    If the predicate is provided:
       *
-      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.first.aspx | MSDN}
-      *
-      *  @returns
-      *     T, the result element.
-      *
-      *  @throws
-      *     TS.Linq.EmptyEnumerableException
-      *
-      */
-      public first(): T
-      /**
-      *  @description
-      *    Returns the first element in a sequence that satisfies a specified condition.
+      *    Returns the first element in a sequence that satisfies the specified condition.
       *
       *    Immediate execution.
       *
@@ -525,7 +520,6 @@
       *     TS.InvalidOperationException
       *
       */
-      public first(predicate: (item: T) => boolean): T
       public first(predicate?: (item: T) => boolean): T
       {
         if (TS.Utils.TypeInfo.isNullOrUndefined(predicate))
@@ -537,31 +531,15 @@
       }
 
 
+      public firstOrDefault<TSource>(defaultConstructor: { new (): TSource; }): T
       /**
       *  @description
       *    Returns the first element of a sequence, or a default value if the sequence contains no elements.
       *
-      *    Immediate execution.
+      *    If the predicate is provided:
       *
-      *    That function differs from the .NET counterpart in that way that is has a 
-      *    'defaultConstructor' in the singnature. That argument is needed because
-      *    javascript doesn't offer reflection or a type system which you can rely on
-      *    at runtime.
-      *
-      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.firstordefault.aspx | MSDN}
-      *
-      *  @returns
-      *     T, the result element.
-      *
-      *  @throws
-      *     TS.ArgumentNullOrUndefinedException
-      *
-      */
-      public firstOrDefault<TSource>(defaultConstructor: { new (): TSource; }): T
-      /**
-      *  @description
-      *    Returns the first element of the sequence that satisfies a condition or 
-      *    a default value if no such element is found.
+      *    Returns the first element of the sequence that satisfies the specified condition 
+      *    or a default value if no such element is found.
       *
       *    Immediate execution.
       *
@@ -579,7 +557,6 @@
       *     TS.ArgumentNullOrUndefinedException
       *
       */
-      public firstOrDefault<TSource>(defaultConstructor: { new (): T; }, predicate: (item: TSource) => boolean): T
       public firstOrDefault<TSource>(defaultConstructor: { new (): T; }, predicate?: (item: TSource) => boolean): T
       {
         if (TS.Utils.TypeInfo.isNullOrUndefined(predicate))
@@ -613,6 +590,41 @@
 
 
       /**
+      * @description
+      *    Implements interface IEnumerable<T>
+      */
+      public getEnumerator(): IEnumerator<T>
+      {
+        return this._callback();
+      }
+
+
+      /**
+      *  @description
+      *    Correlates the elements of two sequences based on key equality and groups the results. 
+      *    Uses either the default equalityComparer (===) or if provided a specified equalityComparer
+      *    to compare keys.
+      *
+      *    Deferred execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.groupjoin.aspx | MSDN} 
+      *
+      *  @returns
+      *    Enumerable<TResult>, the result enumerable.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      */
+      public groupJoin<TOuter, TInner, TKey, TResult>(outerEnumerable: Enumerable<TOuter>, innerEnumerable: Enumerable<TInner>, outerKeySelector: (outerItem: TOuter) => TKey, innerKeySelector: (innerItem: TInner) => TKey, resultSelector: (outerItem: TOuter, group: IEnumerable<TInner>) => TResult, equalityComparer?: <TKey>(first: TKey, second: TKey) => boolean): Enumerable<TResult>
+      {
+        return Extensions.groupJoin(this, innerEnumerable, outerKeySelector, innerKeySelector, resultSelector);
+      }
+
+
+      /**
       *  @description
       *    Correlates the elements of two sequences based on matching keys.
       *
@@ -636,21 +648,162 @@
 
 
       /**
-      * @description
-      *    Implements interface IEnumerable<T>
+      *  @description
+      *    Returns the last element of a sequence or if the predicate is provided
+      *    the last element of a sequence that satisfies the specified condition.
+      *
+      *    Immediate execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.last.aspx | MSDN}
+      *
+      *  @returns
+      *    Enumerable<TResult>, the result enumerable.
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      *
+      *  @throws
+      *    TS.Linq.EmptyEnumerableException
       */
-      public getEnumerator(): IEnumerator<T>
+      public last<T>(predicate?: (item: T) => boolean): T
       {
-        return this._callback();
+        return Extensions.last(this, predicate);
       }
 
 
       /**
       *  @description
-      *    Sorts the elements of a sequence in ascending order according to a key
-      *    or
-      *    Sorts the elements of a sequence in ascending order by using a specified comparer
-      *    if available.
+      *    Returns the last element of a sequence, or a default value if the sequence 
+      *    contains no elements.
+      *    
+      *    If the precicate is provided:
+      *
+      *    Returns the last element of a sequence that satisfies the specified condition 
+      *    or a default value if no such element is found.
+      *
+      *    Immediate execution.
+      *
+      *    That function differs from the .NET counterpart in that way that is has a 
+      *    'defaultConstructor' in the singnature. That argument is needed because
+      *    javascript doesn't offer reflection or a type system which you can rely on
+      *    at runtime. So there is no way to tell which constructor to use for the
+      *    default value exept the constructor it is already available as function parameter.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.lastordefault.aspx | MSDN}
+      *
+      *  @returns
+      *     TSource, the result element.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException.
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      */
+      public lastOrDefault<T>(defaultConstructor: { new (): T; }, predicate?: (item: T) => boolean): T
+      {
+        return Extensions.lastOrDefault(this, defaultConstructor, predicate);
+      }
+
+
+      /**
+      *  @description
+      *    Returns the maximum value in a sequence of values.
+      *
+      *    Immediate execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.max.aspx | MSDN}
+      *
+      *  @returns
+      *    number, the maximum number.
+      *
+      *  @throws
+      *    TS.Linq.EmptyEnumerableException.
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      */
+      public max<number>(): number
+      {
+        var _numberArray: Array<number>;
+        var _enumerator: IEnumerator<T>;
+
+        if (this.count() == 0)
+        {
+          throw new TS.Linq.EmptyEnumerableException(this, "The LINQ operation 'max' is not applicable on empty enumerables'.");
+        }//END if
+
+        _enumerator = this.getEnumerator();
+        _numberArray = new Array<number>();
+
+        while (_enumerator.moveNext())
+        {
+          if (!TS.Utils.TypeInfo.isNumber(_enumerator.current))
+          {
+            _enumerator.dispose();
+            throw new TS.InvalidTypeException("this", this, "The LINQ operation 'max' is only applicable on enumerables of type 'Enumerable<number>'.");
+          }//END if
+          _numberArray.push(Number(_enumerator.current));
+        }//END while
+
+        _enumerator.dispose();
+
+        return Extensions.max(Enumerable.fromArray(_numberArray));
+      }
+
+
+      /**
+      *  @description
+      *    Returns the minimum value in a sequence of values.
+      *
+      *    Immediate execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.min.aspx | MSDN}
+      *
+      *  @returns
+      *    number, the minimum number.
+      *
+      *  @throws
+      *    TS.Linq.EmptyEnumerableException.
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      */
+      public min<number>(): number
+      {
+        var _numberArray: Array<number>;
+        var _enumerator: IEnumerator<T>;
+
+        if (this.count() == 0)
+        {
+          throw new TS.Linq.EmptyEnumerableException(this, "The LINQ operation 'min' is not applicable on empty enumerables'.");
+        }//END if
+
+        _enumerator = this.getEnumerator();
+
+        while (_enumerator.moveNext())
+        {
+          if (!TS.Utils.TypeInfo.isNumber(_enumerator.current))
+          {
+            _enumerator.dispose();
+            throw new TS.InvalidTypeException("this", this, "The LINQ operation 'min' is only applicable on enumerables of type 'Enumerable<number>'.");
+          }//END if
+          _numberArray.push(Number(_enumerator.current));
+        }//END while
+
+        _enumerator.dispose();
+
+        return Extensions.min(Enumerable.fromArray(_numberArray));
+      }
+
+
+      /**
+      *  @description
+      *    Sorts the elements of a sequence in ascending order according to a key.
+      *    
+      *    I the comparer is provided:
+      *
+      *    Sorts the elements of a sequence in ascending order by using the specified comparer.
       *
       *    Deferred execution.
       *
@@ -673,10 +826,11 @@
 
       /**
       *  @description
-      *    Sorts the elements of a sequence in descending order according to a key
-      *    or
-      *    Sorts the elements of a sequence in descending order by using a specified comparer
-      *    if available.
+      *    Sorts the elements of a sequence in descending order according to a key.
+      *    
+      *    I the comparer is provided:
+      *
+      *    Sorts the elements of a sequence in descending order by using thea specified comparer.
       *
       *    Deferred execution.
       *

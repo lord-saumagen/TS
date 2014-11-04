@@ -14,7 +14,7 @@ In order to use the files from that project, you need to install the TypeScript 
 
 ##Usage
 
-If you want to use some or all of the modules I wrote in you own TypeScript project, you must download the corresponding TypeScrpt files and copy to your project directory. Make sure that they get compiled with your own code and that's it. If you use Visual Studio together with the "*TypeScript Tools for Visual Studio*", you don't even have to bother how to compile your TypeScript files. You will find that tools at the '*Visual Studio Gallery*'.
+If you want to use some or all of the modules I wrote in you own TypeScript project, you must download the corresponding TypeScript files and copy to your project directory. Make sure that they get compiled with your own code and that's it. If you use Visual Studio together with the "*TypeScript Tools for Visual Studio*", you don't even have to bother how to compile your TypeScript files. You will find that tools at the '*Visual Studio Gallery*'.
 
 [https://visualstudiogallery.msdn.microsoft.com/](https://visualstudiogallery.msdn.microsoft.com/)
 

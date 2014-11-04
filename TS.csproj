@@ -20,6 +20,8 @@
   <ItemGroup>
     <Content Include="Documentation\index.css" />
     <Content Include="Documentation\index.html" />
+    <Content Include="README.md" />
+    <None Include="git-local.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
@@ -29,7 +31,7 @@
     <Content Include="Test\TestSuite.html" />
     <Content Include="Test\TS_Linq_Exception_test.html" />
     <Content Include="Test\TS_Linq_Extensions_test_plainjs.js" />
-    <Content Include="Test\TS_Encoding_Base64_test.html" />
+    <Content Include="Test\TS_Encoding_test.html" />
     <Content Include="Test\TS_Utils_TypeInfo_test.html" />
     <Content Include="Test\TS_Utils_Compare_test.html" />
     <Content Include="Test\TS_Exception_test.html" />
@@ -44,6 +46,7 @@
     <TypeScriptCompile Include="Exception\Exception.ts" />
     <TypeScriptCompile Include="Linq\ArrayEnumerable.ts" />
     <TypeScriptCompile Include="Linq\ArrayEnumerator.ts" />
+    <TypeScriptCompile Include="Linq\Linq.ts" />
     <TypeScriptCompile Include="Linq\RandomGenerator.ts" />
     <TypeScriptCompile Include="Linq\CycleGenerator.ts" />
     <TypeScriptCompile Include="Linq\Enumerable.ts" />
@@ -57,7 +60,7 @@
     <TypeScriptCompile Include="Scripts\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\qunit.d.ts" />
     <TypeScriptCompile Include="Test\TS_Linq_Exception_test.ts" />
-    <TypeScriptCompile Include="Test\TS_Encoding_Base64_test.ts" />
+    <TypeScriptCompile Include="Test\TS_Encoding_test.ts" />
     <TypeScriptCompile Include="Test\TS_Utils_TypeInfo_test.ts" />
     <TypeScriptCompile Include="Test\TS_Utils_Compare_test.ts" />
     <TypeScriptCompile Include="Test\TS_Exception_test.ts" />
@@ -77,7 +80,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DOCS\" />
     <Folder Include="Test\Data\" />
   </ItemGroup>
   <PropertyGroup>

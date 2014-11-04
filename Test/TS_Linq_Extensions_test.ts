@@ -605,13 +605,13 @@ module TS_Linq_Extensions_test
     _result = TS.Linq.Extensions.where(personEnumerable, (item: any) => item.FirstName == "Michael").first();
     assert.equal(_result.LastName, "Blythe", "Should return the first match in the result set.");
 
+    _result = TS.Linq.Extensions.first(personEnumerable, (item: any) => item.FirstName == "Michael");
+    assert.equal(_result.LastName, "Blythe", "Should return the first match in the result set when called with a predicate.");
+
     assert.throws(() =>
     {
       TS.Linq.Extensions.first(TS.Linq.Extensions.empty<number>());
     }, (err) => ((err.name == "TS.Linq.EmptyEnumerableException") ? true : false), "Should trow a TS.Linq.EmptyEnumerableException on an empty enumerable.");
-
-    _result = TS.Linq.Extensions.first(personEnumerable, (item: any) => item.FirstName == "Michael");
-    assert.equal(_result.LastName, "Blythe", "Should return the first match in the result set when called with a predicate.");
 
     assert.throws(() =>
     {
@@ -677,6 +677,84 @@ module TS_Linq_Extensions_test
 
   });
 
+
+  QUnit.test("groupJoin", (assert) =>
+  {
+    var _jointEnum;
+    var _jointArray;
+    var _undefined;
+    var _index: number;
+    var _orders: number;
+    //Run the following query in 'LinqPad' against the 'NORTHWND' database.
+    //Customers.GroupJoin(Orders, _CUST => _CUST.CustomerID, _ORD => _ORD.CustomerID, (_CUST, _ORD_ENUM) => new { _CUST.ContactName, _ORD_ENUM}).Dump();
+    //The query will return 91 Results.
+
+
+    _jointEnum = TS.Linq.Extensions.groupJoin(customersEnumerable, ordersEnumerable, (outerItem) => outerItem.CustomerID, (innerItem) => innerItem.CustomerID, (outerItem, group) => ({ CustID: outerItem.CustomerID, CustName: outerItem.ContactName, OrderGroup: group }));
+
+    _jointArray = _jointEnum.toArray();
+    _orders = 0;
+    for (_index = _jointArray.length - 1; _index > -1; _index--)
+    {
+      _jointArray[_index].OrderGroup = _jointArray[_index].OrderGroup.toArray();
+      _orders += _jointArray[_index].OrderGroup.length;
+    }//END for
+
+    assert.ok(_jointArray.length == 91, "Should return 91 joined records for the executed expression.");
+    assert.ok(_orders == 830, "Should return 830 order records for the executed expression.");
+
+    //
+    //Call the query once again but using the 'equalityComparer' instead of the default comparer.
+    //Should return the same result.
+    //
+    _jointEnum = TS.Linq.Extensions.groupJoin(customersEnumerable, ordersEnumerable, (outerItem) => outerItem, (innerItem) => innerItem, (outerItem, group) => ({ CustID: outerItem.CustomerID, CustName: outerItem.ContactName, OrderGroup: group }), (outerKey, innerKey) =>
+    {
+      return outerKey.CustomerID === innerKey.CustomerID
+    });
+
+    _jointArray = _jointEnum.toArray();
+    _orders = 0;
+    for (_index = _jointArray.length - 1; _index > -1; _index--)
+    {
+      _jointArray[_index].OrderGroup = _jointArray[_index].OrderGroup.toArray();
+      _orders += _jointArray[_index].OrderGroup.length;
+    }//END for
+
+    assert.ok(_jointArray.length == 91, "Should return 91 joined records for the executed expression.");
+    assert.ok(_orders == 830, "Should return 830 order records for the executed expression.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.groupJoin(customersEnumerable, ordersEnumerable, null, (innerItem) => innerItem.CustomerID, (outerItem, group) => ({ Customer: outerItem, OrderGroup: group }));
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'outerKeySelector' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.groupJoin(customersEnumerable, ordersEnumerable, _undefined, (innerItem) => innerItem.CustomerID, (outerItem, group) => ({ Customer: outerItem, OrderGroup: group }));
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'outerKeySelector' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.groupJoin(customersEnumerable, ordersEnumerable, (outerItem) => outerItem.CustomerID, null, (outerItem, group) => ({ Customer: outerItem, OrderGroup: group }));
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'innerKeySelector' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.groupJoin(customersEnumerable, ordersEnumerable, (outerItem) => outerItem.CustomerID, _undefined, (outerItem, group) => ({ Customer: outerItem, OrderGroup: group }));
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'innerKeySelector' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.groupJoin(customersEnumerable, ordersEnumerable, (outerItem) => outerItem.CustomerID, (innerItem) => innerItem.CustomerID, null);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'resultSelector' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.groupJoin(customersEnumerable, ordersEnumerable, (outerItem) => outerItem.CustomerID, (innerItem) => innerItem.CustomerID, _undefined);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'resultSelector' argument.");
+  });
+
+
   QUnit.test("join", (assert) =>
   {
     var _jointEnum;
@@ -722,6 +800,148 @@ module TS_Linq_Extensions_test
       TS.Linq.Extensions.join(customersEnumerable, ordersEnumerable, (outerItem) => outerItem.CustomerID, (innerItem) => innerItem.CustomerID, _undefined);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'resultSelector' argument.");
   });
+
+
+  QUnit.test("last", (assert) =>
+  {
+    var _result: any;
+    var _undefined;
+
+    _result = TS.Linq.Extensions.where(personEnumerable, (item: any) => item.FirstName == "Michael").last();
+    assert.equal(_result.LastName, "Martin", "Should return the last element in the result set.");
+
+    _result = TS.Linq.Extensions.last(personEnumerable, (item: any) => item.FirstName == "Michael");
+    assert.equal(_result.LastName, "Martin", "Should return the last match in the result set when called with a predicate.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.last(TS.Linq.Extensions.empty<number>());
+    }, (err) => ((err.name == "TS.Linq.EmptyEnumerableException") ? true : false), "Should trow a TS.Linq.EmptyEnumerableException on an empty enumerable.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.last(personEnumerable, (item: any) => item.NoAttribute == "NOP");
+    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should trow a TS.InvalidOperationException when called with an invalid predicate.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.last(TS.Linq.Extensions.empty<number>(), (item: number) => item.toString() == "5");
+    }, (err) => ((err.name == "TS.Linq.EmptyEnumerableException") ? true : false), "Should trow a TS.Linq.EmptyEnumerableException on an empty enumerable when called with a predicate.");
+
+    assert.throws(() => 
+    {
+      TS.Linq.Extensions.last(null);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'enumerable' argument.");
+
+    assert.throws(() => 
+    {
+      TS.Linq.Extensions.last(_undefined);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'enumerable' argument.");
+
+  });
+
+  QUnit.test("lastOrDefault", (assert) =>
+  {
+    var _result: ICustomer;
+    var _undefined;
+
+    _result = TS.Linq.Extensions.lastOrDefault(customersEnumerable, Customer);
+    assert.equal(_result.ContactName, "Zbyszek Piestrzeniewicz", "Should return the last element in the enumerable.");
+
+    _result = TS.Linq.Extensions.lastOrDefault(customersEnumerable.where(Item => Item.Country == "NOP"), Customer);
+    assert.deepEqual(_result, new Customer(), "Should return a default object if the enumerable is empyt.");
+
+    _result = TS.Linq.Extensions.lastOrDefault(customersEnumerable, Customer, (Item) => Item.Country == "USA");
+    assert.equal(_result.CompanyName, "White Clover Markets", "Should return the last match in the result set when called with a predicate."); 
+
+    _result = TS.Linq.Extensions.lastOrDefault(customersEnumerable, Customer, (Item) => Item.Country == "NOP");
+    assert.deepEqual(_result, new Customer(), "Should return a default object if the result set is empyt.");
+
+    assert.throws(() => 
+    {
+      TS.Linq.Extensions.lastOrDefault(null, Customer);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'enumerable' argument.");
+
+    assert.throws(() => 
+    {
+      TS.Linq.Extensions.lastOrDefault(_undefined, Customer);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'enumerable' argument.");
+
+    assert.throws(() => 
+    {
+      TS.Linq.Extensions.lastOrDefault(customersEnumerable, null);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'defaultConstructor' argument.");
+
+    assert.throws(() => 
+    {
+      TS.Linq.Extensions.lastOrDefault(customersEnumerable, _undefined);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'defaultConstructor' argument.");
+
+    //assert.ok(false, "Not implemented.");
+  });
+
+
+  QUnit.test("max", (assert) =>
+  {
+    var _max: number;
+    var _undefined;
+    //Run the following query in 'LinqPad' against the 'NORTHWND' database.
+    //Orders.Select(_ORD => _ORD.Freight).Max().Dump();
+    //The query will return 1007.6400
+
+    _max = TS.Linq.Extensions.max(<TS.Linq.Enumerable<number>> ordersEnumerable.select<IOrders, Number>(_ORD => _ORD.Freight));
+    assert.equal(_max, 1007.64, "Should return the expected value.");
+
+    _max = TS.Linq.Extensions.max(TS.Linq.Extensions.fromArray(CreateNumberArray()));
+    assert.equal(_max, 10, "Should return the expected value.");
+
+    assert.throws(() => 
+    {
+      TS.Linq.Extensions.max(null);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'enumerable' argument.");
+
+    assert.throws(() => 
+    {
+      TS.Linq.Extensions.max(_undefined);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'enumerable' argument.");
+
+    assert.throws(() => 
+    {
+      TS.Linq.Extensions.max(TS.Linq.Extensions.empty<number>());
+    }, (err) => ((err.name == "TS.Linq.EmptyEnumerableException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a empty 'enumerable' argument.");
+  });
+
+
+  QUnit.test("min", (assert) =>
+  {
+    var _min: number;
+    var _undefined;
+    //Run the following query in 'LinqPad' against the 'NORTHWND' database.
+    //Orders.Select(_ORD => _ORD.Freight).Min().Dump();
+    //The query will return 0.0200
+
+    _min = TS.Linq.Extensions.min(<TS.Linq.Enumerable<number>> ordersEnumerable.select<IOrders, Number>(_ORD => _ORD.Freight));
+    assert.equal(_min, 0.02, "Should return the expected value.");
+
+    _min = TS.Linq.Extensions.min(TS.Linq.Extensions.fromArray(CreateNumberArray()));
+    assert.equal(_min, 1, "Should return the expected value.");
+
+    assert.throws(() => 
+    {
+      TS.Linq.Extensions.min(null);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'enumerable' argument.");
+
+    assert.throws(() => 
+    {
+      TS.Linq.Extensions.min(_undefined);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'enumerable' argument.");
+
+    assert.throws(() => 
+    {
+      TS.Linq.Extensions.min(TS.Linq.Extensions.empty<number>());
+    }, (err) => ((err.name == "TS.Linq.EmptyEnumerableException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a empty 'enumerable' argument.");
+  });
+
 
   QUnit.test("orderBy", (assert) =>
   {
@@ -1438,6 +1658,14 @@ module TS_Linq_Extensions_test
     Phone: string;
     PostalCode: string;
     Region: string;
+  }
+
+  export class Customer implements ICustomer
+  {
+    constructor(public Address: string = "", public City: string = "", public CompanyName: string = "", public ContactName: string = "", public ContactTitle: string = "", public Country: string = "", public CustomerID: string = "", public Fax: string = "", public Phone: string = "", public PostalCode: string = "", public Region: string = "")
+    {
+    }
+
   }
 
   export interface ICar

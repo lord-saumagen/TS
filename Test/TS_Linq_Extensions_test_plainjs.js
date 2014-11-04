@@ -551,6 +551,7 @@
 
   });
 
+
   QUnit.test("lastOrDefault", function (assert)
   {
     var _testInputCarEnumerable;
@@ -585,6 +586,57 @@
       return (err.name == "TS.InvalidTypeException") ? true : false;
     }, "Should throw a 'TS.InvalidTypeException' for an invalid 'predicate' argument type.");
   });
+
+
+  QUnit.test("max", function (assert)
+  {
+    var _stringEnumerable;
+
+    _stringEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateStringArray());
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.max({});
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'enumerable' argument type.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.max(_stringEnumerable);
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an an 'enumerable' argument which is not of type 'Enumerable<number>'.");
+
+  });
+
+
+  QUnit.test("min", function (assert)
+  {
+    var _stringEnumerable;
+
+    _stringEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateStringArray());
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.min({});
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'enumerable' argument type.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.min(_stringEnumerable);
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an an 'enumerable' argument which is not of type 'Enumerable<number>'.");
+
+  });
+
 
   QUnit.test("orderBy", function (assert)
   {
