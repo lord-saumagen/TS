@@ -8,8 +8,9 @@
   </head>
   <body>
     <h1>TS - A TypeScript module collection.</h1>
-    <div id="navigation" style="float: left; width: 20%; min-width: 200px; vertical-align: top;">
+    <div id="navigation" style="width: 10em; vertical-align: top; position:fixed; top:7em; left:0.1em; ">
       <ul>
+        <li><a href="https://github.com/lord-saumagen/TS">Return to project</a></li>
         <li><a href="#Preface">Preface</a></li>
         <li><a href="#Introduction">Introduction</a></li>
         <li><a href="#Linq">LINQ</a></li>
@@ -17,7 +18,7 @@
         <li><a href="#Exceptions">Exceptions</a></li>
       </ul>
     </div>
-    <div id="content" style="float: left; width: 80%; vertical-align: top;">
+    <div id="content" style=" margin-left:12em; vertical-align: top;">
       <div id="Preface">
         <h2>Preface</h2>
         The recent years I had to deal more and more with javascript as a web programmer. Javascript was always part of the job, but it required more and more attention since it became popular to create single page web application which are all build on top of Ajax. The same time the number of libraries which tried to circumvent the design flaws of the javascript language grew. There are also attempts to establisch a better language for client-side programming in web applications. Unfortunately they all failed.
@@ -54,7 +55,7 @@
         browser war in the last millenium.
         <br />
         <br />
-        Anders did a great job and gave us lambda expressions, inheritance, something like a type system, typed function arguments, access modifiers and much much more. All that stuff you always wanted to have in javascript but didn&#39;t dare to ask for. Since the language is all new&nbsp; he is still focused on developing the language itself and the compiler. So he didn&#39;t have time to create a full blown ecosystem around that language like you may know from &quot;Phyton&quot; or &quot;Node.js&quot;. You can use existing javasript libraries in TypeScript with the help of TypeScript definition files (&quot;d.ts&quot;). Those &quot;d.ts&quot; files work much like header files in C or C++. They introduce the javscript library functions to TypeScript so that you can use them from within your TypeScript code. That gives you a headstart when you want to use TypeScript for serious coding, but don&#39;t have the time to wirte all necessary libraries by yourself. But you shouldnt settle for this. With TypeScript you have the tool to write much 
+        Anders Hejlsberg did a great job and gave us lambda expressions, inheritance, something like a type system, typed function arguments, access modifiers and much much more. All that stuff you always wanted to have in javascript but didn&#39;t dare to ask for. Since the language is all new&nbsp; he is still focused on developing the language itself and the compiler. So he didn&#39;t have time to create a full blown ecosystem around that language, like you may know from &quot;Phyton&quot; or &quot;Node.js&quot;. You can use existing javasript libraries in TypeScript with the help of TypeScript definition files (&quot;d.ts&quot;). Those &quot;d.ts&quot; files work much like header files in C or C++. They introduce the javscript library functions to TypeScript so that you can use them from within your TypeScript code. That gives you a headstart when you want to use TypeScript for serious coding, but don&#39;t have the time to wirte all necessary libraries by yourself. But you shouldn&#39;t settle for this. With TypeScript you have the tool to write much 
         more robust javascript code than ever before. My vision is, that there will come a time where those libraries are written in typescript in the first place. That will give us more robust libraries, code which is much easier to understand and you get also rid of the &quot;d.ts&quot; files. Event those which are not enlightened can still use your code, because after compiling it is plain javascript for them. That&#39;s the reason why I started this project.<br />
         <br />
         Since I&#39;m a great fan of LINQ in C#, it was a natural choice for me to start with a LINQ library. There are also some modules which are not LINQ specific at all, but build the foundation of a robust and eloquent coding style. Namely that are the type info function in the &quot;TS.Utils&quot; module and the exception classes.
@@ -282,6 +283,15 @@
             </tr>
             <tr>
               <td>
+                groupJoin
+              </td>
+              <td>
+                Deferred execution
+              </td>
+              <td>1 overload</td>
+            </tr>
+            <tr>
+              <td>
                 join
               </td>
               <td>
@@ -304,6 +314,24 @@
                 Immediate execution
               </td>
               <td>1 overload</td>
+            </tr>
+            <tr>
+              <td>
+                max
+              </td>
+              <td>
+                Immediate execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                min
+              </td>
+              <td>
+                Immediate execution
+              </td>
+              <td>&nbsp;</td>
             </tr>
             <tr>
               <td>
