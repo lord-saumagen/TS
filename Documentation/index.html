@@ -8,8 +8,9 @@
   </head>
   <body>
     <h1>TS - A TypeScript module collection.</h1>
-    <div id="navigation" style="float: left; width: 20%; min-width: 200px; vertical-align: top;">
+    <div id="navigation" style="width: 10em; vertical-align: top; position: fixed; top: 7em; left: 0.1em;">
       <ul>
+        <li><a href="https://github.com/lord-saumagen/TS">Return to project</a></li>
         <li><a href="#Preface">Preface</a></li>
         <li><a href="#Introduction">Introduction</a></li>
         <li><a href="#Linq">LINQ</a></li>
@@ -17,10 +18,10 @@
         <li><a href="#Exceptions">Exceptions</a></li>
       </ul>
     </div>
-    <div id="content" style="float: left; width: 80%; vertical-align: top;">
+    <div id="content" style="margin-left: 12em; vertical-align: top;">
       <div id="Preface">
         <h2>Preface</h2>
-        The recent years I had to deal more and more with javascript as a web programmer. Javascript was always part of the job, but it required more and more attention since it became popular to create single page web application which are all build on top of Ajax. The same time the number of libraries which tried to circumvent the design flaws of the javascript language grew. There are also attempts to establisch a better language for client-side programming in web applications. Unfortunately they all failed.
+        The recent years I had to deal more and more with javascript as a web programmer. Javascript was always part of the job, but it required more and more attention since it became popular to create single-page web application which are all build on top of Ajax. The same time the number of libraries which tried to circumvent the design flaws of the javascript language grew. There are also attempts to establisch a better language for client-side programming in web applications. Unfortunately they all failed.
         <br />
         As a programmer who relies on the object oriented programming paradigm, I have at least an ambivalent relationship to javascript. That programming language has 5 times
         more desing flaws than instructions. Even well established javascript libraries, which claim for themselfe to be professionel,
@@ -54,8 +55,8 @@
         browser war in the last millenium.
         <br />
         <br />
-        Anders did a great job and gave us lambda expressions, inheritance, something like a type system, typed function arguments, access modifiers and much much more. All that stuff you always wanted to have in javascript but didn&#39;t dare to ask for. Since the language is all new&nbsp; he is still focused on developing the language itself and the compiler. So he didn&#39;t have time to create a full blown ecosystem around that language like you may know from &quot;Phyton&quot; or &quot;Node.js&quot;. You can use existing javasript libraries in TypeScript with the help of TypeScript definition files (&quot;d.ts&quot;). Those &quot;d.ts&quot; files work much like header files in C or C++. They introduce the javscript library functions to TypeScript so that you can use them from within your TypeScript code. That gives you a headstart when you want to use TypeScript for serious coding, but don&#39;t have the time to wirte all necessary libraries by yourself. But you shouldnt settle for this. With TypeScript you have the tool to write much 
-        more robust javascript code than ever before. My vision is, that there will come a time where those libraries are written in typescript in the first place. That will give us more robust libraries, code which is much easier to understand and you get also rid of the &quot;d.ts&quot; files. Event those which are not enlightened can still use your code, because after compiling it is plain javascript for them. That&#39;s the reason why I started this project.<br />
+        Anders Hejlsberg did a great job and gave us lambda expressions, inheritance, something like a type system, typed function arguments, access modifiers and much much more. All that stuff you always wanted to have in javascript but didn&#39;t dare to ask for. Since the language is all new&nbsp; he is still focused on developing the language itself and the compiler. So he didn&#39;t have time to create a full blown ecosystem around that language, like you may know from &quot;Phyton&quot; or &quot;Node.js&quot;. You can use existing javasript libraries in TypeScript with the help of TypeScript definition files (&quot;d.ts&quot;). Those &quot;d.ts&quot; files work much like header files in C or C++. They introduce the javscript library functions to TypeScript so that you can use them from within your TypeScript code. That gives you a headstart when you want to use TypeScript for serious coding, but don&#39;t have the time to wirte all necessary libraries by yourself. But you shouldn&#39;t settle for this. With TypeScript you have the tool to write much 
+        more robust javascript code than ever before. My vision is, that there will come a time when those libraries are written in typescript in the first place. That will give us more robust libraries, code which is much easier to understand and you get also rid of the &quot;d.ts&quot; files. Event those which are not enlightened can still use your code, because after compiling it is plain javascript for them. That&#39;s the reason why I started this project.<br />
         <br />
         Since I&#39;m a great fan of LINQ in C#, it was a natural choice for me to start with a LINQ library. There are also some modules which are not LINQ specific at all, but build the foundation of a robust and eloquent coding style. Namely that are the type info function in the &quot;TS.Utils&quot; module and the exception classes.
         <br />
@@ -96,14 +97,16 @@
         <br />
         All my public classes and functions got a code comment which shows up in the editor during typing. At leas if you use visual studio
         for development. That feature makes it a lot more easier to write code in javascript then you might expect. Check it out and you
-        will never want to miss it. <br />
+        will never want to miss it.
+        <br />
         <br />
         Even with that design goals in mind and extensive testing, there might be errors in this library. For that reason I would like to hear
         from you when you find one. Please drop a note at "lord.saumagen@gmail.com" with a full description of the error.
         <br />
         &nbsp;  
         <br />
-        Since this is a work in progress, you will find modules, classes or functions which are not supposed to be used in business code, because of their immature state. Those functions which pass their unit tests are considered to be stable. Run the test suite in the &quot;Test&quot; directory to get a better understanding of which of the library functions are stable and can be used.</div>
+        Since this is a work in progress, you will find modules, classes or functions which are not supposed to be used in business code, because of their immature state. Those functions which pass their unit tests are considered to be stable. Run the test suite in the &quot;Test&quot; directory to get a better understanding of which of the library functions are stable and can be used.
+      </div>
       <div id="Linq">
         <h2>LINQ</h2>
         All classes, modules and interfaces which belong to the 'TS.Linq' namespace can be found in the corresponding subdirectory called 'Linq'.<br />
@@ -116,9 +119,15 @@
         Most of the extension functions are also bound to the 'TS.Linq.Enumerable' class which you can find in file 'Enumerable.ts'. This way you can
         use the fluent interface for the LINQ extensions which you may already know from C#.<br />
         <br />
-        The table below shows all of the implemented LINQ extensions and their execution behavior.<br />
+        The table below shows all 
+        LINQ extensions as defined by Microsoft and theire execution behavior. Those wich are marked green are considered complete implemented and tested.<br />
+        Those wich are marked yellow are not yet implemented or not tested. Those which are marked read will never be implemented. Lagely because of the missing type system in javascript.
         <br />
-        &nbsp;<table>
+        <br />
+        <a href="http://msdn.microsoft.com/en-us/library/bb882641.aspx">The default LINQ extension functions listed by Microsoft.</a>
+        <br />
+        <br />
+        <table>
           <thead>
             <tr>
               <th colspan="3">Implemented LINQ extensions.
@@ -131,7 +140,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 aggregate
               </td>
@@ -142,7 +151,7 @@
                 1 overload
               </td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 all
               </td>
@@ -153,7 +162,7 @@
                 &nbsp;
               </td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 any
               </td>
@@ -164,7 +173,18 @@
                 1 overload
               </td>
             </tr>
-            <tr>
+            <tr class="notImplemented">
+              <td>
+                asEnumerable
+              </td>
+              <td>
+                &nbsp;
+              </td>
+              <td>
+                NOT IMPLEMENTED!&nbsp;&nbsp;See: 'fromArray'.
+              </td>
+            </tr>
+            <tr class="fullImplemented">
               <td>
                 average
               </td>
@@ -175,7 +195,18 @@
                 &nbsp;
               </td>
             </tr>
-            <tr>
+            <tr class="notImplemented">
+              <td>
+                cast
+              </td>
+              <td>
+                &nbsp;
+              </td>
+              <td>
+                NOT IMPLEMENTED!&nbsp;&nbsp;See: 'toArray'.
+              </td>
+            </tr>
+            <tr class="fullImplemented">
               <td>
                 concat
               </td>
@@ -186,7 +217,7 @@
                 &nbsp;
               </td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 contains
               </td>
@@ -197,7 +228,7 @@
                 1 overload
               </td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 count
               </td>
@@ -208,7 +239,7 @@
                 1 overload
               </td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 defaultIfEmpty
               </td>
@@ -217,7 +248,7 @@
               </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 distinct
               </td>
@@ -226,7 +257,7 @@
               </td>
               <td>1 overload</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 elementAt
               </td>
@@ -235,7 +266,7 @@
               </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 elementAtOrDefault
               </td>
@@ -244,7 +275,7 @@
               </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 empty
               </td>
@@ -253,7 +284,7 @@
               </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 except
               </td>
@@ -262,7 +293,7 @@
               </td>
               <td>1 overload</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 first
               </td>
@@ -271,7 +302,7 @@
               </td>
               <td>1 overload</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 firstOrDefault
               </td>
@@ -280,7 +311,18 @@
               </td>
               <td>1 overload</td>
             </tr>
-            <tr>
+            <tr class="notYetImplemented">
+              <td>
+                groupBy
+              </td>
+              <td>
+                &nbsp;
+              </td>
+              <td>
+                &nbsp;
+              </td>
+            </tr>
+            <tr class="fullImplemented">
               <td>
                 groupJoin
               </td>
@@ -289,7 +331,18 @@
               </td>
               <td>1 overload</td>
             </tr>
-            <tr>
+            <tr class="notYetImplemented">
+              <td>
+                intersect
+              </td>
+              <td>
+                &nbsp;
+              </td>
+              <td>
+                &nbsp;
+              </td>
+            </tr>
+            <tr class="fullImplemented">
               <td>
                 join
               </td>
@@ -298,23 +351,25 @@
               </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
-                last</td>
+                last
+              </td>
               <td>
                 Immediate execution
               </td>
               <td>1 overload</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
-                lastOrDefault</td>
+                lastOrDefault
+              </td>
               <td>
                 Immediate execution
               </td>
               <td>1 overload</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 max
               </td>
@@ -323,7 +378,7 @@
               </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 min
               </td>
@@ -332,7 +387,18 @@
               </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="notImplemented">
+              <td>
+                ofType
+              </td>
+              <td>
+                &nbsp;
+              </td>
+              <td>
+                NOT IMPLEMENTED!
+              </td>
+            </tr>
+            <tr class="fullImplemented">
               <td>
                 orderBy
               </td>
@@ -341,7 +407,7 @@
               </td>
               <td>1 overload</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 orderByDescending
               </td>
@@ -350,7 +416,16 @@
               </td>
               <td>1 overload</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
+              <td>
+                range
+              </td>
+              <td>
+                &nbsp;
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr class="fullImplemented">
               <td>
                 repeat
               </td>
@@ -359,7 +434,7 @@
               </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 reverse
               </td>
@@ -368,7 +443,7 @@
               </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 select
               </td>
@@ -377,7 +452,7 @@
               </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 selectMany
               </td>
@@ -386,7 +461,34 @@
               </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="notYetImplemented">
+              <td>
+                sequenceEqual
+              </td>
+              <td>
+                &nbsp;
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr class="fullImplemented">
+              <td>
+                single
+              </td>
+              <td>
+                Immediate execution
+              </td>
+              <td>1 overload</td>
+            </tr>
+            <tr class="fullImplemented">
+              <td>
+                singleOrDefault
+              </td>
+              <td>
+                Immediate execution
+              </td>
+              <td>1 overload</td>
+            </tr>
+            <tr class="fullImplemented">
               <td>
                 skip
               </td>
@@ -395,22 +497,25 @@
               </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
-                skipWhile</td>
+                skipWhile
+              </td>
               <td>
                 Deferred execution
               </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
-                sum</td>
+                sum
+              </td>
               <td>
-                Immediate execution</td>
+                Immediate execution
+              </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 take
               </td>
@@ -419,7 +524,7 @@
               </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 takeWhile
               </td>
@@ -428,16 +533,7 @@
               </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
-              <td>
-                toArray
-              </td>
-              <td>
-                Immediate execution
-              </td>
-              <td>&nbsp;</td>
-            </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 thenBy
               </td>
@@ -446,7 +542,7 @@
               </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 thenByDescending
               </td>
@@ -455,7 +551,49 @@
               </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
+              <td>
+                toArray
+              </td>
+              <td>
+                Immediate execution
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr class="notImplemented">
+              <td>
+                toDictionary
+              </td>
+              <td>
+                &nbsp;
+              </td>
+              <td>
+                NOT IMPLEMENTED!
+              </td>
+            </tr>
+            <tr class="notImplemented">
+              <td>
+                toList
+              </td>
+              <td>
+                &nbsp;
+              </td>
+              <td>
+                NOT IMPLEMENTED!
+              </td>
+            </tr>
+            <tr class="notImplemented">
+              <td>
+                toLookup
+              </td>
+              <td>
+                &nbsp;
+              </td>
+              <td>
+                NOT IMPLEMENTED!
+              </td>
+            </tr>
+            <tr class="fullImplemented">
               <td>
                 union
               </td>
@@ -464,7 +602,7 @@
               </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 where
               </td>
@@ -490,7 +628,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr class="fullImplemented">
               <td style="width: 12em;">
                 cycle
               </td>
@@ -499,7 +637,7 @@
               </td>
               <td style="width: 12em;">&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 fromArray
               </td>
@@ -508,7 +646,7 @@
               </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 random
               </td>
@@ -517,7 +655,7 @@
               </td>
               <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr class="fullImplemented">
               <td>
                 shuffle
               </td>
@@ -578,6 +716,89 @@
 
       </div>
       <div id="Utils">
+        <h2>Utils</h2>
+        All classes, modules and interfaces which belong to the 'TS.Utils' namespace can be found in the corresponding subdirectory called 'Utils&#39;.<br />
+        <br />
+        The 'Utils' module hosts all the function and classes which have a general purpose but no common problem domain. They do very different things 
+        but have in common that they come in handy at mundane programming tasks.
+        <br />
+        <br />
+        You will find the following functions, enums and classes at the &#39;TS.Utils&#39; module level.<br />
+
+        <table>
+          <tbody>
+            <tr>
+              <th colspan="2" style="text-align:left;">Classes:</th>
+            </tr>
+            <tr>
+              <td>
+                <code>TS.Utils.TypeInfo</code>
+              </td>
+              <td>
+                A static class which offers a bunch of functions for type detecting. 
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2" style="text-align:left;">Enums:</th>
+            </tr>
+            <tr>
+              <td>
+                <code>TS.Utils.TypeEnum</code>
+              </td>
+              <td>
+                An enumeration which lists all detectable javascript types.
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2" style="text-align:left;">Functions:</th>
+            </tr>
+            <tr>
+              <td>
+                <code>compactArray(arr: Array&lt;any&gt;): Array&lt;any&gt;
+                </code>
+              </td>
+              <td>
+                The functions takes a sparse array of any type and returns a compacted array of the same type.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <code>createGUID(): string
+                </code>
+              </td>
+              <td>
+                Creates a version 4 random GUID and returns it as string in it's canonical representation.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <code>fillLeft(source: string, fillChar: string, length: number): string
+                </code>
+              </td>
+              <td>
+                The functions takes a string and a fill character and returns a string which is filled up with the fill character from the left, until the total number of characters matched the number specified in length.
+              </td>
+            </tr>
+            <tr>
+              <td style="width:30em;">
+                <code>HTMLCollectionToArray(collection): Array&lt;HTMLElement&gt;
+                </code>
+              </td>
+              <td>
+                The functions takes a HTML collection and returns that collection as an array of HTMLElements. 
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <code>normalizePath(path: string): string
+                </code>
+              </td>
+              <td>
+                The functions takes a path string and returnes a string where every occurence of a '\' is replaced by a '/'.
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </body>

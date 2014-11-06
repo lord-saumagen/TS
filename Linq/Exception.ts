@@ -70,6 +70,33 @@
 
     }//END class
 
+    export class MoreThanOneElementException extends TS.Exception
+    {
+      private _enumerable: Enumerable<any>;
+
+      /**
+      * @overwrite
+      */
+      get type(): string
+      {
+        return "TS.Linq.MoreThanOneElementException";
+      }
+
+      get enumerable(): Enumerable<any>
+      {
+        return this._enumerable;
+      }
+
+      /**
+      *  @constructs
+      */
+      constructor(enumerable: Enumerable<any>, message?: string, innerException?: TS.Exception)
+      {
+        super(message, innerException);
+        this._enumerable = enumerable;
+      }
+
+    }//END class
   }//END module
 
 }//END module

@@ -531,7 +531,6 @@ module TS
       }
 
 
-      public firstOrDefault<TSource>(defaultConstructor: { new (): TSource; }): T
       /**
       *  @description
       *    Returns the first element of a sequence, or a default value if the sequence contains no elements.
@@ -557,14 +556,14 @@ module TS
       *     TS.ArgumentNullOrUndefinedException
       *
       */
-      public firstOrDefault<TSource>(defaultConstructor: { new (): T; }, predicate?: (item: TSource) => boolean): T
+      public firstOrDefault<T>(defaultConstructor: { new (): T; }, predicate?: (item: T) => boolean): T
       {
         if (TS.Utils.TypeInfo.isNullOrUndefined(predicate))
         {
-          return Extensions.firstOrDefault<T>(this, defaultConstructor);
+          return Extensions.firstOrDefault(this, defaultConstructor);
         }//END if
 
-        return Extensions.firstOrDefault<T>(this, defaultConstructor);
+        return Extensions.firstOrDefault(this, defaultConstructor, predicate);
       }
 
 
@@ -665,7 +664,7 @@ module TS
       *  @throws
       *    TS.Linq.EmptyEnumerableException
       */
-      public last<T>(predicate?: (item: T) => boolean): T
+      public last(predicate?: (item: T) => boolean): T
       {
         return Extensions.last(this, predicate);
       }
@@ -700,7 +699,7 @@ module TS
       *  @throws
       *    TS.InvalidTypeException.
       */
-      public lastOrDefault<T>(defaultConstructor: { new (): T; }, predicate?: (item: T) => boolean): T
+      public lastOrDefault(defaultConstructor: { new (): T; }, predicate?: (item: T) => boolean): T
       {
         return Extensions.lastOrDefault(this, defaultConstructor, predicate);
       }
@@ -869,7 +868,7 @@ module TS
       *  @throws
       *    TS.ArgumentOutOfRangeException
       */
-      public static repeat<T>(item: T, count: number): Enumerable<T>
+      public static repeat<U>(item: U, count: number): Enumerable<U>
       {
         return Extensions.repeat(item, count);
       }
@@ -918,7 +917,7 @@ module TS
       *  @throws
       *    TS.InvalidTypeException.
       */
-      public select<T, U>(selector: (item: T) => U): Enumerable<U>
+      public select<U>(selector: (item: T) => U): Enumerable<U>
       {
         return Extensions.select(this, selector);
       }
@@ -945,9 +944,74 @@ module TS
       *  @throws
       *    TS.InvalidTypeException.
       */
-      public selectMany<T>(selector: (item) => T[]): Enumerable<T>
+      public selectMany<U>(selector: (item: T) => U[]): Enumerable<U>
       {
         return Extensions.selectMany(this, selector);
+      }
+
+
+      /**
+      *  @description
+      *    Returns the only element of a sequence, and throws an exception 
+      *    if there is not exactly one element in the sequence.
+      *
+      *    If the predicate is provided:
+      *
+      *    Returns the only element of a sequence that satisfies a specified condition, 
+      *    and throws an exception if more than one such element exists.
+      *
+      *    Immediate execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.single.aspx : MSDN }
+      *
+      *  @returns
+      *    T, the result element.
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      *
+      *  @throws
+      *    TS.InvalidOperationException
+      *
+      *  @throws
+      *    TS.Linq.EmptyEnumerableException
+      *
+      *  @throws
+      *    TS.Linq.MoreThanOneElementException
+      */
+      public single(predicate?: (item: T) => boolean): T
+      {
+        return Extensions.single(this, predicate);
+      }
+
+
+      /**
+      *  @description
+      *    Returns the only element of a sequence, or a default value if the sequence is empty. This method throws an 
+      *    exception if there is more than one element in the sequence.
+      *
+      *    If the predicate is provided:
+      *
+      *    Returns the only element of a sequence that satisfies a specified condition or a default value 
+      *    if no such element exists. This method throws an exception if more than one element satisfies the condition.
+      * 
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.singleordefault.aspx : MSDN }
+      *
+      *  @returns
+      *    TSource, the result element.
+      *
+      *  @throws
+      *    TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      *
+      *  @throws
+      *    TS.Linq.MoreThanOneElementException
+      */
+      public singleOrDefault(defaultConstructor: { new (): T; }, predicate?: (item: T) => boolean): T
+      {
+        return Extensions.singleOrDefault(this, defaultConstructor, predicate);
       }
 
 

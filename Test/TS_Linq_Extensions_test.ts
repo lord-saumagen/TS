@@ -611,7 +611,7 @@ module TS_Linq_Extensions_test
     assert.throws(() =>
     {
       TS.Linq.Extensions.first(TS.Linq.Extensions.empty<number>());
-    }, (err) => ((err.name == "TS.Linq.EmptyEnumerableException") ? true : false), "Should trow a TS.Linq.EmptyEnumerableException on an empty enumerable.");
+    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should trow a TS.InvalidOperationException on an empty enumerable.");
 
     assert.throws(() =>
     {
@@ -621,7 +621,7 @@ module TS_Linq_Extensions_test
     assert.throws(() =>
     {
       TS.Linq.Extensions.first(TS.Linq.Extensions.empty<number>(), (item: number) => item.toString() == "5");
-    }, (err) => ((err.name == "TS.Linq.EmptyEnumerableException") ? true : false), "Should trow a TS.Linq.EmptyEnumerableException on an empty enumerable when called with a predicate.");
+    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should trow a TS.InvalidOperationException on an empty enumerable when called with a predicate.");
 
     assert.throws(() => 
     {
@@ -816,17 +816,17 @@ module TS_Linq_Extensions_test
     assert.throws(() =>
     {
       TS.Linq.Extensions.last(TS.Linq.Extensions.empty<number>());
-    }, (err) => ((err.name == "TS.Linq.EmptyEnumerableException") ? true : false), "Should trow a TS.Linq.EmptyEnumerableException on an empty enumerable.");
+    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should trow a TS.InvalidOperationException on an empty enumerable.");
 
     assert.throws(() =>
     {
       TS.Linq.Extensions.last(personEnumerable, (item: any) => item.NoAttribute == "NOP");
-    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should trow a TS.InvalidOperationException when called with an invalid predicate.");
+    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should trow a TS.InvalidOperationException when called with a predicate that doesn't match.");
 
     assert.throws(() =>
     {
       TS.Linq.Extensions.last(TS.Linq.Extensions.empty<number>(), (item: number) => item.toString() == "5");
-    }, (err) => ((err.name == "TS.Linq.EmptyEnumerableException") ? true : false), "Should trow a TS.Linq.EmptyEnumerableException on an empty enumerable when called with a predicate.");
+    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should trow a TS.InvalidOperationException on an empty enumerable when called with a predicate.");
 
     assert.throws(() => 
     {
@@ -855,7 +855,7 @@ module TS_Linq_Extensions_test
     assert.equal(_result.CompanyName, "White Clover Markets", "Should return the last match in the result set when called with a predicate."); 
 
     _result = TS.Linq.Extensions.lastOrDefault(customersEnumerable, Customer, (Item) => Item.Country == "NOP");
-    assert.deepEqual(_result, new Customer(), "Should return a default object if the result set is empyt.");
+    assert.deepEqual(_result, new Customer(), "Should return a default object when called with a prdicate that doesn't match.");
 
     assert.throws(() => 
     {
@@ -889,7 +889,7 @@ module TS_Linq_Extensions_test
     //Orders.Select(_ORD => _ORD.Freight).Max().Dump();
     //The query will return 1007.6400
 
-    _max = TS.Linq.Extensions.max(<TS.Linq.Enumerable<number>> ordersEnumerable.select<IOrders, Number>(_ORD => _ORD.Freight));
+    _max = TS.Linq.Extensions.max(<TS.Linq.Enumerable<number>> ordersEnumerable.select<Number>(_ORD => _ORD.Freight));
     assert.equal(_max, 1007.64, "Should return the expected value.");
 
     _max = TS.Linq.Extensions.max(TS.Linq.Extensions.fromArray(CreateNumberArray()));
@@ -920,7 +920,7 @@ module TS_Linq_Extensions_test
     //Orders.Select(_ORD => _ORD.Freight).Min().Dump();
     //The query will return 0.0200
 
-    _min = TS.Linq.Extensions.min(<TS.Linq.Enumerable<number>> ordersEnumerable.select<IOrders, Number>(_ORD => _ORD.Freight));
+    _min = TS.Linq.Extensions.min(<TS.Linq.Enumerable<number>> ordersEnumerable.select<Number>(_ORD => _ORD.Freight));
     assert.equal(_min, 0.02, "Should return the expected value.");
 
     _min = TS.Linq.Extensions.min(TS.Linq.Extensions.fromArray(CreateNumberArray()));
@@ -1229,6 +1229,100 @@ module TS_Linq_Extensions_test
   });
 
 
+  QUnit.test("single", (assert) =>
+  {
+    var _result: Customer;
+    var _undedined;
+
+    _result = TS.Linq.Extensions.single(customersEnumerable.where(_CUST => _CUST.CustomerID == "OTTIK"));
+
+    assert.equal(_result.CustomerID, "OTTIK", "Should return the expected single result.");
+
+    _result = TS.Linq.Extensions.single(customersEnumerable, (_CUST) => _CUST.CustomerID == "OTTIK");
+
+    assert.equal(_result.CustomerID, "OTTIK", "Should return the expected single result.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.single(customersEnumerable.where(_CUST => _CUST.CustomerID.indexOf("BO") > -1));
+    }, (err) => ((err.name == "TS.Linq.MoreThanOneElementException") ? true : false), "Should throw a 'TS.Linq.MoreThanOneElementException' for an 'enumerable' argument with more than one element.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.single(customersEnumerable, (_CUST) => _CUST.CustomerID.indexOf("BO") > -1);
+    }, (err) => ((err.name == "TS.Linq.MoreThanOneElementException") ? true : false), "Should throw a 'TS.Linq.MoreThanOneElementException' for an for a 'predicate' which matches more than one element.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.single(customersEnumerable.where(_CUST => _CUST.CustomerID.indexOf("NOP") > -1));
+    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should throw a 'TS.InvalidOperationException' for an empty 'enumerable' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.single(customersEnumerable, (_CUST) => _CUST.CustomerID == "NOP");
+    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should throw a 'TS.InvalidOperationException' for a 'predicate' which doesn't match.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.single(null);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'enumerable' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.single(_undedined);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'enumerable' argument.");
+  });
+
+
+  QUnit.test("singleOrDefault", (assert) =>
+  {
+    var _result: Customer;
+    var _undedined;
+
+    _result = TS.Linq.Extensions.singleOrDefault(customersEnumerable.where(_CUST => _CUST.CustomerID == "OTTIK"), Customer);
+    assert.equal(_result.CustomerID, "OTTIK", "Should return the expected single result.");
+
+    _result = TS.Linq.Extensions.singleOrDefault(customersEnumerable, Customer, (_CUST) => _CUST.CustomerID == "OTTIK");
+    assert.equal(_result.CustomerID, "OTTIK", "Should return the expected single result.");
+
+    _result = TS.Linq.Extensions.singleOrDefault(customersEnumerable.where(_CUST => _CUST.CustomerID == "NOP"), Customer);
+    assert.deepEqual(_result, new Customer(), "Shoud return a default object for an 'enumerable' which is empty.");
+
+    _result = TS.Linq.Extensions.singleOrDefault(customersEnumerable, Customer, (_CUST) => _CUST.CustomerID == "NOP");
+    assert.deepEqual(_result, new Customer(), "Shoud return a default object for a 'predicate' which doesn't match with the enumerable.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.singleOrDefault(customersEnumerable.where(_CUST => _CUST.CustomerID.indexOf("BO") > -1), Customer);
+    }, (err) => ((err.name == "TS.Linq.MoreThanOneElementException") ? true : false), "Should throw a 'TS.Linq.MoreThanOneElementException' for an 'enumerable' argument with more than one element.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.singleOrDefault(customersEnumerable, Customer, (_CUST) => _CUST.CustomerID.indexOf("BO") > -1);
+    }, (err) => ((err.name == "TS.Linq.MoreThanOneElementException") ? true : false), "Should throw a 'TS.Linq.MoreThanOneElementException' for an for a 'predicate' which matches more than one element.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.singleOrDefault(null, Customer);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'enumerable' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.singleOrDefault(_undedined, Customer);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'enumerable' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.singleOrDefault(customersEnumerable, null);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'defaultConstructor' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.singleOrDefault(customersEnumerable, _undedined);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'defaultConstructor' argument.");
+  });
+
+
   QUnit.test("skip", (assert) =>
   {
     var _numberArr: Array<number>;
@@ -1459,7 +1553,7 @@ module TS_Linq_Extensions_test
     //Check that in each color group the items 
     //are sorted by location as expected.
     //
-    _colorsArray = TS.Linq.Enumerable.fromArray<ISortTestItem>(_resultArray).select<ISortTestItem, string>(Item => Item.color).distinct().toArray();
+    _colorsArray = TS.Linq.Enumerable.fromArray<ISortTestItem>(_resultArray).select<string>(Item => Item.color).distinct().toArray();
     _colorsArray.forEach((value) => 
     {
       _resultArrayColorGroup = _resultArray.filter(Item => Item.color == value);
@@ -1534,7 +1628,7 @@ module TS_Linq_Extensions_test
     //Check that in each color group the items 
     //are sorted by location as expected.
     //
-    _colorsArray = TS.Linq.Enumerable.fromArray<ISortTestItem>(_resultArray).select<ISortTestItem, string>(Item => Item.color).distinct().toArray();
+    _colorsArray = TS.Linq.Enumerable.fromArray<ISortTestItem>(_resultArray).select<string>(Item => Item.color).distinct().toArray();
     _colorsArray.forEach((value) => 
     {
       _resultArrayColorGroup = _resultArray.filter(Item => Item.color == value);

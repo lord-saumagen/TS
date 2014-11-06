@@ -10,7 +10,7 @@ module TS_Utils_TypeInfo_test
   declare var document;
   var _arguments;
 
-  function getArguments(p1 : string, p2 : number, p3 : Object)
+  function getArguments(p1: string, p2: number, p3: Object)
   {
     return arguments;
   }
@@ -19,9 +19,8 @@ module TS_Utils_TypeInfo_test
     {
       setupOnce: function ()
       {
-
-        _arguments = getArguments("One", 2, {});
         // runs once before anything else in the module
+        _arguments = getArguments("One", 2, {});
       },
       setup: function ()
       {
