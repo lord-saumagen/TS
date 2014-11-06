@@ -5,3 +5,7 @@ table, thead, tbody, tr, th, td { border:1px solid;}
 
 table { border-collapse: collapse;}
 
+.notImplemented { background-color:#EE3B3B; }
+.notYetImplemented { background-color: #FFC125;}
+.fullImplemented { background-color: #7CCD7C;}
+
