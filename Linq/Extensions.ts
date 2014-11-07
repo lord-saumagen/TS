@@ -42,6 +42,71 @@ module TS
       }
 
 
+      class Set<TSource>
+      {
+        private _setArray: Array<TSource>;
+        private _equalityComparer: (first: TSource, second: TSource) => boolean;
+
+        constructor(equalityComparer: (first: TSource, second: TSource) => boolean)
+        {
+
+          if (!TS.Utils.TypeInfo.isFunction(equalityComparer))
+          {
+            throw new TS.InvalidTypeException("equalityComparer", equalityComparer, "Argument '" + equalityComparer + "' must be a function parameter in the constructor of 'TS.Linq.Extensions.Set'.");
+          }//END if
+
+          this._setArray = new Array<TSource>();
+          this._equalityComparer = equalityComparer;
+        }
+
+        public add(element: TSource): Boolean
+        {
+          if (!this.contains(element))
+          {
+            this._setArray.push(element);
+            return true;
+          }//END if
+
+          return false;
+        }
+
+        public remove(element)
+        {
+          if (TS.Utils.TypeInfo.isNullOrUndefined(element))
+          {
+            throw new TS.ArgumentNullOrUndefinedException("element", "Argument 'element' must not be null or undefined in function 'TS.Linq.Extensions.Set.remove'.");
+          }//END if
+
+          this._setArray = this._setArray.filter((value, index, array): boolean =>
+          {
+            return !this._equalityComparer(value, element);
+          });
+        }
+
+        public contains(element)
+        {
+
+          if (TS.Utils.TypeInfo.isNullOrUndefined(element))
+          {
+            throw new TS.ArgumentNullOrUndefinedException("element", "Argument 'element' must not be null or undefined in function 'TS.Linq.Extensions.Set.contains'.");
+          }//END if
+
+          return this._setArray.some((value, index, array): boolean =>
+          {
+            return this._equalityComparer(value, element);
+          });
+
+          return false;
+        }
+
+        public dispose()
+        {
+          this._setArray = undefined;
+          this._equalityComparer = undefined;
+        }
+      }
+
+
       /**
       *  @description
       *    This function checks the argument 'enumerable' against null and 
@@ -204,9 +269,6 @@ module TS
       *    TS.ArgumentNullOrUndefinedException
       *
       *  @throws
-      *    TS.Linq.EmptyEnumerableException
-      *
-      *  @throws
       *    TS.InvalidTypeException.
       */
       export function aggregate<TSource, TAccumulate>(enumerable: Enumerable<TSource>, accumulator: (first: TAccumulate, second: TSource) => TAccumulate, seed: TAccumulate): TAccumulate
@@ -227,16 +289,25 @@ module TS
 
         if (!_enumerator.moveNext())
         {
-          throw new TS.Linq.EmptyEnumerableException(enumerable, "The argument 'enumerable' must not be an empty enumerable in function 'TS.Linq.Extensions.aggregate'.");
-        }//END if
-
-        if (TS.Utils.TypeInfo.isNullOrUndefined(seed))
-        {
-          _resultValue = _enumerator.current;
+          if (TS.Utils.TypeInfo.isNullOrUndefined(seed))
+          {
+            throw new TS.Linq.EmptyEnumerableException(enumerable, "The argument 'enumerable' must not be an empty enumerable in function 'TS.Linq.Extensions.aggregate'.");
+          }//END if
+          else
+          {
+            _resultValue = seed;
+          }//END else
         }//END if
         else
         {
-          _resultValue = accumulator(seed, _enumerator.current);
+          if (TS.Utils.TypeInfo.isNullOrUndefined(seed))
+          {
+            _resultValue = _enumerator.current;
+          }//END if
+          else
+          {
+            _resultValue = accumulator(seed, _enumerator.current);
+          }//END else
         }//END else
 
         while (_enumerator.moveNext())
@@ -660,27 +731,21 @@ module TS
         {
           _checkFunctionParameter(predicate, "equalityComparer", "TS.Linq.Extensions.count");
         }//END if
+        else
+        {
+          predicate = (item) => true;
+        }//END else
 
         _enumerator = enumerable.getEnumerator();
         _count = 0;
 
-        if (TS.Utils.TypeInfo.isNullOrUndefined(predicate))
+        while (_enumerator.moveNext())
         {
-          while (_enumerator.moveNext())
+          if (predicate(_enumerator.current))
           {
             _count++;
-          }//END while
-        }//END if
-        else
-        {
-          while (_enumerator.moveNext())
-          {
-            if (predicate(_enumerator.current))
-            {
-              _count++;
-            }//END if
-          }//END while
-        }//END else
+          }//END if
+        }//END while
 
         return _count;
       }
@@ -1476,6 +1541,94 @@ module TS
         };
 
         return new Enumerable<TResult>(_callback);
+      }
+
+      /**
+      *  @description
+      *    Produces the set intersection of two sequences by using the default equality comparer (===) to compare values.
+      *
+      *    Deferred execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.intersect.aspx | MSDN}
+      *
+      *  @returns
+      *    Enumerable<TResult>, the result enumerable.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      */     
+      export function intersect<TSource>(firstEnumerable: Enumerable<TSource>, secondEnumerable: Enumerable<TSource>): Enumerable<TSource>
+      /**
+      *  @description
+      *    Produces the set intersection of two sequences by using the specified equalityComparer to compare values.
+      *
+      *    Deferred execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.intersect.aspx | MSDN}
+      *
+      *  @returns
+      *    Enumerable<TResult>, the result enumerable.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      */
+      export function intersect<TSource>(firstEnumerable: Enumerable<TSource>, secondEnumerable: Enumerable<TSource>, equalityComparer: (first: TSource, second: TSource) => boolean): Enumerable<TSource>
+      export function intersect<TSource>(firstEnumerable: Enumerable<TSource>, secondEnumerable: Enumerable<TSource>, equalityComparer?: (first: TSource, second: TSource) => boolean): Enumerable<TSource>
+      {
+
+        var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
+        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
+        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
+
+        var _set: Set<TSource>;
+        var _firstEnumerator: IEnumerator<TSource>;
+        var _secondEnumerator: IEnumerator<TSource>;
+        var _resultArray: Array<TSource>;
+        var _callback: () => IEnumerator<TSource>;
+
+        _checkEnumerable(firstEnumerable, "TS.Linq.Extensions.intersect");
+        _checkEnumerable(secondEnumerable, "TS.Linq.Extensions.intersect");
+
+        if (!TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer))
+        {
+          _checkFunctionParameter(equalityComparer, "predicate", "TS.Linq.Extensions.intersect");
+        }//END if
+        else
+        {
+          equalityComparer = (first, second) => first === second;
+        }//END else
+
+        _callback = () =>
+        {
+          _firstEnumerator = firstEnumerable.getEnumerator();
+          _secondEnumerator = secondEnumerable.getEnumerator();
+          _set = new Set<TSource>(equalityComparer);
+          _resultArray = new Array<TSource>();
+
+          while (_firstEnumerator.moveNext())
+          {
+            _set.add(_firstEnumerator.current);
+          }//END while
+
+          while (_secondEnumerator.moveNext())
+          {
+            if (_set.contains(_secondEnumerator.current))
+            {
+              _resultArray.push(_secondEnumerator.current);
+              _set.remove(_secondEnumerator.current);
+            }//END if
+          }//END while
+
+          return new ArrayEnumerator<TSource>(_resultArray);
+        };
+
+        return new Enumerable<TSource>(_callback);
       }
 
 

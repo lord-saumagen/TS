@@ -78,7 +78,7 @@ module TS
       *  @throws
       *    TS.InvalidTypeException.
       */
-      public aggregate(accumulatorFunc: (first: T, second: T) => T): T
+      public aggregate(accumulator: (first: T, second: T) => T): T
       /**
       *  @description
       *    Applies an accumulator function over a sequence. The specified seed value is used as the initial accumulator value.

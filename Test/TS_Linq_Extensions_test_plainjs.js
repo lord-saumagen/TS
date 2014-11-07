@@ -443,6 +443,35 @@
   });
 
 
+  QUnit.test("intersect", function (assert)
+  {
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.intersect({}, TS.Linq.Extensions.empty());
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for a invalid 'firstEnumerable' argument.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.intersect(TS.Linq.Extensions.empty(), {});
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for a invalid 'secondEnumerable' argument.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.intersect(TS.Linq.Extensions.empty(), TS.Linq.Extensions.empty(), {});
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for a invalid 'equalityComparer' argument.");
+
+  });
+
   QUnit.test("join", function (assert)
   {
     var _customersEnumerable;

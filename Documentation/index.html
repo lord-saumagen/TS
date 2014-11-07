@@ -121,7 +121,7 @@
         <br />
         The table below shows all 
         LINQ extensions as defined by Microsoft and theire execution behavior. Those wich are marked green are considered complete implemented and tested.<br />
-        Those wich are marked yellow are not yet implemented or not tested. Those which are marked read will never be implemented. Lagely because of the missing type system in javascript.
+        Those wich are marked yellow are not yet implemented or not tested. Those which are marked read will never be implemented. Largely because of the missing type system in javascript.
         <br />
         <br />
         <a href="http://msdn.microsoft.com/en-us/library/bb882641.aspx">The default LINQ extension functions listed by Microsoft.</a>
@@ -331,7 +331,7 @@
               </td>
               <td>1 overload</td>
             </tr>
-            <tr class="notYetImplemented">
+            <tr class="fullImplemented">
               <td>
                 intersect
               </td>
@@ -339,7 +339,7 @@
                 &nbsp;
               </td>
               <td>
-                &nbsp;
+                &nbsp;1 overload
               </td>
             </tr>
             <tr class="fullImplemented">
@@ -719,16 +719,17 @@
         <h2>Utils</h2>
         All classes, modules and interfaces which belong to the 'TS.Utils' namespace can be found in the corresponding subdirectory called 'Utils&#39;.<br />
         <br />
-        The 'Utils' module hosts all the function and classes which have a general purpose but no common problem domain. They do very different things 
+        The 'Utils' module hosts all the functions and classes which have a general purpose but no common problem domain. They do very different things 
         but have in common that they come in handy at mundane programming tasks.
         <br />
         <br />
         You will find the following functions, enums and classes at the &#39;TS.Utils&#39; module level.<br />
+        <br />
 
         <table>
           <tbody>
             <tr>
-              <th colspan="2" style="text-align:left;">Classes:</th>
+              <th colspan="2" style="text-align: left;">Classes:</th>
             </tr>
             <tr>
               <td>
@@ -739,7 +740,7 @@
               </td>
             </tr>
             <tr>
-              <th colspan="2" style="text-align:left;">Enums:</th>
+              <th colspan="2" style="text-align: left;">Enums:</th>
             </tr>
             <tr>
               <td>
@@ -750,7 +751,7 @@
               </td>
             </tr>
             <tr>
-              <th colspan="2" style="text-align:left;">Functions:</th>
+              <th colspan="2" style="text-align: left;">Functions:</th>
             </tr>
             <tr>
               <td>
@@ -780,7 +781,7 @@
               </td>
             </tr>
             <tr>
-              <td style="width:30em;">
+              <td style="width: 30em;">
                 <code>HTMLCollectionToArray(collection): Array&lt;HTMLElement&gt;
                 </code>
               </td>
@@ -800,6 +801,168 @@
           </tbody>
         </table>
       </div>
+      <div id="Exception">
+        <h2>Exception</h2>
+        The &#39;TS.Exception&#39; class and some derived classes can be found in subdirectory called &#39;Exception&#39; in file &#39;Exception.ts&#39;.<br />
+        <br />
+        The 'TS.Excepton&#39; 
+        class is a substitute for the poor javascript &#39;Error&#39; classes which are part of the language specification in javascript. So your are forced to use one of those classes to signal an exceptions, even if none of them is appropriate. The &#39;TS.Exception&#39; class is an attempt to introduce the power and flexibility of the exception system use in C#, into TypeScript.
+        <br />
+        <br />
+        Since TypeScript builds on javascript, and javascript doesn&#39;t offer a type system, it&#39;s also impossible to determine a specific exeption type. To circumvent that problem you should follow a design convention when creating your own exception classes derived from &#39;TS.Exception&#39; or it&#39;s subclasses.<br />
+        <br />
+        Before I will explain the convention, let&#39;s have a look at the definition of the &#39;TS.Exception&#39; class.
+        <br />
+        <pre>
+export class Exception implements Error
+{
+  private _message: string;
+  private _innerException: Exception;
+
+  public get innerException(): Exception
+  {
+    return this._innerException;
+  }
+
+  /**
+  *  @implemnts
+  *    Error.message
+  */
+  public get message(): string
+  {
+    return this._message;
+  }
+
+  /**
+  *  @implemnts
+  *    Error.name
+  */
+  public get name(): string
+  {
+    return this.type;
+  }
+
+  public get type(): string
+  {
+    return "TS.Exception";
+  }
+
+  /**
+  *  @constructs
+  *    TS.Exception
+  */
+  constructor(message?: string, innerException?: Exception)
+  {
+    this._message = (message) ? message : "";
+    this._innerException = (innerException) ? innerException : null;
+  }
+
+  /**
+  *  @overwrite
+  *    Object.toString
+  */
+  public toString(): string
+  {
+    return this.type + ((this.message.length > 0) ? " :: " + this.message : "");
+  }
+
+}//END class
+
+        </pre>
+        As you can see, the 'TS.Exception' class implements the 'Error' interface. 
+        The inteface is defined as follows.<br />
+        <br />
+        <pre>
+interface Error 
+{
+  name: string;
+  message: string;
+}
+</pre>
+        That means that the 'TS.Exception' class an all of it's 
+        descendants have a &#39;name&#39; and a &#39;message&#39; property.&nbsp; The properties are implemented as read only properties, they can only be set once in the constructor.&nbsp; The class also implements a constant &#39;type&#39; property which holds the fully qualified type name of the current class as string. The class overwrites the &#39;toString&#39; methode inherrited from the class &#39;Object&#39;. This method returns a string wich consists of the type name as defined in property &#39;type&#39; and if available the message as defined in property &#39;message&#39; separated by the following string: &quot; :: &quot;.<br />
+        <br />
+        There is nothing special with this class, except that it gives you the freedom to create exception classes for your own purpose by deriving from &#39;TS.Exception&#39; or one of it&#39;s derivates. There are only two rules you should follow. <br />
+        <br />
+        1. Overwrite the inherrited &#39;type&#39; property with the fully qualified name of your derived class.<br />
+        2. Call the constructor of the base class in the constructor of your derived class. <br />
+        <br />
+        When you open the 'Exception.ts' file, you will notice that there is more than one exception class defined in this file. The next in order of occurence is the 'ArgumentException' class. 
+        You can see the definition of that file below.
+        As you can see, the &#39;type&#39; property overwrites the inherrited &#39;type&#39; property and the constructor of the base class is called in the constructor.&nbsp;
+        <br />
+        <br />
+        <pre>
+export class ArgumentException extends Exception
+{
+  private _argumentName: string;
+  private _argumentValue: any;
+
+  /**
+  *  @overwrite
+  */
+  public get type(): string
+  {
+    return "TS.ArgumentException";
+  }
+
+  get argumentName(): string
+  {
+    return this._argumentName;
+  }
+
+  get argumentValue(): any
+  {
+    return this._argumentValue;
+  }
+
+  /**
+  *  @constructs
+  */
+  constructor(argumentName: string, argumentValue: any, message?: string, innerException?: Exception)
+  {
+    super(message, innerException);
+    this._argumentName = (argumentName) ? argumentName : "";
+    this._argumentValue = argumentValue;
+  }
+
+}//END class
+
+        </pre>
+        Now you may ask yourself what&#39;s the advantage of this construction at all, because you could also use an &#39;Error&#39; class or one of the six other errors defined in the javascript language definition. Of cause you can. But if those classes doesn&#39;t fit your needs, you will have to create your own exception system anyway. So you can also stick with this system from the beginning and don&#39;t have to bother with the poor implementation in javascript.
+        <br />
+        <br />
+        It makes is also easier to determine the type fo an exception. Lets say you wrote an exception handler but you are only interested in those exceptions you are able to handel in your handler. Your code might look like this.<br />
+        <br />
+        <pre>
+ try
+{
+  //Any expression or statement that might throw en exception.
+}//END try
+catch (ex)
+{
+  switch ((&lt;TS.Exception&gt; ex).type)
+  {
+    case "TS.ArgumentNullException":
+      {
+        //Handle the 'ArgumentNullException'.
+      }
+    case "TS.IndexOutOfRangeException":
+      {
+        //Handle the 'IndexOutOfRangeException'.
+      }
+    default:
+      {
+        //Rethrow the exception if not handled.
+        throw ex;
+      }
+  }//END switch
+}//END catch        
+        </pre>
+        You see, this way it is pretty easy to filter exceptions by it's type. 
+        You don&#39;t have to operate on the message string to determine the exceptions type. Even if the message is empty, you still can tell what kind of exceptions arose by looking at the &#39;type&#39; attribute.<br />
+        <br />
+        If you want to see a working example of specialised exceptions classes an how they are used, take a look into the file &#39;Extensions.ts&#39; in the &#39;Linq&#39; subdirectory. You will find the exceptions classes which are specific to the &#39;TS.Linq.Extension&#39; module and have no meaning outsider of that context.</div>
     </div>
   </body>
 </html>

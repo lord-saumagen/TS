@@ -79,10 +79,10 @@ module TS_Linq_Extensions_test
     assert.equal(_testStringResult, "one, two, three, four, five, six, seven, eight, nine, ten", "should return 'one, two, three, four, five, six, seven, eight, nine, ten' on TS.Linq.Enumerable<string> .");
 
     _testCarNumberResult = TS.Linq.Extensions.aggregate(_testCarEnumerable, (first: number, second: Car) => first + second.horsePower, 0);
-    assert.equal(_testCarNumberResult, 595, "should return 595 on TS.Linq.Enumerable<Car> with an accumulator function on 'horsePower' should return 595.");
+    assert.equal(_testCarNumberResult, 595, "should return 595 on TS.Linq.Enumerable<Car> with an accumulator function on 'horsePower' and a seed value of '0'.");
 
     _testCarStringResult = TS.Linq.Extensions.aggregate(_testCarEnumerable, (first: string, second: Car) => first + second.name, "");
-    assert.equal(_testCarStringResult, "BMWAUDIVWFIATTRABANT", "should return 'BMWAUDIVWFIATTRABANT' on TS.Linq.Enumerable<Car> with an accumulator function on 'name'.");
+    assert.equal(_testCarStringResult, "BMWAUDIVWFIATTRABANT", "should return 'BMWAUDIVWFIATTRABANT' on TS.Linq.Enumerable<Car> with an accumulator function on 'name' and a seed value of ''.");
 
     assert.throws(() =>
     {
@@ -755,6 +755,54 @@ module TS_Linq_Extensions_test
   });
 
 
+
+  QUnit.test("intersect", (assert) => 
+  {
+    var _carsUnionEnum: TS.Linq.Enumerable<Car>;
+    var _carsEnum: TS.Linq.Enumerable<Car>;
+    var _carsIntersect: TS.Linq.Enumerable<Car>;
+    var _numberEnumFirst: TS.Linq.Enumerable<Number>;
+    var _numberEnumSecond: TS.Linq.Enumerable<Number>;
+    var _numberIntersect: TS.Linq.Enumerable<Number>;
+    var _resultArr: Array<Car>;
+    var _undefined;
+
+    _carsUnionEnum = TS.Linq.Extensions.fromArray(CreateCarsUnionTestArray());
+    _carsEnum = TS.Linq.Extensions.fromArray(CreateCarsArray());
+
+    _carsIntersect = TS.Linq.Extensions.intersect(_carsEnum, _carsUnionEnum, (first, second) => first.name === second.name);
+    _resultArr = _carsIntersect.toArray();
+
+    assert.equal(_carsIntersect.count(), 2, "Schould return a result set with 2 elements when called with an equality comparer.");
+
+    _numberEnumFirst = TS.Linq.Extensions.fromArray(CreateNumberArray());
+    _numberEnumSecond = TS.Linq.Extensions.fromArray([2, 4, 7, 8]);
+    _numberIntersect = TS.Linq.Extensions.intersect(_numberEnumFirst, _numberEnumSecond);
+
+    assert.equal(_numberIntersect.count(), 4, "Schould return a result set with 4 elements when called without an equality comparer.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.intersect(null, _numberEnumSecond);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'firstEnumerable' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.intersect(_undefined, _numberEnumSecond);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'firstEnumerable' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.intersect(_numberEnumFirst, null);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'secondEnumerable' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.intersect(_numberEnumFirst, _undefined);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'secondEnumerable' argument.");
+  });
+
+
   QUnit.test("join", (assert) =>
   {
     var _jointEnum;
@@ -839,6 +887,7 @@ module TS_Linq_Extensions_test
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'enumerable' argument.");
 
   });
+
 
   QUnit.test("lastOrDefault", (assert) =>
   {

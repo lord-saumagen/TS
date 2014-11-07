@@ -6,6 +6,21 @@
   {
     private _message: string;
     private _innerException: Exception;
+    static _name: string;
+
+    public get innerException(): Exception
+    {
+      return this._innerException;
+    }
+
+    /**
+    *  @implemnts
+    *    Error.message
+    */
+    public get message(): string
+    {
+      return this._message;
+    }
 
     /**
     *  @implemnts
@@ -21,18 +36,9 @@
       return "TS.Exception";
     }
 
-    public get message(): string
-    {
-      return this._message;
-    }
-
-    public get innerException(): Exception
-    {
-      return this._innerException;
-    }
-
     /**
     *  @constructs
+    *    TS.Exception
     */
     constructor(message?: string, innerException?: Exception)
     {
@@ -50,7 +56,6 @@
     }
 
   }//END class
-
 
 
   //********************************************************************************
