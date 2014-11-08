@@ -1,6 +1,6 @@
-﻿//
-// requires: TS.Utils.TypeInfo
-//
+﻿/// <reference path="../utils/utils.ts" />
+/// <reference path="../utils/typeinfo.ts" />
+
 
 module TS
 {
@@ -1471,7 +1471,6 @@ module TS
         var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
         var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
-        var _pairCtor = Pair;
         var _joinArray: Array<Pair<TOuter, Enumerable<TInner>>>;
         var _index: number;
         var _enumeratorOuter: IEnumerator<TOuter>;
@@ -1655,7 +1654,6 @@ module TS
         var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
         var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
-        var _pairCtor = Pair;
         var _joinArray: Array<Pair<TOuter, TInner>>;
         var _index: number;
         var _enumeratorOuter: IEnumerator<TOuter>;
@@ -2398,6 +2396,88 @@ module TS
         }//END callback
 
         return new Enumerable<TResult>(_callback);
+      }
+
+
+      /**
+      *  @description
+      *    Determines whether two sequences are equal by comparing the elements 
+      *    by using the default equality comparer (===).
+      *
+      *    Immediate execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.sequenceequal.aspx | MSDN}
+      *
+      *  @returns
+      *    Boolean
+      *
+      *  @throws
+      *    TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      */
+       export function sequenceEqual<TSource>(firstEnumerable: Enumerable<TSource>, secondEnumerable: Enumerable<TSource>): boolean
+      /**
+      *  @description
+      *    Determines whether two sequences are equal by comparing their 
+      *    elements by using a specified equalityComparer.
+      *
+      *    Immediate execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.sequenceequal.aspx | MSDN}
+      *
+      *  @returns
+      *    Boolean
+      *
+      *  @throws
+      *    TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      */
+      export function sequenceEqual<TSource>(firstEnumerable: Enumerable<TSource>, secondEnumerable: Enumerable<TSource>, equalityComparer: (first: TSource, second: TSource) => boolean): boolean
+      export function sequenceEqual<TSource>(firstEnumerable: Enumerable<TSource>, secondEnumerable: Enumerable<TSource>, equalityComparer?: (first: TSource, second: TSource) => boolean): boolean
+      {
+        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
+        var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
+        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
+
+        var _firstEnumerator: IEnumerator<TSource>;
+        var _secondEnumerator: IEnumerator<TSource>;
+
+        _checkEnumerable(firstEnumerable, "TS.Linq.Extensions.sequenceEqual");
+        _checkEnumerable(secondEnumerable, "TS.Linq.Extensions.sequenceEqual");
+
+        if (!TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer))
+        {
+          _checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.sequenceEqual");
+        }//END if
+        else
+        {
+          equalityComparer = (first, second) => first === second;
+        }//END else
+
+        _firstEnumerator = firstEnumerable.getEnumerator();
+        _secondEnumerator = secondEnumerable.getEnumerator();
+
+        while (_firstEnumerator.moveNext())
+        {
+          if (!(_secondEnumerator.moveNext() && equalityComparer(_firstEnumerator.current, _secondEnumerator.current)))
+          {
+            _firstEnumerator.dispose();
+            _secondEnumerator.dispose();
+            return false;
+          }//END if
+        }//END while
+        if (_secondEnumerator.moveNext())
+        {
+          _firstEnumerator.dispose();
+          _secondEnumerator.dispose();
+          return false;
+        }//END if
+
+        return true;
       }
 
 

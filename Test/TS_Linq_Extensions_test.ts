@@ -1251,6 +1251,71 @@ module TS_Linq_Extensions_test
   });
 
 
+  QUnit.test("sequenceEqual", (assert) =>
+  {
+    var _numberArray: Array<Number>;
+    var _customerArray: Array<ICustomer>;
+    var _firstNumberEnumerable: TS.Linq.Enumerable<Number>;
+    var _secondNumberEnumerable: TS.Linq.Enumerable<Number>;
+    var _compareResult: boolean;
+    var _undefined;
+
+    _firstNumberEnumerable = TS.Linq.Extensions.fromArray(CreateNumberArray());
+    _secondNumberEnumerable = TS.Linq.Extensions.fromArray(CreateNumberArray());
+
+    _compareResult = TS.Linq.Extensions.sequenceEqual(_firstNumberEnumerable, _secondNumberEnumerable);
+    assert.ok(_compareResult, "Should return true when comparing two equal enumerables");
+
+    _compareResult = TS.Linq.Extensions.sequenceEqual(customersEnumerable, customersEnumerable, (first, second) => first.ContactName == second.ContactName);
+    assert.ok(_compareResult, "Should return true when comparing two equal enumerables using an equalityComparer");
+
+    _customerArray = customersEnumerable.toArray();
+    _customerArray[55] = new Customer();
+    _customerArray[55].ContactName = "No Contact Name";
+    _compareResult = TS.Linq.Extensions.sequenceEqual(customersEnumerable, TS.Linq.Extensions.fromArray(_customerArray), (first, second) => first.ContactName == second.ContactName);
+    assert.ok(!_compareResult, "Should return false when comparing two enumerables with different elements usin an equalityComparer");
+
+    _numberArray = CreateNumberArray();
+    _numberArray.pop();
+    _secondNumberEnumerable = TS.Linq.Extensions.fromArray(_numberArray);
+    _compareResult = TS.Linq.Extensions.sequenceEqual(_firstNumberEnumerable, _secondNumberEnumerable);
+    assert.ok(!_compareResult, "Should return false when comparing two enumerables with different length");
+
+    _numberArray = CreateNumberArray();
+    _numberArray.push(11);
+    _secondNumberEnumerable = TS.Linq.Extensions.fromArray(_numberArray);
+    _compareResult = TS.Linq.Extensions.sequenceEqual(_firstNumberEnumerable, _secondNumberEnumerable);
+    assert.ok(!_compareResult, "Should return false when comparing two enumerables with different length");
+
+    _numberArray = CreateNumberArray();
+    _numberArray[5] = Math.PI;
+    _secondNumberEnumerable = TS.Linq.Extensions.fromArray(_numberArray);
+    _compareResult = TS.Linq.Extensions.sequenceEqual(_firstNumberEnumerable, _secondNumberEnumerable);
+    assert.ok(!_compareResult, "Should return false when comparing two unequal enumerables");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.sequenceEqual(null, _secondNumberEnumerable);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'firstEnumerable' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.sequenceEqual(_undefined, _secondNumberEnumerable);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'firstEnumerable' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.sequenceEqual(_firstNumberEnumerable, null);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'secondEnumerable' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.sequenceEqual(_firstNumberEnumerable, _undefined);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'secondEnumerable' argument.");
+
+  });
+
+
   QUnit.test("shuffle", (assert) =>
   {
     var _numberArr: Array<number>;

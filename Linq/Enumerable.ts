@@ -625,6 +625,33 @@ module TS
 
       /**
       *  @description
+      *    Produces the set intersection of two sequences by using the default equality comparer (===) to compare values.
+      *
+      *    If the equalityComparer is provided:
+      *
+      *    Produces the set intersection of two sequences by using the specified equalityComparer to compare values.
+      *
+      *    Deferred execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.intersect.aspx | MSDN}
+      *
+      *  @returns
+      *    Enumerable<TResult>, the result enumerable.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      */     
+      public intersect(otherEnumerable: Enumerable<T>, equalityComparer?: (first: T, second: T) => boolean): Enumerable<T>
+      {
+        return Extensions.intersect(this, otherEnumerable, equalityComparer);
+      }
+
+
+      /**
+      *  @description
       *    Correlates the elements of two sequences based on matching keys.
       *
       *    Deferred execution.
@@ -947,6 +974,35 @@ module TS
       public selectMany<U>(selector: (item: T) => U[]): Enumerable<U>
       {
         return Extensions.selectMany(this, selector);
+      }
+
+
+      /**
+      *  @description
+      *    Determines whether two sequences are equal by comparing the elements 
+      *    by using the default equality comparer (===).
+      *
+      *    If the equalityComparer is provided:
+      *
+      *    Determines whether two sequences are equal by comparing their 
+      *    elements by using the specified equalityComparer.
+      *
+      *    Immediate execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.sequenceequal.aspx | MSDN}
+      *
+      *  @returns
+      *    Boolean
+      *
+      *  @throws
+      *    TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      */
+      public sequenceEqual(enumerable: Enumerable<T>, equalityComparer?: (first: T, second: T) => boolean): boolean
+      {
+        return Extensions.sequenceEqual(this, enumerable, equalityComparer);
       }
 
 

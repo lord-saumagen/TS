@@ -781,6 +781,38 @@
   });
 
 
+  QUnit.test("sequenceEqual", function (assert)
+  {
+    var _numberEnumerable;
+
+    _numberEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateNumberArray())
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.sequenceEqual({}, _numberEnumerable);
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'firstEnumerable' argument type.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.sequenceEqual(_numberEnumerable, {});
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'secondEnumerable' argument type.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.sequenceEqual(_numberEnumerable, _numberEnumerable, {});
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'equalityComparer' argument type.");
+
+  });
+
+
   QUnit.test("skip", function (assert)
   {
     var _carsEnumerable;
