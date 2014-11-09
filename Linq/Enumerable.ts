@@ -5,6 +5,7 @@
 // TS.Linq.Extensions
 // TS.Utils.TypeInfo
 //
+
 module TS
 {
   "use strict";
@@ -874,6 +875,32 @@ module TS
       public orderByDescending(selector: (item: T) => any, comparer?: (first: any, second: any) => number): OrderedEnumerable<T>
       {
         return Extensions.orderByDescending(this, selector, comparer);
+      }
+
+
+      /**
+      *  @description
+      *    Generates a sequence of integral numbers within a specified range.
+      *
+      *    Immediate execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.range.aspx | MSDN}
+      *
+      *  @returns
+      *    Enumerable<Number>, the resulting enumerable.
+      *
+      *  @throws
+      *    TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException
+      *
+      *  @throws
+      *    TS.ArgumentOutOfRangeException
+      */
+      public static range(start: number, count: number) : Enumerable<Number>
+      {
+        return Extensions.range(start, count);
       }
 
 

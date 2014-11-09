@@ -1,6 +1,7 @@
 ﻿/// <reference path="../scripts/qunit.d.ts" />
 /// <reference path="../scripts/jquery.d.ts" />
 
+
 "use strict";
 
 module TS_Linq_Extensions_test
@@ -1086,6 +1087,47 @@ module TS_Linq_Extensions_test
     {
       TS.Linq.Extensions.random(_undefined).take(50);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'enumerable' argument.");
+  });
+
+
+  QUnit.test("range", (assert) => 
+  {
+    var _resultEnum: TS.Linq.Enumerable<Number>;
+    var _resultArray: Array<Number>
+    var _undefined;
+
+    _resultEnum = TS.Linq.Extensions.range(1, 50);
+    _resultArray = _resultEnum.toArray();
+    assert.equal(_resultEnum.count(), 50, "Should return an enumerable with 50 elements.");
+
+    _resultEnum = TS.Linq.Extensions.range(111, 0);
+    _resultArray = _resultEnum.toArray();
+    assert.equal(_resultEnum.count(), 0, "Should return an enumerable with 0 elements.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.range(1, -3);
+    }, (err) => ((err.name == "TS.ArgumentOutOfRangeException") ? true : false), "Should trow a TS.ArgumentOutOfRangeException for a negative 'count' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.range(null, 33);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should trow a TS.ArgumentNullOrUndefinedException for a null 'start' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.range(_undefined, 33);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should trow a TS.ArgumentNullOrUndefinedException for an undefined 'start' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.range(12, null);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should trow a TS.ArgumentNullOrUndefinedException for a null 'count' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.range(12, _undefined);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should trow a TS.ArgumentNullOrUndefinedException for an undefined 'count' argument.");
   });
 
 

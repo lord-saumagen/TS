@@ -1,6 +1,6 @@
 #TS - A TypeScript module collection
 
-This project is a collection of some TypeScript libraries which I wrote. Most of them are reprogrammed modules which are already available in some other javascript libraries. But I don't like that plain javascript libraries which often enough come with a bad coding style. I have the hope and vision that there will come more libraries which are written in TypeScript in the first place. My hope is, that this will bring a more professional coding style to the javascript community.
+This project is a collection of some TypeScript modules which I wrote. Most of them are reprogrammed modules which are already available in some other JavaScript libraries. I don't like that plain JavaScript libraries very much, because often enough they come with a bad coding style. I have the hope and vision that there will be  more libraries which are written in TypeScript in the first place in the future. My hope is, that this will bring a more professional coding style to the JavaScript community.
 
 The first module which I created is a LINQ implementation in TypeScript. I'm a great fan of LINQ in C#, so that was an natural choice to start with. There is more information about this project at the project page available.
 
@@ -8,7 +8,7 @@ The first module which I created is a LINQ implementation in TypeScript. I'm a g
 
 ##Prerequisites
 
-In order to use the files from that project, you need to install the TypeScript compiler. You will find all you need at the TypeScript project page. 
+In order to use the modules from that project, you need to install the TypeScript compiler. You will find all you need at the TypeScript project page. 
 
 [http://www.typescriptlang.org/](http://www.typescriptlang.org/)
 

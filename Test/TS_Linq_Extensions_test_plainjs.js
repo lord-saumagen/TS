@@ -1,4 +1,9 @@
-﻿var TS_Linq_Extensions_test;
+﻿/// <reference path="../Linq/Extensions.js" />
+/// <reference path="../Linq/Enumerable.js" />
+/// <reference path="../Linq/Enumerator.js" />
+
+
+var TS_Linq_Extensions_test;
 (function (TS_Linq_Extensions_test)
 {
 
@@ -698,6 +703,26 @@
       return (err.name == "TS.InvalidTypeException") ? true : false;
     }, "Should throw a 'TS.InvalidTypeException' for an invalid 'comparer' argument type.");
 
+  });
+
+
+  QUnit.test("range", function (assert)
+  {
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.range({}, 5);
+    },function(err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should trhow a 'TS.InvalidTypeException' for an invalid 'start' argument type.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.range(12, {});
+    },function(err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should trhow a 'TS.InvalidTypeException' for an invalid 'count' argument type.");
   });
 
 

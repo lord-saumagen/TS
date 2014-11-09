@@ -1,8 +1,4 @@
-﻿/// <reference path="../utils/utils.ts" />
-/// <reference path="../utils/typeinfo.ts" />
-
-
-module TS
+﻿module TS
 {
   "use strict";
 
@@ -2192,6 +2188,63 @@ module TS
 
       /**
       *  @description
+      *    Generates a sequence of integral numbers within a specified range.
+      *
+      *    Immediate execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.range.aspx | MSDN}
+      *
+      *  @returns
+      *    Enumerable<Number>, the resulting enumerable.
+      *
+      *  @throws
+      *    TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException
+      *
+      *  @throws
+      *    TS.ArgumentOutOfRangeException
+      */
+      export function range(start: number, count: number) : Enumerable<Number>
+      {
+        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
+
+        var _resultArray: Array<number>;
+        var _index: number;
+
+        _checkParameter(start, "start", "TS.Linq.Extensions.range");
+        _checkParameter(count, "count", "TS.Linq.Extensions.range");
+
+
+        if (!TS.Utils.TypeInfo.isNumber(start))
+        {
+          throw new TS.InvalidTypeException("start", count, "Argument 'start' has the wrong type in function 'TS.Linq.Extensions.range'.");
+        }//END if
+
+        if (!TS.Utils.TypeInfo.isNumber(count))
+        {
+          throw new TS.InvalidTypeException("count", count, "Argument 'count' has the wrong type in function 'TS.Linq.Extensions.range'.");
+        }//END if
+
+        if (!TS.Utils.TypeInfo.isPositiveIntegerNumber(count))
+        {
+          throw new TS.ArgumentOutOfRangeException("count", count, "Argument 'count' must be a positive integer number in function 'TS.Linq.Extensions.range'.");
+        }//END if
+
+        _resultArray = new Array<number>();
+
+        for (_index = 0; _index < count; _index ++)
+        {
+          _resultArray.push(start + _index);
+        }//END for
+
+        return Extensions.fromArray(_resultArray);
+      }
+
+
+      /**
+      *  @description
       *    Generates a sequence that contains one repeated value
       *    as often as specified in count.
       *
@@ -2206,6 +2259,9 @@ module TS
       *    TS.ArgumentNullOrUndefinedException
       *
       *  @throws
+      *    TS.InvalidTypeException
+      *
+      *  @throws
       *    TS.ArgumentOutOfRangeException
       */
       export function repeat<TSource>(item: TSource, count: number): Enumerable<TSource>
@@ -2216,6 +2272,7 @@ module TS
         var _resultArray: Array<TSource>;
 
         _checkParameter(item, "item", "TS.Linq.Extensions.repeat");
+
         if (!TS.Utils.TypeInfo.isNumber(count))
         {
           throw new TS.InvalidTypeException("count", count, "Argument 'count' has the wrong type in function 'TS.Linq.Extensions.repeat'.");
