@@ -16,6 +16,7 @@
         <li><a href="#Linq">LINQ</a></li>
         <li><a href="#Utils">Utils</a></li>
         <li><a href="#Exceptions">Exceptions</a></li>
+        <li><a href="#Test">Test</a></li>
       </ul>
     </div>
     <div id="content" style="margin-left: 12em; vertical-align: top;">
@@ -121,7 +122,9 @@
         <br />
         The table below shows all 
         LINQ extensions as defined by Microsoft and theire execution behavior. Those wich are marked green are considered complete implemented and tested.<br />
-        Those wich are marked yellow are not yet implemented or not tested. Those which are marked read will never be implemented. Largely because of the missing type system in JavaScript.
+        Those wich are marked yellow are not yet implemented or not tested. 
+        <br />
+        Those which are marked read will never be implemented. Largely because of the missing type system in JavaScript.
         <br />
         <br />
         <a href="http://msdn.microsoft.com/en-us/library/bb882641.aspx">The default LINQ extension functions listed by Microsoft.</a>
@@ -311,15 +314,15 @@
               </td>
               <td>1 overload</td>
             </tr>
-            <tr class="notYetImplemented">
+            <tr class="fullyImplemented">
               <td>
                 groupBy
               </td>
               <td>
-                &nbsp;
+                Deferred execution
               </td>
               <td>
-                &nbsp;
+               3 overloads
               </td>
             </tr>
             <tr class="fullyImplemented">
@@ -338,7 +341,7 @@
               <td>
                 &nbsp;Deferred execution</td>
               <td>
-                &nbsp;1 overload
+                1 overload
               </td>
             </tr>
             <tr class="fullyImplemented">
@@ -420,7 +423,8 @@
                 range
               </td>
               <td>
-                Immediate execution</td>
+               Immediate execution
+              </td>
               <td>&nbsp;</td>
             </tr>
             <tr class="fullyImplemented">
@@ -679,7 +683,7 @@
         instance of that class too. 
         <br />
         <br />
-        <code>newEnumerable1 = TS.Liney.Enumerable.fromArray([anyArray]);
+        <code>newEnumerable1 = TS.Linq.Enumerable.fromArray([anyArray]);
         </code>
         <br />
         <br />
@@ -694,14 +698,14 @@
         Here is an example which calls a static function:
         <br />
         <br />
-        <code>_testResultCarEnumerable = TS.Linq.Extensions.distinct(_testInputCarEnumerable, (first: Car, second: Car) => first.name == second.name);
+        <code>_testResultCarEnumerable = TS.Linq.Extensions.distinct(_testInputCarEnumerable, (first, second) =&gt; first.name == second.name);
         </code>
         <br />
         <br />
         The same call using the fluent interface:
         <br />
         <br />
-        <code>_testResultCarEnumerable = _testInputCarEnumerable.distinct((first: Car, second: Car) => first.name == second.name);
+        <code>_testResultCarEnumerable = _testInputCarEnumerable.distinct((first, second) => first.name == second.name);
         </code>
         <br />
         <br />
@@ -961,6 +965,24 @@ catch (ex)
         You don&#39;t have to parse the message string to determine the exception type. Even if the message is empty, you still can tell what kind of exceptions you got by looking at the &#39;type&#39; attribute.<br />
         <br />
         If you want to see a working example of specialised exceptions classes an how they are used, take a look into the file &#39;Extensions.ts&#39; in the &#39;Linq&#39; subdirectory. You will find the exceptions classes which are specific to the &#39;TS.Linq.Extension&#39; module and have no meaning outsider of that context.</div>
+      <div id="Test">
+        <h2>Test</h2>
+        You will find the unit tests fore each module in the subdirectory 'Test'. All modules have a corresponding TypeScript file in this directory. Some have also a corresponding 
+        file written in plain JavaScript. The naming rule for the unit tests is as follows:
+        <br /><br />
+        "TS_" + [Fully Qualified Module Name] + "_test.js" for a test file wirtten in TypeScript or, <br />
+        "TS_" + [Fully Qualified Module Name] + "_test_plain.js" for a test fiel written in plain JavaScript. <br />
+        <br />
+        The namespace / module separator in the fully qualified module name is the '_'. <br />
+        <br />
+        There is also a HTML page for each module following the same naming convention. That HTML page is used to start the unit tests in your browser. I chose the <a href="http://qunitjs.com/">QUnit</a> testing framework for this project.
+        Running a unit test is only a matter of opening the corresponding HTML page in your Browser.<br />
+        There is also a HTML page called &quot;TestSuite.html&quot; which will run all unit test at once.
+        <br />
+        <br />
+        The subdirectory &quot;Data&quot; in the &quot;Test&quot; directory holds the test data for the unit tests.<br />
+        <br />
+        The test files in plain JavaScript need a little explanation. Some tests regarding the error handling of the modules wasn&#39;t realizeable in TypeScript. The simple reason for that is, TypeScript doesn&#39;t allow you to write as erroneous code as you can write in plain JavaScript. So I had to write those tests in plain JavaScript. </div>
     </div>
   </body>
 </html>
