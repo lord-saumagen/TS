@@ -410,10 +410,10 @@ module TS_Linq_Extensions_test
     _testInputCarArray.push(new Car("BENTLEY", 350, false, Date.parse("2012-01-01"), 55000));
     _testInputCarArray.push(new Car("FIAT", 60, false, Date.parse("1980-01-01"), 500));
     _testInputCarEnumerable = TS.Linq.Extensions.fromArray(_testInputCarArray);
-    _testResultCarEnumerable = TS.Linq.Extensions.distinct(_testInputCarEnumerable, (first: Car, second: Car) => first.name == second.name);
+    _testResultCarEnumerable = TS.Linq.Extensions.distinct(_testInputCarEnumerable, (first, second) => first.name == second.name);
     _testResultCarArray = TS.Linq.Extensions.toArray(_testResultCarEnumerable);
     assert.equal(_testResultCarArray.length, 7, "Should return a result enumerable with 7 elements from the input enumerable with 9 elements using the given 'equalityComparer'.");
-
+    _testResultCarEnumerable = TS.Linq.Extensions.distinct(_testInputCarEnumerable, (first, second) => first.name == second.name);
     _testResultNumberArray = TS.Linq.Extensions.fromArray([0, 0, 1, 2, 2, 2, 3, 4, 4, 5, 6, 6, 6, 6, 6, 7, 8, 8, 8, 9, 9]).distinct().toArray();
     assert.equal(_testResultNumberArray.length, 10, "Should return a result enumerable with 10 elements from the input enumerable of type 'Enumerable<number>' with no 'equalityComparer' defined.");
 
@@ -664,6 +664,7 @@ module TS_Linq_Extensions_test
   {
     var _testArray = CreateNumberArray();
     var _testEnumerable: TS.Linq.Enumerable<number>;
+    var _testObj = { Test: "Test", Obj: "Obj" };
 
     _testEnumerable = TS.Linq.Extensions.fromArray(CreateNumberArray());
     assert.equal(_testEnumerable.count(), _testArray.length, "Should return a enumerable with as much elements as the source array.");
@@ -678,6 +679,96 @@ module TS_Linq_Extensions_test
 
   });
 
+
+  QUnit.test("groupBy", (assert) =>
+  {
+    var _resultCustomerEnumerable: TS.Linq.Enumerable<TS.Linq.Grouping<string, ICustomer>>;
+    var _resultProductEnumerable: TS.Linq.Enumerable<TS.Linq.Grouping<string, IProduct>>;
+    var _resultProductEnumerableStorageRoom: TS.Linq.Enumerable<TS.Linq.Grouping<string, string>>;
+    var _resultProductEnumerableStorageRoomConcat: TS.Linq.Enumerable<{ Key: string; RoomConcat: string}>;
+    var _productEnumerable: TS.Linq.Enumerable<IProduct>;
+    var _undefined;
+
+    _productEnumerable = TS.Linq.Extensions.fromArray(CreateProductArray());
+
+    _resultCustomerEnumerable = TS.Linq.Extensions.groupBy(customersEnumerable, _CUST => _CUST.Country);
+    assert.equal(_resultCustomerEnumerable.count(), 21, "Should return 21 elements for the executed expression.");
+    assert.equal(_resultCustomerEnumerable.where(item => item.key == "Germany").single().count(), 11, "Should return 11 elements in group 'Germany'");
+    assert.equal(_resultCustomerEnumerable.where(item => item.key == "UK").single().count(), 7, "Should return 7 elements in group 'UK'");
+
+    _resultProductEnumerable = TS.Linq.Extensions.groupBy(_productEnumerable, item => unifyCurrency(item.Currency), (first, second) => unifyCurrency(first) === unifyCurrency(second));
+    assert.equal(_resultProductEnumerable.count(), 4, "Should return 4 elements for the executed expression with equalityComparer.");
+    assert.equal(_resultProductEnumerable.where(item => item.key == "EURO").single().count(), 5, "Should return 5 elements in group 'EURO'");
+    assert.equal(_resultProductEnumerable.where(item => item.key == "YEN").single().count(), 4, "Should return 4 elements in group 'YEN'");
+
+    _resultProductEnumerableStorageRoom = TS.Linq.Extensions.groupBy(_productEnumerable, item => unifyCurrency(item.Currency), null, item => item.Storage.Room);
+    assert.equal(_resultProductEnumerableStorageRoom.count(), 4, "Should return 4 elements for the executed expression with elementSelector.");
+    assert.equal(_resultProductEnumerableStorageRoom.where(Item => Item.key == "EURO").single().count(), 5, "Should return 5 elements in group 'EURO'");
+    assert.equal(_resultProductEnumerableStorageRoom.where(Item => Item.key == "YEN").single().count(), 4, "Should return 4 elements in group 'YEN'");
+
+    _resultProductEnumerableStorageRoomConcat = TS.Linq.Extensions.groupBy(_productEnumerable, item => unifyCurrency(item.Currency), null, (key, group) => { return { Key: key, RoomConcat: group.select(gr => gr.Storage.Room).toArray().join(",") }; });
+    assert.equal(_resultProductEnumerableStorageRoomConcat.count(), 4, "Should return the 4 elements for the executed expression with resultSelector.");
+    assert.equal(_resultProductEnumerableStorageRoomConcat.where(Item => Item.Key == "EURO").single().RoomConcat, "STR 001,STR 002,STR 002,STR 002,STR 003", "Should return the expected room list for the executed expression with resultSelector.");
+    assert.equal(_resultProductEnumerableStorageRoomConcat.where(Item => Item.Key == "YEN").single().RoomConcat, "STR 001,STR 002,STR 003,STR 003", "Should return the expected room list for the executed expression with resultSelector.");
+
+
+    //EURO: STR 001, STR 002, STR 002, STR 002, STR 003
+    //DOLLAR: STR 001, STR 002
+    //YEN: STR 001, STR 002, STR 003, STR 003
+    //GBP: STR 002, STR 002, STR 003
+
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.groupBy(null, _CUST => _CUST);;
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'enumerable' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.groupBy(_undefined, _CUST => _CUST);;
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a undefined 'enumerable' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.groupBy(customersEnumerable, null);;
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'enumerable' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.groupBy(customersEnumerable, undefined);;
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a undefined 'enumerable' argument.");
+
+    function unifyCurrency(currency: string): string
+    {
+      var _euroArray = ["EUR", "EURO", "€"];
+      var _dollarArray = ["USD", "DOLLAR", "$"];
+      var _yenArray = ["YEN", "¥"];
+      var _gbpArray = ["POUND STERLING", "GBP", "£"];
+
+      if (_euroArray.filter((value, index, array) => currency.toUpperCase() == value).length > 0)
+      {
+        return "EURO";
+      }//END if
+
+      if (_dollarArray.filter((value, index, array) => currency.toUpperCase() == value).length > 0)
+      {
+        return "DOLLAR";
+      }//END if
+
+      if (_yenArray.filter((value, index, array) => currency.toUpperCase() == value).length > 0)
+      {
+        return "YEN";
+      }//END if
+
+      if (_gbpArray.filter((value, index, array) => currency.toUpperCase() == value).length > 0)
+      {
+        return "GBP";
+      }//END if
+
+      return currency.toUpperCase();
+    }
+
+  });
 
   QUnit.test("groupJoin", (assert) =>
   {
@@ -754,7 +845,6 @@ module TS_Linq_Extensions_test
       TS.Linq.Extensions.groupJoin(customersEnumerable, ordersEnumerable, (outerItem) => outerItem.CustomerID, (innerItem) => innerItem.CustomerID, _undefined);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'resultSelector' argument.");
   });
-
 
 
   QUnit.test("intersect", (assert) => 
@@ -1877,6 +1967,7 @@ module TS_Linq_Extensions_test
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'enumerable' argument.");
   });
 
+
   export interface IOrders
   {
     CustomerID: string;
@@ -1895,6 +1986,7 @@ module TS_Linq_Extensions_test
     ShipVia: number;
   }
 
+
   export interface ICustomer
   {
     Address: string;
@@ -1910,6 +2002,7 @@ module TS_Linq_Extensions_test
     Region: string;
   }
 
+
   export class Customer implements ICustomer
   {
     constructor(public Address: string = "", public City: string = "", public CompanyName: string = "", public ContactName: string = "", public ContactTitle: string = "", public Country: string = "", public CustomerID: string = "", public Fax: string = "", public Phone: string = "", public PostalCode: string = "", public Region: string = "")
@@ -1917,6 +2010,7 @@ module TS_Linq_Extensions_test
     }
 
   }
+
 
   export interface ICar
   {
@@ -1958,6 +2052,7 @@ module TS_Linq_Extensions_test
     return _resultCarArray;
   }
 
+
   /**
   *  @description
   *    Creates and returns an array containing
@@ -1973,6 +2068,7 @@ module TS_Linq_Extensions_test
       { name: "TRABANT", horsePower: 35, disel: false, buildYear: Date.parse("1977-06-01"), price: 1 }
       );
   }
+
 
   export interface ISortTestItem
   {
@@ -2002,6 +2098,67 @@ module TS_Linq_Extensions_test
       { color: "red", number: 3, location: "europe" },
       { color: "blue", number: 1, location: "africa" },
       { color: "red", number: 3, location: "greenland" });
+  }
+
+
+  export interface IStorage
+  {
+    Room: string;
+    Rack: number;
+    Shelf: number;
+    Sector: number;
+    Place: number;
+    Amount: number;
+    Unit: string;
+  }
+
+
+  export interface IProduct
+  {
+    ID: number;
+    Name: string;
+    Price: number;
+    Currency: string;
+    Storage: IStorage;
+  }
+
+
+  export function CreateProductArray() 
+  {
+    var _productArray : Array<IProduct>;
+    var _product: IProduct;
+
+    _productArray = new Array<IProduct>();
+    _product = { ID: 1234, Name: "Nexus 1530", Price: 250.0, Currency: "Euro", Storage: { Room: "STR 001", Rack: 25, Shelf: 13, Sector: 8, Place: 44, Amount: 15, Unit: "Piece" } };
+    _productArray.push(_product);
+    _product = { ID: 2345, Name: "Hair Dryer", Price: 20.0, Currency: "$", Storage: { Room: "STR 001", Rack: 20, Shelf: 44, Sector: 12, Place: 8, Amount: 200, Unit: "Piece" } };
+    _productArray.push(_product);
+    _product = { ID: 3456, Name: "Digital Clock", Price: 5.0, Currency: "YEN", Storage: { Room: "STR 001", Rack: 20, Shelf: 45, Sector: 4, Place: 1, Amount: 2000, Unit: "Piece" } };
+    _productArray.push(_product);
+    _product = { ID: 4567, Name: "Wrench", Price: 4.30, Currency: "£", Storage: { Room: "STR 002", Rack: 4, Shelf: 1, Sector: 1, Place: 5, Amount: 400, Unit: "Piece" } };
+    _productArray.push(_product);
+    _product = { ID: 5678, Name: "Screw Driver", Price: 5.20, Currency: "¥", Storage: { Room: "STR 002", Rack: 4, Shelf: 1, Sector: 1, Place: 6, Amount: 400, Unit: "Piece" } };
+    _productArray.push(_product);
+    _product = { ID: 6789, Name: "Nuts", Price: 0.04, Currency: "€", Storage: { Room: "STR 002", Rack: 4, Shelf: 1, Sector: 1, Place: 7, Amount: 5000, Unit: "Piece" } };
+    _productArray.push(_product);
+    _product = { ID: 7890, Name: "Shim", Price: 0.01, Currency: "GBP", Storage: { Room: "STR 002", Rack: 4, Shelf: 1, Sector: 1, Place: 8, Amount: 50000, Unit: "Piece" } };
+    _productArray.push(_product);
+    _product = { ID: 8901, Name: "Nail", Price: 0.01, Currency: "EUR", Storage: { Room: "STR 002", Rack: 4, Shelf: 1, Sector: 1, Place: 8, Amount: 50000, Unit: "Piece" } };
+    _productArray.push(_product);
+    _product = { ID: 9012, Name: "Glue", Price: 4.0, Currency: "$", Storage: { Room: "STR 002", Rack: 5, Shelf: 2, Sector: 7, Place: 10, Amount: 500, Unit: "Litre" } };
+    _productArray.push(_product);
+    _product = { ID: 9013, Name: "Cast", Price: 5.0, Currency: "€", Storage: { Room: "STR 002", Rack: 5, Shelf: 2, Sector: 7, Place: 11, Amount: 1500, Unit: "Kilo" } };
+    _productArray.push(_product);
+    _product = { ID: 2222, Name: "Grain", Price: 0.5, Currency: "EURO", Storage: { Room: "STR 003", Rack: 1, Shelf: 1, Sector: 1, Place: 1, Amount: 1000, Unit: "Kilo" } };
+    _productArray.push(_product);
+    _product = { ID: 3333, Name: "Meet", Price: 5.0, Currency: "¥", Storage: { Room: "STR 003", Rack: 1, Shelf: 1, Sector: 1, Place: 2, Amount: 2000, Unit: "Kilo" } };
+    _productArray.push(_product);
+    _product = { ID: 4444, Name: "Fish", Price: 6.0, Currency: "£", Storage: { Room: "STR 003", Rack: 1, Shelf: 1, Sector: 1, Place: 3, Amount: 3000, Unit: "Kilo" } };
+    _productArray.push(_product);
+    _product = { ID: 5555, Name: "Vegetables", Price: 3.0, Currency: "YEN", Storage: { Room: "STR 003", Rack: 1, Shelf: 1, Sector: 1, Place: 4, Amount: 4000, Unit: "Kilo" } };
+    _productArray.push(_product);
+
+    return _productArray;
   }
 
   /**

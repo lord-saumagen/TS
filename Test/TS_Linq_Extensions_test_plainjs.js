@@ -1,8 +1,9 @@
 ﻿/// <reference path="../Linq/Extensions.js" />
 /// <reference path="../Linq/Enumerable.js" />
 /// <reference path="../Linq/Enumerator.js" />
+/// <reference path="TS_Linq_Extensions_test.js" />
 
-
+"use strict";
 var TS_Linq_Extensions_test;
 (function (TS_Linq_Extensions_test)
 {
@@ -47,6 +48,7 @@ var TS_Linq_Extensions_test;
 
   });
 
+
   QUnit.test("average", function (assert)
   {
 
@@ -67,6 +69,7 @@ var TS_Linq_Extensions_test;
     }, "Should throw a 'TS.InvalidTypeException' for an invalid 'enumerable' argument type.");
 
   });
+
 
   QUnit.test("concat", function (assert)
   {
@@ -357,6 +360,47 @@ var TS_Linq_Extensions_test;
   });
 
 
+  QUnit.test("groupBy", function (assert)
+  {
+    var _productEnumerable
+
+    _productEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateProductArray());
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.groupBy({}, function (Item) { return Item.Currency })
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'enumerable' argument.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.groupBy(_productEnumerable, {})
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'keySelector' argument.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.groupBy(_productEnumerable, function (Item) { return Item.Currency }, {})
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'equalityComparer' argument.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.groupBy(_productEnumerable, function (Item) { return Item.Currency }, function (first, second) { return first === second; }, {})
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'elementOrResultSelector' argument.");
+
+  });
+
+
   QUnit.test("groupJoin", function (assert)
   {
     var _customersEnumerable;
@@ -476,6 +520,7 @@ var TS_Linq_Extensions_test;
     }, "Should throw a 'TS.InvalidTypeException' for a invalid 'equalityComparer' argument.");
 
   });
+
 
   QUnit.test("join", function (assert)
   {

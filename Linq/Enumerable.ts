@@ -126,7 +126,7 @@ module TS
       */
       public all(predicate: (item: T) => boolean): boolean
       {
-        return Extensions.all<T>(this, predicate);
+        return Extensions.all(this, predicate);
       }
 
 
@@ -168,7 +168,7 @@ module TS
       public any(): boolean
       public any(predicate?: (item: T) => boolean): boolean
       {
-        return Extensions.any<T>(this, predicate);
+        return Extensions.any(this, predicate);
       }
 
 
@@ -238,7 +238,7 @@ module TS
       */
       public concat(enumerable: Enumerable<T>): Enumerable<T>
       {
-        return Extensions.concat<T>(this, enumerable);
+        return Extensions.concat(this, enumerable);
       }
 
 
@@ -288,11 +288,11 @@ module TS
       {
         if (equalityComparer == null)
         {
-          return Extensions.contains<T>(this, element);
+          return Extensions.contains(this, element);
         }//END if
         else
         {
-          return Extensions.contains<T>(this, element, equalityComparer);
+          return Extensions.contains(this, element, equalityComparer);
         }//END else
       }
 
@@ -311,7 +311,7 @@ module TS
       */
       public count(): number
       {
-        return Extensions.count<T>(this);
+        return Extensions.count(this);
       }
 
 
@@ -336,7 +336,7 @@ module TS
       */
       public defaultIfEmpty(defaultConstructor: { new (): T; }): Enumerable<T>
       {
-        return Extensions.defaultIfEmpty<T>(this, defaultConstructor);
+        return Extensions.defaultIfEmpty(this, defaultConstructor);
       }
 
 
@@ -378,9 +378,9 @@ module TS
       {
         if (equalityComparer == null)
         {
-          return Extensions.distinct<T>(this);
+          return Extensions.distinct(this);
         }//END if
-        return Extensions.distinct<T>(this, equalityComparer);
+        return Extensions.distinct(this, equalityComparer);
       }
 
 
@@ -403,7 +403,7 @@ module TS
       */
       public elementAt(index: number): T
       {
-        return Extensions.elementAt<T>(this, index);
+        return Extensions.elementAt(this, index);
       }
 
 
@@ -433,7 +433,7 @@ module TS
       */
       public elemementAtOrDefault(index: number, defaultConstructor: { new (): T }): T
       {
-        return Extensions.elementAtOrDefault<T>(this, index, defaultConstructor);
+        return Extensions.elementAtOrDefault(this, index, defaultConstructor);
       }
 
 
@@ -495,7 +495,7 @@ module TS
       public except(otherEnumerable: Enumerable<T>, equalityComparer: <T>(first: T, second: T) => boolean): IEnumerable<T>
       public except(otherEnumerable: Enumerable<T>, equalityComparer?: <T>(first: T, second: T) => boolean): IEnumerable<T>
       {
-        return Extensions.except<T>(this, otherEnumerable, equalityComparer);
+        return Extensions.except(this, otherEnumerable, equalityComparer);
       }
 
 
@@ -525,10 +525,10 @@ module TS
       {
         if (TS.Utils.TypeInfo.isNullOrUndefined(predicate))
         {
-          return Extensions.first<T>(this);
+          return Extensions.first(this);
         }//END if
 
-        return Extensions.first<T>(this, predicate);
+        return Extensions.first(this, predicate);
       }
 
 
@@ -557,7 +557,7 @@ module TS
       *     TS.ArgumentNullOrUndefinedException
       *
       */
-      public firstOrDefault<T>(defaultConstructor: { new (): T; }, predicate?: (item: T) => boolean): T
+      public firstOrDefault(defaultConstructor: { new (): T; }, predicate?: (item: T) => boolean): T
       {
         if (TS.Utils.TypeInfo.isNullOrUndefined(predicate))
         {
@@ -596,6 +596,90 @@ module TS
       public getEnumerator(): IEnumerator<T>
       {
         return this._callback();
+      }
+
+
+      /**
+      *  @description
+      *    Groups the elements of a sequence according to a specified key selector function.
+      *
+      *    Deferred execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.groupby.aspx | MSDN}
+      *
+      *  @returns
+      *    Enumerable<Grouping<TKey, TSource>>, the result enumerable.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException
+      */
+      public groupBy<T, TKey>(keySelector: (item: T) => TKey): Enumerable<Grouping<TKey, T>>
+      /**
+      *  @description
+      *    Groups the elements of a sequence according to a specified key selector 
+      *    function.
+      *    The keys are compared by using the specified comparer in argument 'equalityComparer'.
+      *    Deferred execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.groupby.aspx | MSDN}
+      *
+      *  @returns
+      *    Enumerable<Grouping<TKey, TSource>>, the result enumerable.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException
+      */
+      public groupBy<T, TKey>(keySelector: (item: T) => TKey, equalityComparer: (first: TKey, second: TKey) => boolean): Enumerable<Grouping<TKey, T>>
+      /**
+      *  @description
+      *    Groups the elements of a sequence according to a specified key selector 
+      *    function and projects the elements for each group by using a specified function.
+      *    The keys are compared by using the specified comparer in argument 'equalityComparer' if provided.
+      *
+      *    Deferred execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.groupby.aspx | MSDN}
+      *
+      *  @returns
+      *    Enumerable<Grouping<TKey, TElement>>, the result enumerable.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException
+      */
+      public groupBy<TKey, TElement>(keySelector: (item: T) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, elementSelector?: (item: T) => TElement): Enumerable<Grouping<TKey, TElement>>
+      /**
+      *  @description
+      *    Groups the elements of a sequence according to a specified key selector function and creates a result 
+      *    value from each group and its key.
+      *    The keys are compared by using the specified comparer in argument 'equalityComparer' if provided.
+      *
+      *    Deferred execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.groupby.aspx | MSDN}
+      *
+      *  @returns
+      *    Enumerable<TResult>, the result enumerable.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException
+      */
+      public groupBy<TKey, TResult>(keySelector: (item: T) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, resultSelector?: (key: TKey, group: Enumerable<T>) => TResult): Enumerable<TResult>
+
+      public groupBy<TKey, any>(keySelector: (item: T) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, elementOrResultSelector?: any) : Enumerable<any>
+      {
+        return TS.Linq.Extensions.groupBy(this, keySelector, equalityComparer, elementOrResultSelector);
       }
 
 

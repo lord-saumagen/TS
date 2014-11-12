@@ -1,4 +1,5 @@
-﻿var TS_Utils_TypeInfo_test;
+﻿"use strict";
+var TS_Utils_TypeInfo_test;
 (function (TS_Utils_TypeInfo_test)
 {
 

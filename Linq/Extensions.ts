@@ -1,4 +1,5 @@
-﻿module TS
+﻿/// <reference path="enumerable.ts" />
+module TS
 {
   "use strict";
 
@@ -14,7 +15,13 @@
       // http://referencesource.microsoft.com/#System.Core/System/Linq/Enumerable.cs (Reference Source)
       // -------------------------------------
 
-      class Pair<TFirst, TSecond>
+      export interface IPair<TFirst, TSecond> 
+      {
+        first: TFirst;
+        second: TSecond;
+      }
+
+      class Pair<TFirst, TSecond> implements IPair<TFirst, TSecond>
       {
         private _first: TFirst;
         private _second: TSecond;
@@ -635,34 +642,23 @@
         {
           _checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.contains");
         }//END if
+        else
+        {
+          equalityComparer = (first, second) => first === second;
+        }//END else
 
         _contains = false;
         _enumerator = enumerable.getEnumerator();
 
-        if (TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer))
+        while (_enumerator.moveNext())
         {
-          while (_enumerator.moveNext())
+          if (equalityComparer(_enumerator.current, element))
           {
-            if (_enumerator.current === element)
-            {
-              _contains = true;
-              _enumerator.dispose();
-              break;
-            }//END if
-          }//END while
-        }//END if
-        else
-        {
-          while (_enumerator.moveNext())
-          {
-            if (equalityComparer(_enumerator.current, element))
-            {
-              _contains = true;
-              _enumerator.dispose();
-              break;
-            }//END if
-          }//END while
-        }//END else
+            _contains = true;
+            _enumerator.dispose();
+            break;
+          }//END if
+        }//END while
 
         return _contains;
       }
@@ -905,75 +901,43 @@
         {
           _checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.distinct");
         }//END if
+        else
+        {
+          equalityComparer = (first, second) => first === second;
+        }//END else
 
         _index = 0;
 
-        if (TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer))
+        _callback = () => 
         {
-          _callback = () => 
+          _enumerator = enumerable.getEnumerator();
+          _arr = new Array<TSource>();
+
+          if (_enumerator.moveNext())
           {
-            _enumerator = enumerable.getEnumerator();
-            _arr = new Array<TSource>();
+            _arr.push(_enumerator.current);
+          }//END if
 
-            if (_enumerator.moveNext())
-            {
-              _arr.push(_enumerator.current);
-            }//END if
-
-            while (_enumerator.moveNext())
-            {
-              _hasElement = false;
-              _currentElement = _enumerator.current;
-
-              for (_index = 0; _index < _arr.length; _index++)
-              {
-                if (_arr[_index] === _currentElement)
-                {
-                  _hasElement = true;
-                  break;
-                }//END if
-              }//END for
-              if (!_hasElement)
-              {
-                _arr.push(_currentElement);
-              }//END if
-            }//END while
-            return new ArrayEnumerator(_arr);
-          }
-        }//END if
-        else
-        {
-          _callback = () => 
+          while (_enumerator.moveNext())
           {
-            _enumerator = enumerable.getEnumerator();
-            _arr = new Array<TSource>();
+            _hasElement = false;
+            _currentElement = _enumerator.current;
 
-            if (_enumerator.moveNext())
+            for (_index = 0; _index < _arr.length; _index++)
             {
-              _arr.push(_enumerator.current);
-            }//END if
-
-            while (_enumerator.moveNext())
-            {
-              _hasElement = false;
-              _currentElement = _enumerator.current;
-
-              for (_index = 0; _index < _arr.length; _index++)
+              if (equalityComparer(_arr[_index], _currentElement))
               {
-                if (equalityComparer(_arr[_index], _currentElement))
-                {
-                  _hasElement = true;
-                  break;
-                }//END if
-              }//END for
-              if (!_hasElement)
-              {
-                _arr.push(_currentElement);
+                _hasElement = true;
+                break;
               }//END if
-            }//END while
-            return new ArrayEnumerator(_arr);
-          }
-        }//END else
+            }//END for
+            if (!_hasElement)
+            {
+              _arr.push(_currentElement);
+            }//END if
+          }//END while
+          return new ArrayEnumerator(_arr);
+        }
 
         return new Enumerable<TSource>(_callback);
       }
@@ -1300,7 +1264,6 @@
 
         _enumerator.dispose();
         throw new TS.InvalidOperationException("The'enumerable' is either empty or has no matche with the given predicate in function 'TS.Linq.Extensions.first'.");
-
       }
 
 
@@ -1388,7 +1351,6 @@
 
         _enumerator.dispose();
         return new defaultConstructor();
-
       }
 
 
@@ -1420,6 +1382,146 @@
         }//END if
 
         return new TS.Linq.ArrayEnumerable<TSource>(sourceArray);
+      }
+
+
+      /**
+      *  @description
+      *    Groups the elements of a sequence according to a specified key selector function.
+      *
+      *    Deferred execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.groupby.aspx | MSDN}
+      *
+      *  @returns
+      *    Enumerable<Grouping<TKey, TSource>>, the result enumerable.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException
+      */
+      export function groupBy<TSource, TKey>(enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey): Enumerable<Grouping<TKey, TSource>>
+      /**
+      *  @description
+      *    Groups the elements of a sequence according to a specified key selector 
+      *    function.
+      *    The keys are compared by using the specified comparer in argument 'equalityComparer'.
+      *    Deferred execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.groupby.aspx | MSDN}
+      *
+      *  @returns
+      *    Enumerable<Grouping<TKey, TSource>>, the result enumerable.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException
+      */
+      export function groupBy<TSource, TKey>(enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey, equalityComparer: (first: TKey, second: TKey) => boolean): Enumerable<Grouping<TKey, TSource>>
+      /**
+      *  @description
+      *    Groups the elements of a sequence according to a specified key selector 
+      *    function and projects the elements for each group by using a specified function.
+      *    The keys are compared by using the specified comparer in argument 'equalityComparer' if provided.
+      *
+      *    Deferred execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.groupby.aspx | MSDN}
+      *
+      *  @returns
+      *    Enumerable<Grouping<TKey, TElement>>, the result enumerable.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException
+      */
+      export function groupBy<TSource, TKey, TElement>(enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, elementSelector?: (item: TSource) => TElement): Enumerable<Grouping<TKey, TElement>>
+      /**
+      *  @description
+      *    Groups the elements of a sequence according to a specified key selector function and creates a result 
+      *    value from each group and its key.
+      *    The keys are compared by using the specified comparer in argument 'equalityComparer' if provided.
+      *
+      *    Deferred execution.
+      *
+      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.groupby.aspx | MSDN}
+      *
+      *  @returns
+      *    Enumerable<TResult>, the result enumerable.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException
+      */
+      export function groupBy<TSource, TKey, TResult>(enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, resultSelector?: (key: TKey, group: Enumerable<TSource>) => TResult): Enumerable<TResult>
+
+      export function groupBy<TSource, TKey, any>(enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, elementOrResultSelector?: any): Enumerable<any>
+      {
+        var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
+        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
+        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
+
+        _checkEnumerable(enumerable, "TS.Linq.Extensions.groupBy");
+        _checkParameter(keySelector, "keySelector", "TS.Linq.Extensions.groupBy");
+        _checkFunctionParameter(keySelector, "keySelector", "TS.Linq.Extensions.groupBy");
+
+        var _groupingArray: Array<any>;
+        var _callback: () => IEnumerator<Grouping<TKey, TSource>>;
+        var _keyEnumerator: IEnumerator<TKey>
+
+        if (TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer))
+        {
+          equalityComparer = (first, second) => first === second;
+        }//END if
+        else
+        {
+          _checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.groupBy");
+        }//END else
+
+        if (!TS.Utils.TypeInfo.isNullOrUndefined(elementOrResultSelector))
+        {
+          _checkFunctionParameter(elementOrResultSelector, "elementSelector or resultSelector", "TS.Linq.Extensions.groupBy");
+        }//END if
+
+        function createSingleResult(key: TKey, enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey, equalityComparer: (first: TKey, second: TKey) => boolean, resultSelector: (key: TKey, group: Enumerable<TSource>) => any): any
+        {
+          return resultSelector(key, TS.Linq.Extensions.where(enumerable, item => equalityComparer(keySelector(item), key)));
+        }
+
+        _callback = () =>
+        {
+
+          _groupingArray = new Array<any>();
+          //_keyEnumerator = enumerable.select(keySelector).distinct().getEnumerator();
+          _keyEnumerator = distinct(select(enumerable, keySelector)).getEnumerator();
+
+          while (_keyEnumerator.moveNext())
+          {
+
+            if (TS.Utils.TypeInfo.isNullOrUndefined(elementOrResultSelector) || elementOrResultSelector.length == 1)
+            {
+              _groupingArray.push(new Grouping(_keyEnumerator.current, enumerable, keySelector, equalityComparer, elementOrResultSelector));
+            }//END if
+
+            if (!TS.Utils.TypeInfo.isNullOrUndefined(elementOrResultSelector) && elementOrResultSelector.length == 2)
+            {
+              _groupingArray.push(createSingleResult(_keyEnumerator.current, enumerable, keySelector, equalityComparer, elementOrResultSelector));
+            }//END if
+
+          }//END while
+
+          return new ArrayEnumerator(_groupingArray);
+        }
+
+        return new Enumerable<any>(_callback);
       }
 
 
@@ -1509,7 +1611,7 @@
           while (_enumeratorOuter.moveNext())
           {
             _outerKey = outerKeySelector(_enumeratorOuter.current);
-            _enumeratorInner = innerEnumerable.where(Item => equalityComparer(_outerKey, innerKeySelector(Item))).getEnumerator();
+            _enumeratorInner =  TS.Linq.Extensions.where(innerEnumerable, Item => equalityComparer(_outerKey, innerKeySelector(Item))).getEnumerator();
             _groupArray = new Array<TInner>();
             while (_enumeratorInner.moveNext())
             {
@@ -1678,7 +1780,7 @@
           while (_enumeratorOuter.moveNext())
           {
             _outerKey = outerKeySelector(_enumeratorOuter.current);
-            _enumeratorInner = innerEnumerable.where(Item => innerKeySelector(Item) == _outerKey).getEnumerator();
+            _enumeratorInner = TS.Linq.Extensions.where(innerEnumerable, Item => innerKeySelector(Item) == _outerKey).getEnumerator();
             while (_enumeratorInner.moveNext())
             {
               _joinArray.push(new Pair(_enumeratorOuter.current, _enumeratorInner.current));
@@ -2206,7 +2308,7 @@
       *  @throws
       *    TS.ArgumentOutOfRangeException
       */
-      export function range(start: number, count: number) : Enumerable<Number>
+      export function range(start: number, count: number): Enumerable<Number>
       {
         var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
@@ -2234,7 +2336,7 @@
 
         _resultArray = new Array<number>();
 
-        for (_index = 0; _index < count; _index ++)
+        for (_index = 0; _index < count; _index++)
         {
           _resultArray.push(start + _index);
         }//END for
@@ -3091,7 +3193,7 @@
             {
               break;
             }//END else
-          }
+          }//END while
 
           _enumerator.dispose();
           return new ArrayEnumerator(_resultArray);

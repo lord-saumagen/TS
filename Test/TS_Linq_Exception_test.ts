@@ -27,6 +27,7 @@ module TS_Linq_Exception_test
     }
   });
 
+
   QUnit.test("SelectorException", function (assert)
   {
     var ExceptionMessage = "TS.Linq.SelectorException message";
@@ -52,6 +53,7 @@ module TS_Linq_Exception_test
         return false;
       }, "Should raise an exception instance of the expected type with an inner exception.");
   });
+
 
   QUnit.test("EmptyEnumerableException", function (assert)
   {
