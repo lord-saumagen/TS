@@ -625,8 +625,8 @@ module TS
       *  @throws
       *    TS.InvalidTypeException.
       */
-      export function contains<TSource>(enumerable: Enumerable<TSource>, element: TSource, equalityComparer: <TSource>(first: TSource, second: TSource) => boolean): boolean
-      export function contains<TSource>(enumerable: Enumerable<TSource>, element: TSource, equalityComparer?: <TSource>(first: TSource, second: TSource) => boolean): boolean
+      export function contains<TSource>(enumerable: Enumerable<TSource>, element: TSource, equalityComparer: (first: TSource, second: TSource) => boolean): boolean
+      export function contains<TSource>(enumerable: Enumerable<TSource>, element: TSource, equalityComparer?: (first: TSource, second: TSource) => boolean): boolean
       {
         var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
@@ -1639,6 +1639,7 @@ module TS
 
         return new Enumerable<TResult>(_callback);
       }
+
 
       /**
       *  @description

@@ -204,6 +204,7 @@ module TS
         }//END if
 
         _enumerator = this.getEnumerator();
+        _numberArray = new Array<number>()
 
         while (_enumerator.moveNext())
         {
@@ -283,8 +284,8 @@ module TS
       *    TS.ArgumentNullOrUndefinedException
       *
       */
-      public contains(element: T, equalityComparer: <T>(first: T, second: T) => boolean): boolean
-      public contains(element: T, equalityComparer?: <T>(first: T, second: T) => boolean): boolean
+      public contains(element: T, equalityComparer: (first: T, second: T) => boolean): boolean
+      public contains(element: T, equalityComparer?: (first: T, second: T) => boolean): boolean
       {
         if (equalityComparer == null)
         {
@@ -301,6 +302,10 @@ module TS
       *  @description
       *    Returns the number of elements in a sequence.
       *
+      *    If argument 'predicate' is provided:
+      *
+      *    Returns a number that represents how many elements in the specified sequence satisfy a condition.
+      *
       *    Immediate execution.
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.count.aspx | MSDN}
@@ -309,9 +314,9 @@ module TS
       *    number, the number of elements in the enumerable.
       *
       */
-      public count(): number
+      public count(predicate?: (item: T) => boolean): number
       {
-        return Extensions.count(this);
+        return Extensions.count(this, predicate);
       }
 
 

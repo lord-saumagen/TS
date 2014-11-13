@@ -154,7 +154,7 @@ module TS_Linq_Extensions_test
     assert.equal(TS.Linq.Extensions.any(TS.Linq.Enumerable.fromArray([]), (item) => true), false, "Should return false on an empty 'enumerable'.");
     _testResult = TS.Linq.Extensions.any(TS.Linq.Enumerable.fromArray(CreateStringArray()), (item) => item.length >= 3);
     assert.ok(_testResult, "Should return true on a predicate that should pass.");
-    _testResult = TS.Linq.Extensions.any(TS.Linq.Enumerable.fromArray(CreateStringArray()), (item) => item.lenght < 2);
+    _testResult = TS.Linq.Extensions.any(TS.Linq.Enumerable.fromArray(CreateStringArray()), (item) => item.length < 2);
     assert.ok(!_testResult, "Should return false on a predicate that shouldn't pass.");
     _testResult = TS.Linq.Extensions.any(TS.Linq.Enumerable.fromArray(CreateStringArray()));
     assert.ok(_testResult, "Should return true on a none empty 'enumerable' without predicate.");
@@ -659,6 +659,7 @@ module TS_Linq_Extensions_test
     _result = TS.Linq.Extensions.firstOrDefault(_carEnumerable, Car, (item: any) => item.noValidAttribute == 5);
     assert.deepEqual(_result, new Car(), "Should return a default object on an enumerable with an invalid predicate.");
   });
+
 
   QUnit.test("fromArray", (assert) =>
   {
