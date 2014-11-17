@@ -1,5 +1,6 @@
 ﻿/// <reference path="../scripts/qunit.d.ts" />
 /// <reference path="../scripts/jquery.d.ts" />
+/// <reference path="ts_linq_test_common.ts" />
 
 
 "use strict";
@@ -15,14 +16,14 @@ module TS_Linq_Extensions_test
   var getPersonData: () => Array<any> = Person400.getData;
   var getNYData: () => Array<any> = Get_NY.getData;
   var getMM: () => Array<any> = MM.getData;
-  var getCustomers: () => Array<ICustomer> = Customers.getData;
-  var getOrders: () => Array<IOrders> = Orders.getData;
+  var getCustomers: () => Array<TS_Linq_test_common.ICustomer> = Customers.getData;
+  var getOrders: () => Array<TS_Linq_test_common.IOrders> = Orders.getData;
 
-  var personEnumerable;
-  var nyEnumerable;
-  var mmEnumerable;
-  var customersEnumerable: TS.Linq.Enumerable<ICustomer>;
-  var ordersEnumerable: TS.Linq.Enumerable<IOrders>;
+  var personEnumerable: TS.Linq.Enumerable<any>;
+  var nyEnumerable: TS.Linq.Enumerable<any>;
+  var mmEnumerable: TS.Linq.Enumerable<any>;
+  var customersEnumerable: TS.Linq.Enumerable<TS_Linq_test_common.ICustomer>;
+  var ordersEnumerable: TS.Linq.Enumerable<TS_Linq_test_common.IOrders>;
 
   QUnit.module("TS.Linq.Extensions", {
     setupOnce: function ()
@@ -54,16 +55,16 @@ module TS_Linq_Extensions_test
   {
     var _testNumberEnumerable: TS.Linq.Enumerable<number>;
     var _testStringEnumerable: TS.Linq.Enumerable<string>;
-    var _testCarEnumerable: TS.Linq.Enumerable<Car>;
+    var _testCarEnumerable: TS.Linq.Enumerable<TS_Linq_test_common.Car>;
     var _testNumberResult: number;
     var _testStringResult: string;
     var _testCarNumberResult: number;
     var _testCarStringResult: string;
     var _undefined;
 
-    _testNumberEnumerable = TS.Linq.Enumerable.fromArray(CreateNumberArray());
-    _testStringEnumerable = TS.Linq.Enumerable.fromArray(CreateStringArray());
-    _testCarEnumerable = TS.Linq.Enumerable.fromArray(CreateCarsArray());
+    _testNumberEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateNumberArray());
+    _testStringEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray());
+    _testCarEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateCarsArray());
 
     _testNumberResult = TS.Linq.Extensions.aggregate(_testNumberEnumerable, (first, second) =>
     {
@@ -79,11 +80,11 @@ module TS_Linq_Extensions_test
 
     assert.equal(_testStringResult, "one, two, three, four, five, six, seven, eight, nine, ten", "should return 'one, two, three, four, five, six, seven, eight, nine, ten' on TS.Linq.Enumerable<string> .");
 
-    _testCarNumberResult = TS.Linq.Extensions.aggregate(_testCarEnumerable, (first: number, second: Car) => first + second.horsePower, 0);
-    assert.equal(_testCarNumberResult, 595, "should return 595 on TS.Linq.Enumerable<Car> with an accumulator function on 'horsePower' and a seed value of '0'.");
+    _testCarNumberResult = TS.Linq.Extensions.aggregate(_testCarEnumerable, (first: number, second: TS_Linq_test_common.Car) => first + second.horsePower, 0);
+    assert.equal(_testCarNumberResult, 595, "should return 595 on TS.Linq.Enumerable<TS_Linq_test_common.Car> with an accumulator function on 'horsePower' and a seed value of '0'.");
 
-    _testCarStringResult = TS.Linq.Extensions.aggregate(_testCarEnumerable, (first: string, second: Car) => first + second.name, "");
-    assert.equal(_testCarStringResult, "BMWAUDIVWFIATTRABANT", "should return 'BMWAUDIVWFIATTRABANT' on TS.Linq.Enumerable<Car> with an accumulator function on 'name' and a seed value of ''.");
+    _testCarStringResult = TS.Linq.Extensions.aggregate(_testCarEnumerable, (first: string, second: TS_Linq_test_common.Car) => first + second.name, "");
+    assert.equal(_testCarStringResult, "BMWAUDIVWFIATTRABANT", "should return 'BMWAUDIVWFIATTRABANT' on TS.Linq.Enumerable<TS_Linq_test_common.Car> with an accumulator function on 'name' and a seed value of ''.");
 
     assert.throws(() =>
     {
@@ -118,9 +119,9 @@ module TS_Linq_Extensions_test
     var _undefined;
 
     assert.equal(TS.Linq.Extensions.all(TS.Linq.Enumerable.fromArray([]), (item) => false), true, "Should return true for an empty enumerable.");
-    _testResult = TS.Linq.Extensions.all(TS.Linq.Enumerable.fromArray(CreateStringArray()), (item) => item.length >= 3);
+    _testResult = TS.Linq.Extensions.all(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()), (item) => item.length >= 3);
     assert.ok(_testResult, "Should return true on a predicate that should pass.");
-    _testResult = TS.Linq.Extensions.all(TS.Linq.Enumerable.fromArray(CreateStringArray()), (item) => item.lenght > 4);
+    _testResult = TS.Linq.Extensions.all(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()), (item) => item.lenght > 4);
     assert.ok(!_testResult, "Should return false on a predicate that shouldn't pass.");
 
     assert.throws(() =>
@@ -130,7 +131,7 @@ module TS_Linq_Extensions_test
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.all<string>(TS.Linq.Enumerable.fromArray(CreateStringArray()), null);
+      TS.Linq.Extensions.all<string>(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()), null);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'predicate' argument.");
 
     assert.throws(() =>
@@ -140,7 +141,7 @@ module TS_Linq_Extensions_test
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.all<string>(TS.Linq.Enumerable.fromArray(CreateStringArray()), _undefined);
+      TS.Linq.Extensions.all<string>(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()), _undefined);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'predicate' argument.");
 
   });
@@ -152,11 +153,11 @@ module TS_Linq_Extensions_test
     var _undefined;
 
     assert.equal(TS.Linq.Extensions.any(TS.Linq.Enumerable.fromArray([]), (item) => true), false, "Should return false on an empty 'enumerable'.");
-    _testResult = TS.Linq.Extensions.any(TS.Linq.Enumerable.fromArray(CreateStringArray()), (item) => item.length >= 3);
+    _testResult = TS.Linq.Extensions.any(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()), (item) => item.length >= 3);
     assert.ok(_testResult, "Should return true on a predicate that should pass.");
-    _testResult = TS.Linq.Extensions.any(TS.Linq.Enumerable.fromArray(CreateStringArray()), (item) => item.length < 2);
+    _testResult = TS.Linq.Extensions.any(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()), (item) => item.length < 2);
     assert.ok(!_testResult, "Should return false on a predicate that shouldn't pass.");
-    _testResult = TS.Linq.Extensions.any(TS.Linq.Enumerable.fromArray(CreateStringArray()));
+    _testResult = TS.Linq.Extensions.any(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()));
     assert.ok(_testResult, "Should return true on a none empty 'enumerable' without predicate.");
     _testResult = TS.Linq.Extensions.any(TS.Linq.Enumerable.fromArray([]));
     assert.ok(!_testResult, "Should return false on an empty 'enumerable' without predicate.");
@@ -180,7 +181,7 @@ module TS_Linq_Extensions_test
     var _testResult: number;
     var _undefined;
 
-    _testNumberArray = CreateNumberArray();
+    _testNumberArray = TS_Linq_test_common.CreateNumberArray();
     _testResult = TS.Linq.Extensions.average(TS.Linq.Extensions.fromArray(_testNumberArray));
     assert.equal(_testResult, 5.5, "Should return expected average.");
 
@@ -218,32 +219,32 @@ module TS_Linq_Extensions_test
     var _compareNumberArray: Array<number>;
     var _undefined;
 
-    _testNumberResult = TS.Linq.Extensions.concat(TS.Linq.Enumerable.fromArray(CreateNumberArray()), TS.Linq.Enumerable.fromArray(CreateNumberArray()));
-    _resultNumberArray = _testNumberResult.toArray();
+    _testNumberResult = TS.Linq.Extensions.concat(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateNumberArray()), TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateNumberArray()));
+    _resultNumberArray = TS.Linq.Extensions.toArray(_testNumberResult);
     assert.deepEqual(_resultNumberArray, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "Should return concatenation of two 'Enumerable<number>'.");
 
-    _testStringResult = TS.Linq.Extensions.concat(TS.Linq.Enumerable.fromArray(CreateStringArray()), TS.Linq.Enumerable.fromArray(CreateStringArray()));
-    _resultStringArray = _testStringResult.toArray();
+    _testStringResult = TS.Linq.Extensions.concat(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()), TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()));
+    _resultStringArray = TS.Linq.Extensions.toArray(_testStringResult);
     assert.deepEqual(_resultStringArray, ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"], "Should return concatenation of two 'Enumerable<string>'.");
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.concat(null, TS.Linq.Enumerable.fromArray(CreateStringArray()));
+      TS.Linq.Extensions.concat(null, TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()));
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an null 'firstEnumerable' argument.");
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.concat(TS.Linq.Enumerable.fromArray(CreateStringArray()), null);
+      TS.Linq.Extensions.concat(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()), null);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an null 'secondEnumerable' argument.");
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.concat(_undefined, TS.Linq.Enumerable.fromArray(CreateStringArray()));
+      TS.Linq.Extensions.concat(_undefined, TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()));
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'firstEnumerable' argument.");
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.concat(TS.Linq.Enumerable.fromArray(CreateStringArray()), _undefined);
+      TS.Linq.Extensions.concat(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()), _undefined);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'secondEnumerable' argument.");
   });
 
@@ -252,33 +253,33 @@ module TS_Linq_Extensions_test
   {
     var _testResult: boolean;
     var _testEmptyEnumerable: TS.Linq.Enumerable<any>;
-    var _testCar: ICar
+    var _testCar: TS_Linq_test_common.ICar;
     var _undefined;
 
-    _testCar = new Car("SCODA");
+    _testCar = new TS_Linq_test_common.Car("SCODA");
 
     _testEmptyEnumerable = TS.Linq.Extensions.empty<any>();
 
-    _testResult = TS.Linq.Extensions.contains(TS.Linq.Enumerable.fromArray(CreateNumberArray()), 5);
+    _testResult = TS.Linq.Extensions.contains(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateNumberArray()), 5);
     assert.ok(_testResult, "Should return true on a  lookup for an element in 'Enumerable<number>'.");
 
-    _testResult = TS.Linq.Extensions.contains(TS.Linq.Enumerable.fromArray(CreateNumberArray()), 11);
+    _testResult = TS.Linq.Extensions.contains(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateNumberArray()), 11);
     assert.ok(!_testResult, "Should return false on a lookup for a none existing element in 'Enumerable<number>'.");
 
-    _testResult = TS.Linq.Extensions.contains(TS.Linq.Enumerable.fromArray(CreateStringArray()), "five");
+    _testResult = TS.Linq.Extensions.contains(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()), "five");
     assert.ok(_testResult, "Should return true on a lookup for an element in 'Enumerable<string>'.");
 
-    _testResult = TS.Linq.Extensions.contains(TS.Linq.Enumerable.fromArray(CreateStringArray()), "eleven");
+    _testResult = TS.Linq.Extensions.contains(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()), "eleven");
     assert.ok(!_testResult, "Should return false on a lookup for a none existing element in 'Enumerable<string>'.");
 
     _testResult = TS.Linq.Extensions.contains(_testEmptyEnumerable, 123);
     assert.ok(!_testResult, "Should return false on a lookup in an empty enumerable.");
 
-    _testResult = TS.Linq.Extensions.contains<ICar>(TS.Linq.Enumerable.fromArray<ICar>(CreateCarsArray()), CreateCarsArray()[3], (first: ICar, second: ICar) => first.name == second.name);
-    assert.ok(_testResult, "Should return true on a lookup for an element in 'Enumerable<Car>' with an equalityComparer.");
+    _testResult = TS.Linq.Extensions.contains<TS_Linq_test_common.ICar>(TS.Linq.Enumerable.fromArray<TS_Linq_test_common.ICar>(TS_Linq_test_common.CreateCarsArray()), TS_Linq_test_common.CreateCarsArray()[3], (first: TS_Linq_test_common.ICar, second: TS_Linq_test_common.ICar) => first.name == second.name);
+    assert.ok(_testResult, "Should return true on a lookup for an element in 'Enumerable<TS_Linq_test_common.Car>' with an equalityComparer.");
 
-    _testResult = TS.Linq.Extensions.contains<ICar>(TS.Linq.Enumerable.fromArray<ICar>(CreateCarsArray()), _testCar, (first: ICar, second: ICar) => first.name == second.name);
-    assert.ok(!_testResult, "Should return false on a lookup for a none existing element in 'Enumerable<Car>' with an equalityComparer.");
+    _testResult = TS.Linq.Extensions.contains<TS_Linq_test_common.ICar>(TS.Linq.Enumerable.fromArray<TS_Linq_test_common.ICar>(TS_Linq_test_common.CreateCarsArray()), _testCar, (first: TS_Linq_test_common.ICar, second: TS_Linq_test_common.ICar) => first.name == second.name);
+    assert.ok(!_testResult, "Should return false on a lookup for a none existing element in 'Enumerable<TS_Linq_test_common.Car>' with an equalityComparer.");
 
     assert.throws(() =>
     {
@@ -306,18 +307,18 @@ module TS_Linq_Extensions_test
   {
     var _testNumberEnumerable: TS.Linq.Enumerable<number>;
     var _testStringEnumerable: TS.Linq.Enumerable<string>;
-    var _testCarEnumerable: TS.Linq.Enumerable<Car>;
+    var _testCarEnumerable: TS.Linq.Enumerable<TS_Linq_test_common.Car>;
     var _undefined;
 
-    _testNumberEnumerable = TS.Linq.Enumerable.fromArray(CreateNumberArray());
-    _testStringEnumerable = TS.Linq.Enumerable.fromArray(CreateStringArray());
-    _testCarEnumerable = TS.Linq.Enumerable.fromArray(CreateCarsArray());
+    _testNumberEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateNumberArray());
+    _testStringEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray());
+    _testCarEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateCarsArray());
 
     assert.equal(TS.Linq.Extensions.count(_testNumberEnumerable), 10, "Should count 10 numbers out of 10.");
     assert.equal(TS.Linq.Extensions.count(_testNumberEnumerable, (item: number) => item > 5), 5, "Should count 5 numbers greater 5 out of 10.");
     assert.equal(TS.Linq.Extensions.count(TS.Linq.Extensions.empty()), 0, "Should counted 0 on an empty enumerable.");
     assert.equal(TS.Linq.Extensions.count(_testStringEnumerable, (item: string) => item.indexOf("e") > -1), 7, "Should count 7 elements with character 'e' in an 'Enumerable<string>' using a predicate.");
-    assert.equal(TS.Linq.Extensions.count(_testCarEnumerable, (item: Car) => item.horsePower > 100), 3, "Should count 4 elements with horsePower greater 100 in an 'Enumerable<Car>' using a predicate.");
+    assert.equal(TS.Linq.Extensions.count(_testCarEnumerable, (item: TS_Linq_test_common.Car) => item.horsePower > 100), 3, "Should count 4 elements with horsePower greater 100 in an 'Enumerable<TS_Linq_test_common.Car>' using a predicate.");
 
     assert.throws(() =>
     {
@@ -338,12 +339,12 @@ module TS_Linq_Extensions_test
     var _testResultArray: Array<string>;
     var _undefined;
 
-    _testStringEnumerable = TS.Linq.Extensions.fromArray(CreateStringArray());
+    _testStringEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateStringArray());
     _testResultEnumerable = TS.Linq.Extensions.cycle(_testStringEnumerable).take(40);
-    _testResultArray = _testResultEnumerable.toArray();
+    _testResultArray = TS.Linq.Extensions.toArray(_testResultEnumerable);
     assert.equal(_testResultArray.length, 40, "Should return 40 elements after a call to 'take(40)'.");
 
-    _testResultArray = TS.Linq.Extensions.cycle(TS.Linq.Extensions.empty<string>()).take(20).toArray();
+    _testResultArray = TS.Linq.Extensions.toArray(TS.Linq.Extensions.cycle(TS.Linq.Extensions.empty<string>()).take(20));
 
     assert.equal(_testResultArray.length, 0, "Should return an empty enumerable if the argument 'enumerable' was also an empty enumerable.");
 
@@ -361,60 +362,60 @@ module TS_Linq_Extensions_test
 
   QUnit.test("defaultIfEmpty", (assert) =>
   {
-    var _testResultCarEnumerable: TS.Linq.Enumerable<Car>;
-    var _testResultCarArray: Array<Car>;
+    var _testResultCarEnumerable: TS.Linq.Enumerable<TS_Linq_test_common.Car>;
+    var _testResultCarArray: Array<TS_Linq_test_common.Car>;
     var _undefined;
 
-    _testResultCarEnumerable = TS.Linq.Extensions.defaultIfEmpty(TS.Linq.Extensions.empty<Car>(), Car);
-    _testResultCarArray = _testResultCarEnumerable.toArray();
-    assert.deepEqual(_testResultCarArray[0], new Car(), "Should return an enumerable with one default element on an empty enumerable.");
+    _testResultCarEnumerable = TS.Linq.Extensions.defaultIfEmpty(TS.Linq.Extensions.empty<TS_Linq_test_common.Car>(), TS_Linq_test_common.Car);
+    _testResultCarArray = TS.Linq.Extensions.toArray(_testResultCarEnumerable);
+    assert.deepEqual(_testResultCarArray[0], new TS_Linq_test_common.Car(), "Should return an enumerable with one default element on an empty enumerable.");
 
-    _testResultCarEnumerable = TS.Linq.Extensions.defaultIfEmpty(TS.Linq.Extensions.fromArray(CreateCarsArray()), Car);
-    _testResultCarArray = _testResultCarEnumerable.toArray();
-    assert.deepEqual(_testResultCarArray, CreateCarsArray(), "Should return the original enumerable on a none empty enumerable.");
+    _testResultCarEnumerable = TS.Linq.Extensions.defaultIfEmpty(TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray()), TS_Linq_test_common.Car);
+    _testResultCarArray = TS.Linq.Extensions.toArray(_testResultCarEnumerable);
+    assert.deepEqual(_testResultCarArray, TS_Linq_test_common.CreateCarsArray(), "Should return the original enumerable on a none empty enumerable.");
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.defaultIfEmpty(null, Car);
+      TS.Linq.Extensions.defaultIfEmpty(null, TS_Linq_test_common.Car);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'enumerable' argument.");
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.defaultIfEmpty(TS.Linq.Extensions.empty<Car>(), null)
+      TS.Linq.Extensions.defaultIfEmpty(TS.Linq.Extensions.empty<TS_Linq_test_common.Car>(), null)
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'defaultConstructor' argument.");
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.defaultIfEmpty(_undefined, Car);
+      TS.Linq.Extensions.defaultIfEmpty(_undefined, TS_Linq_test_common.Car);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should threw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'enumerable' argument.");
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.defaultIfEmpty(TS.Linq.Extensions.empty<Car>(), _undefined)
+      TS.Linq.Extensions.defaultIfEmpty(TS.Linq.Extensions.empty<TS_Linq_test_common.Car>(), _undefined)
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'defaultConstructor' argument.");
   });
 
 
   QUnit.test("distinct", (assert) =>
   {
-    var _testResultCarEnumerable: TS.Linq.Enumerable<Car>;
-    var _testResultCarArray: Array<Car>;
-    var _testInputCarEnumerable: TS.Linq.Enumerable<Car>;
-    var _testInputCarArray: Array<Car>;
+    var _testResultCarEnumerable: TS.Linq.Enumerable<TS_Linq_test_common.Car>;
+    var _testResultCarArray: Array<TS_Linq_test_common.Car>;
+    var _testInputCarEnumerable: TS.Linq.Enumerable<TS_Linq_test_common.Car>;
+    var _testInputCarArray: Array<TS_Linq_test_common.Car>;
     var _testResultNumberArray: Array<number>;
     var _undefined;
 
-    _testInputCarArray = CreateCarsArray();
-    _testInputCarArray.push(new Car("VOLVO", 220, false, Date.parse("1999-01-01"), 21000));
-    _testInputCarArray.push(new Car("AUDI", 110, false, Date.parse("1999-04-15"), 4000));
-    _testInputCarArray.push(new Car("BENTLEY", 350, false, Date.parse("2012-01-01"), 55000));
-    _testInputCarArray.push(new Car("FIAT", 60, false, Date.parse("1980-01-01"), 500));
+    _testInputCarArray = TS_Linq_test_common.CreateCarsArray();
+    _testInputCarArray.push(new TS_Linq_test_common.Car("VOLVO", 220, false, Date.parse("1999-01-01"), 21000));
+    _testInputCarArray.push(new TS_Linq_test_common.Car("AUDI", 110, false, Date.parse("1999-04-15"), 4000));
+    _testInputCarArray.push(new TS_Linq_test_common.Car("BENTLEY", 350, false, Date.parse("2012-01-01"), 55000));
+    _testInputCarArray.push(new TS_Linq_test_common.Car("FIAT", 60, false, Date.parse("1980-01-01"), 500));
     _testInputCarEnumerable = TS.Linq.Extensions.fromArray(_testInputCarArray);
     _testResultCarEnumerable = TS.Linq.Extensions.distinct(_testInputCarEnumerable, (first, second) => first.name == second.name);
     _testResultCarArray = TS.Linq.Extensions.toArray(_testResultCarEnumerable);
     assert.equal(_testResultCarArray.length, 7, "Should return a result enumerable with 7 elements from the input enumerable with 9 elements using the given 'equalityComparer'.");
     _testResultCarEnumerable = TS.Linq.Extensions.distinct(_testInputCarEnumerable, (first, second) => first.name == second.name);
-    _testResultNumberArray = TS.Linq.Extensions.fromArray([0, 0, 1, 2, 2, 2, 3, 4, 4, 5, 6, 6, 6, 6, 6, 7, 8, 8, 8, 9, 9]).distinct().toArray();
+    _testResultNumberArray = TS.Linq.Extensions.toArray(TS.Linq.Extensions.fromArray([0, 0, 1, 2, 2, 2, 3, 4, 4, 5, 6, 6, 6, 6, 6, 7, 8, 8, 8, 9, 9]).distinct());
     assert.equal(_testResultNumberArray.length, 10, "Should return a result enumerable with 10 elements from the input enumerable of type 'Enumerable<number>' with no 'equalityComparer' defined.");
 
     assert.throws(() =>
@@ -431,14 +432,14 @@ module TS_Linq_Extensions_test
 
   QUnit.test("elementAt", (assert) =>
   {
-    var _testInputCarEnumerable: TS.Linq.Enumerable<Car>;
-    var _testResultCar: Car;
+    var _testInputCarEnumerable: TS.Linq.Enumerable<TS_Linq_test_common.Car>;
+    var _testResultCar: TS_Linq_test_common.Car;
     var _undefined;
 
-    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(CreateCarsArray());
+    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
     _testResultCar = TS.Linq.Extensions.elementAt(_testInputCarEnumerable, 3);
-    assert.deepEqual(_testResultCar, CreateCarsArray()[3], "Should return the element at the required position.");
+    assert.deepEqual(_testResultCar, TS_Linq_test_common.CreateCarsArray()[3], "Should return the element at the required position.");
 
     assert.throws(() => 
     {
@@ -480,31 +481,31 @@ module TS_Linq_Extensions_test
 
   QUnit.test("elementAtOrDefault", (assert) =>
   {
-    var _testInputCarEnumerable: TS.Linq.Enumerable<Car>;
-    var _testResultCar: Car;
+    var _testInputCarEnumerable: TS.Linq.Enumerable<TS_Linq_test_common.Car>;
+    var _testResultCar: TS_Linq_test_common.Car;
     var _undefined;
 
-    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(CreateCarsArray());
+    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
-    _testResultCar = TS.Linq.Extensions.elementAtOrDefault(_testInputCarEnumerable, 3, Car);
-    assert.deepEqual(_testResultCar, CreateCarsArray()[3], "Should return the element at the required position.");
+    _testResultCar = TS.Linq.Extensions.elementAtOrDefault(_testInputCarEnumerable, 3, TS_Linq_test_common.Car);
+    assert.deepEqual(_testResultCar, TS_Linq_test_common.CreateCarsArray()[3], "Should return the element at the required position.");
 
-    _testResultCar = TS.Linq.Extensions.elementAtOrDefault(_testInputCarEnumerable, 20, Car);
-    assert.deepEqual(_testResultCar, new Car(), "Should return a default element for a required position out of the range of the enumerable.");
+    _testResultCar = TS.Linq.Extensions.elementAtOrDefault(_testInputCarEnumerable, 20, TS_Linq_test_common.Car);
+    assert.deepEqual(_testResultCar, new TS_Linq_test_common.Car(), "Should return a default element for a required position out of the range of the enumerable.");
 
     assert.throws(() => 
     {
-      TS.Linq.Extensions.elementAtOrDefault(_testInputCarEnumerable, -3, Car);
+      TS.Linq.Extensions.elementAtOrDefault(_testInputCarEnumerable, -3, TS_Linq_test_common.Car);
     }, (err) => ((err.name == "TS.ArgumentOutOfRangeException") ? true : false), "Should throw a 'TS.ArgumentOutOfRangeException' for an 'index' argument value less than 0.");
 
     assert.throws(() => 
     {
-      TS.Linq.Extensions.elementAtOrDefault(null, 20, Car);
+      TS.Linq.Extensions.elementAtOrDefault(null, 20, TS_Linq_test_common.Car);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'enumerable' argument.");
 
     assert.throws(() => 
     {
-      TS.Linq.Extensions.elementAtOrDefault(_testInputCarEnumerable, null, Car);
+      TS.Linq.Extensions.elementAtOrDefault(_testInputCarEnumerable, null, TS_Linq_test_common.Car);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'index' argument.");
 
     assert.throws(() => 
@@ -514,12 +515,12 @@ module TS_Linq_Extensions_test
 
     assert.throws(() => 
     {
-      TS.Linq.Extensions.elementAtOrDefault(_undefined, 20, Car);
+      TS.Linq.Extensions.elementAtOrDefault(_undefined, 20, TS_Linq_test_common.Car);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'enumerable' argument.");
 
     assert.throws(() => 
     {
-      TS.Linq.Extensions.elementAtOrDefault(_testInputCarEnumerable, _undefined, Car);
+      TS.Linq.Extensions.elementAtOrDefault(_testInputCarEnumerable, _undefined, TS_Linq_test_common.Car);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'index' argument.");
 
     assert.throws(() => 
@@ -531,10 +532,10 @@ module TS_Linq_Extensions_test
 
   QUnit.test("empty", (assert) =>
   {
-    var _emptyCar: TS.Linq.Enumerable<Car>;
-    var _emptyArr: Array<Car>;
-    _emptyCar = TS.Linq.Extensions.empty<Car>();
-    _emptyArr = _emptyCar.toArray();
+    var _emptyCar: TS.Linq.Enumerable<TS_Linq_test_common.Car>;
+    var _emptyArr: Array<TS_Linq_test_common.Car>;
+    _emptyCar = TS.Linq.Extensions.empty<TS_Linq_test_common.Car>();
+    _emptyArr = TS.Linq.Extensions.toArray(_emptyCar);
     assert.ok(_emptyArr.length == 0, "Should create an enumerable with 0 elements.");
   });
 
@@ -545,36 +546,37 @@ module TS_Linq_Extensions_test
     var _secondSet: TS.Linq.Enumerable<number>;
     var _resultSet: TS.Linq.Enumerable<number>;
     var _resultArray: Array<number>;
-    var _testInputCarArray: Array<Car>;
-    var _testInputCarEnumerable: TS.Linq.Enumerable<Car>;
-    var _testCarResultArray: Array<Car>;
+    var _testInputCarArray: Array<TS_Linq_test_common.Car>;
+    var _testInputCarEnumerable: TS.Linq.Enumerable<TS_Linq_test_common.Car>;
+    var _testCarResultArray: Array<TS_Linq_test_common.Car>;
     var _undefined;
 
     _firstSet = TS.Linq.Extensions.fromArray([1, 2, 3, 4, 5, 6]);
     _secondSet = TS.Linq.Extensions.fromArray([4, 5, 6, 7, 8, 9]);
     _resultSet = TS.Linq.Extensions.except(_firstSet, _secondSet);
-    _resultArray = _resultSet.toArray();
+    _resultArray = TS.Linq.Extensions.toArray(_resultSet);
     assert.deepEqual(_resultArray, [1, 2, 3], "Should return a result set with 3 elements.");
 
     _secondSet = TS.Linq.Extensions.fromArray([1, 2]);
     _resultSet = TS.Linq.Extensions.except(_firstSet, _secondSet);
-    _resultArray = _resultSet.toArray();
+    _resultArray = TS.Linq.Extensions.toArray(_resultSet);
     assert.deepEqual(_resultArray, [3, 4, 5, 6], "Should return a result set with 4 elements.");
 
     _secondSet = TS.Linq.Extensions.fromArray([2, 5]);
     _resultSet = TS.Linq.Extensions.except(_firstSet, _secondSet);
-    _resultArray = _resultSet.toArray();
+    _resultArray = TS.Linq.Extensions.toArray(_resultSet);
     assert.deepEqual(_resultArray, [1, 3, 4, 6], "Should return a result set with 4 elements.");
 
-    _testInputCarArray = new Array<Car>();
-    _testInputCarArray.push(new Car("VOLVO", 220, false, Date.parse("1999-01-01"), 21000));
-    _testInputCarArray.push(new Car("AUDI", 110, false, Date.parse("1999-04-15"), 4000));
-    _testInputCarArray.push(new Car("BENTLEY", 350, false, Date.parse("2012-01-01"), 55000));
-    _testInputCarArray.push(new Car("FIAT", 60, false, Date.parse("1980-01-01"), 500));
+    _testInputCarArray = new Array<TS_Linq_test_common.Car>();
+    _testInputCarArray.push(new TS_Linq_test_common.Car("VOLVO", 220, false, Date.parse("1999-01-01"), 21000));
+    _testInputCarArray.push(new TS_Linq_test_common.Car("AUDI", 110, false, Date.parse("1999-04-15"), 4000));
+    _testInputCarArray.push(new TS_Linq_test_common.Car("BENTLEY", 350, false, Date.parse("2012-01-01"), 55000));
+    _testInputCarArray.push(new TS_Linq_test_common.Car("FIAT", 60, false, Date.parse("1980-01-01"), 500));
     _testInputCarEnumerable = TS.Linq.Extensions.fromArray(_testInputCarArray);
 
-    _resultArray = TS.Linq.Extensions.except(TS.Linq.Extensions.fromArray(CreateCarsArray()), _testInputCarEnumerable, (first: Car, second: Car) => (first.name == second.name)).toArray();
-    assert.equal(_resultArray.length, 3, "Should return a result set with 3 elements.");
+    TS.Linq.Extensions.except(TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray()), _testInputCarEnumerable, (first, second) => first.name == second.name);
+    _testCarResultArray = TS.Linq.Extensions.toArray(TS.Linq.Extensions.except(TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray()), _testInputCarEnumerable, (first, second) => first.name == second.name));
+    assert.equal(_testCarResultArray.length, 3, "Should return a result set with 3 elements.");
 
     assert.throws(() => 
     {
@@ -603,8 +605,8 @@ module TS_Linq_Extensions_test
     var _result: any;
     var _undefined;
 
-    _result = TS.Linq.Extensions.where(personEnumerable, (item: any) => item.FirstName == "Michael").first();
-    assert.equal(_result.LastName, "Blythe", "Should return the first match in the result set.");
+    _result = TS.Linq.Extensions.first(personEnumerable);
+    assert.equal(_result.LastName, "Sánchez", "Should return the first match in the result set.");
 
     _result = TS.Linq.Extensions.first(personEnumerable, (item: any) => item.FirstName == "Michael");
     assert.equal(_result.LastName, "Blythe", "Should return the first match in the result set when called with a predicate.");
@@ -640,34 +642,34 @@ module TS_Linq_Extensions_test
   QUnit.test("firstOrDefault", (assert) =>
   {
     var _result: any;
-    var _carEnumerable: TS.Linq.Enumerable<Car>;
+    var _carEnumerable: TS.Linq.Enumerable<TS_Linq_test_common.Car>;
 
-    _carEnumerable = TS.Linq.Extensions.fromArray(CreateCarsArray());
+    _carEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
-    _result = TS.Linq.Extensions.where(_carEnumerable, (item: Car) => item.name == "VW").firstOrDefault(Car)
-    assert.equal(_result.name, "VW", "Should return the first match in the result set.");
+    _result = TS.Linq.Extensions.firstOrDefault(_carEnumerable, TS_Linq_test_common.Car);
+    assert.equal(_result.name, "BMW", "Should return the first match in the result set.");
 
-    _result = TS.Linq.Extensions.where(_carEnumerable, (item: Car) => item.name == "faöejrfkesjköpaf").firstOrDefault(Car);
-    assert.deepEqual(_result, new Car(), "Should return a default object if the enumerable is empyt.");
+    _result = TS.Linq.Extensions.firstOrDefault(_carEnumerable, TS_Linq_test_common.Car, (item: TS_Linq_test_common.Car) => item.name == "faöejrfkesjköpaf")
+    assert.deepEqual(_result, new TS_Linq_test_common.Car(), "Should return a default object if the enumerable is empyt.");
 
-    _result = TS.Linq.Extensions.firstOrDefault(_carEnumerable, Car, (item: Car) => item.name == "AUDI");
+    _result = TS.Linq.Extensions.firstOrDefault(_carEnumerable, TS_Linq_test_common.Car, (item: TS_Linq_test_common.Car) => item.name == "AUDI");
     assert.equal(_result.name, "AUDI", "Should return the first match in the result set when called with a predicate.");
 
-    _result = TS.Linq.Extensions.firstOrDefault(_carEnumerable, Car, (item: Car) => item.name == "faöejrfkesjköpaf");
-    assert.deepEqual(_result, new Car(), "Should return a default object on an enumerable with no match on the predicate.");
+    _result = TS.Linq.Extensions.firstOrDefault(_carEnumerable, TS_Linq_test_common.Car, (item: TS_Linq_test_common.Car) => item.name == "faöejrfkesjköpaf");
+    assert.deepEqual(_result, new TS_Linq_test_common.Car(), "Should return a default object on an enumerable with no match on the predicate.");
 
-    _result = TS.Linq.Extensions.firstOrDefault(_carEnumerable, Car, (item: any) => item.noValidAttribute == 5);
-    assert.deepEqual(_result, new Car(), "Should return a default object on an enumerable with an invalid predicate.");
+    _result = TS.Linq.Extensions.firstOrDefault(_carEnumerable, TS_Linq_test_common.Car, (item: any) => item.noValidAttribute == 5);
+    assert.deepEqual(_result, new TS_Linq_test_common.Car(), "Should return a default object on an enumerable with an invalid predicate.");
   });
 
 
   QUnit.test("fromArray", (assert) =>
   {
-    var _testArray = CreateNumberArray();
+    var _testArray = TS_Linq_test_common.CreateNumberArray();
     var _testEnumerable: TS.Linq.Enumerable<number>;
     var _testObj = { Test: "Test", Obj: "Obj" };
 
-    _testEnumerable = TS.Linq.Extensions.fromArray(CreateNumberArray());
+    _testEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateNumberArray());
     assert.equal(_testEnumerable.count(), _testArray.length, "Should return a enumerable with as much elements as the source array.");
 
     _testEnumerable = TS.Linq.Extensions.fromArray([]);
@@ -683,14 +685,14 @@ module TS_Linq_Extensions_test
 
   QUnit.test("groupBy", (assert) =>
   {
-    var _resultCustomerEnumerable: TS.Linq.Enumerable<TS.Linq.Grouping<string, ICustomer>>;
-    var _resultProductEnumerable: TS.Linq.Enumerable<TS.Linq.Grouping<string, IProduct>>;
+    var _resultCustomerEnumerable: TS.Linq.Enumerable<TS.Linq.Grouping<string, TS_Linq_test_common.ICustomer>>;
+    var _resultProductEnumerable: TS.Linq.Enumerable<TS.Linq.Grouping<string, TS_Linq_test_common.IProduct>>;
     var _resultProductEnumerableStorageRoom: TS.Linq.Enumerable<TS.Linq.Grouping<string, string>>;
     var _resultProductEnumerableStorageRoomConcat: TS.Linq.Enumerable<{ Key: string; RoomConcat: string}>;
-    var _productEnumerable: TS.Linq.Enumerable<IProduct>;
+    var _productEnumerable: TS.Linq.Enumerable<TS_Linq_test_common.IProduct>;
     var _undefined;
 
-    _productEnumerable = TS.Linq.Extensions.fromArray(CreateProductArray());
+    _productEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateProductArray());
 
     _resultCustomerEnumerable = TS.Linq.Extensions.groupBy(customersEnumerable, _CUST => _CUST.Country);
     assert.equal(_resultCustomerEnumerable.count(), 21, "Should return 21 elements for the executed expression.");
@@ -707,7 +709,7 @@ module TS_Linq_Extensions_test
     assert.equal(_resultProductEnumerableStorageRoom.where(Item => Item.key == "EURO").single().count(), 5, "Should return 5 elements in group 'EURO'");
     assert.equal(_resultProductEnumerableStorageRoom.where(Item => Item.key == "YEN").single().count(), 4, "Should return 4 elements in group 'YEN'");
 
-    _resultProductEnumerableStorageRoomConcat = TS.Linq.Extensions.groupBy(_productEnumerable, item => unifyCurrency(item.Currency), null, (key, group) => { return { Key: key, RoomConcat: group.select(gr => gr.Storage.Room).toArray().join(",") }; });
+    _resultProductEnumerableStorageRoomConcat = TS.Linq.Extensions.groupBy(_productEnumerable, item => unifyCurrency(item.Currency), null, (key, group) => { return { Key: key, RoomConcat: TS.Linq.Extensions.toArray(group.select(gr => gr.Storage.Room)).join(",") }; });
     assert.equal(_resultProductEnumerableStorageRoomConcat.count(), 4, "Should return the 4 elements for the executed expression with resultSelector.");
     assert.equal(_resultProductEnumerableStorageRoomConcat.where(Item => Item.Key == "EURO").single().RoomConcat, "STR 001,STR 002,STR 002,STR 002,STR 003", "Should return the expected room list for the executed expression with resultSelector.");
     assert.equal(_resultProductEnumerableStorageRoomConcat.where(Item => Item.Key == "YEN").single().RoomConcat, "STR 001,STR 002,STR 003,STR 003", "Should return the expected room list for the executed expression with resultSelector.");
@@ -785,11 +787,11 @@ module TS_Linq_Extensions_test
 
     _jointEnum = TS.Linq.Extensions.groupJoin(customersEnumerable, ordersEnumerable, (outerItem) => outerItem.CustomerID, (innerItem) => innerItem.CustomerID, (outerItem, group) => ({ CustID: outerItem.CustomerID, CustName: outerItem.ContactName, OrderGroup: group }));
 
-    _jointArray = _jointEnum.toArray();
+    _jointArray = TS.Linq.Extensions.toArray(_jointEnum);
     _orders = 0;
     for (_index = _jointArray.length - 1; _index > -1; _index--)
     {
-      _jointArray[_index].OrderGroup = _jointArray[_index].OrderGroup.toArray();
+      _jointArray[_index].OrderGroup = TS.Linq.Extensions.toArray(_jointArray[_index].OrderGroup);
       _orders += _jointArray[_index].OrderGroup.length;
     }//END for
 
@@ -805,11 +807,11 @@ module TS_Linq_Extensions_test
       return outerKey.CustomerID === innerKey.CustomerID
     });
 
-    _jointArray = _jointEnum.toArray();
+    _jointArray = TS.Linq.Extensions.toArray(_jointEnum);
     _orders = 0;
     for (_index = _jointArray.length - 1; _index > -1; _index--)
     {
-      _jointArray[_index].OrderGroup = _jointArray[_index].OrderGroup.toArray();
+      _jointArray[_index].OrderGroup = TS.Linq.Extensions.toArray(_jointArray[_index].OrderGroup);
       _orders += _jointArray[_index].OrderGroup.length;
     }//END for
 
@@ -850,24 +852,24 @@ module TS_Linq_Extensions_test
 
   QUnit.test("intersect", (assert) => 
   {
-    var _carsUnionEnum: TS.Linq.Enumerable<Car>;
-    var _carsEnum: TS.Linq.Enumerable<Car>;
-    var _carsIntersect: TS.Linq.Enumerable<Car>;
+    var _carsUnionEnum: TS.Linq.Enumerable<TS_Linq_test_common.Car>;
+    var _carsEnum: TS.Linq.Enumerable<TS_Linq_test_common.Car>;
+    var _carsIntersect: TS.Linq.Enumerable<TS_Linq_test_common.Car>;
     var _numberEnumFirst: TS.Linq.Enumerable<Number>;
     var _numberEnumSecond: TS.Linq.Enumerable<Number>;
     var _numberIntersect: TS.Linq.Enumerable<Number>;
-    var _resultArr: Array<Car>;
+    var _resultArr: Array<TS_Linq_test_common.Car>;
     var _undefined;
 
-    _carsUnionEnum = TS.Linq.Extensions.fromArray(CreateCarsUnionTestArray());
-    _carsEnum = TS.Linq.Extensions.fromArray(CreateCarsArray());
+    _carsUnionEnum = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsUnionTestArray());
+    _carsEnum = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
     _carsIntersect = TS.Linq.Extensions.intersect(_carsEnum, _carsUnionEnum, (first, second) => first.name === second.name);
-    _resultArr = _carsIntersect.toArray();
+    _resultArr = TS.Linq.Extensions.toArray(_carsIntersect);
 
     assert.equal(_carsIntersect.count(), 2, "Schould return a result set with 2 elements when called with an equality comparer.");
 
-    _numberEnumFirst = TS.Linq.Extensions.fromArray(CreateNumberArray());
+    _numberEnumFirst = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateNumberArray());
     _numberEnumSecond = TS.Linq.Extensions.fromArray([2, 4, 7, 8]);
     _numberIntersect = TS.Linq.Extensions.intersect(_numberEnumFirst, _numberEnumSecond);
 
@@ -907,7 +909,7 @@ module TS_Linq_Extensions_test
 
     _jointEnum = TS.Linq.Extensions.join(customersEnumerable, ordersEnumerable, (outerItem) => outerItem.CustomerID, (innerItem) => innerItem.CustomerID, (outerItem, innerItem) => ({ CustID: outerItem.CustomerID, CustName: outerItem.ContactName, OrdID: innerItem.OrderID, OrdDate: innerItem.OrderDate, OrdRequDate: innerItem.RequiredDate, OrdShippingCountry: innerItem.ShipCountry }));
 
-    _jointArray = _jointEnum.toArray();
+    _jointArray = TS.Linq.Extensions.toArray(_jointEnum);
     assert.ok(_jointArray.length == 830, "Should return 830 records for the executed expression.");
 
     assert.throws(() =>
@@ -947,8 +949,8 @@ module TS_Linq_Extensions_test
     var _result: any;
     var _undefined;
 
-    _result = TS.Linq.Extensions.where(personEnumerable, (item: any) => item.FirstName == "Michael").last();
-    assert.equal(_result.LastName, "Martin", "Should return the last element in the result set.");
+    _result = TS.Linq.Extensions.last(personEnumerable);
+    assert.equal(_result.LastName, "Cox", "Should return the last element in the result set.");
 
     _result = TS.Linq.Extensions.last(personEnumerable, (item: any) => item.FirstName == "Michael");
     assert.equal(_result.LastName, "Martin", "Should return the last match in the result set when called with a predicate.");
@@ -983,29 +985,29 @@ module TS_Linq_Extensions_test
 
   QUnit.test("lastOrDefault", (assert) =>
   {
-    var _result: ICustomer;
+    var _result: TS_Linq_test_common.ICustomer;
     var _undefined;
 
-    _result = TS.Linq.Extensions.lastOrDefault(customersEnumerable, Customer);
+    _result = TS.Linq.Extensions.lastOrDefault(customersEnumerable, TS_Linq_test_common.Customer);
     assert.equal(_result.ContactName, "Zbyszek Piestrzeniewicz", "Should return the last element in the enumerable.");
 
-    _result = TS.Linq.Extensions.lastOrDefault(customersEnumerable.where(Item => Item.Country == "NOP"), Customer);
-    assert.deepEqual(_result, new Customer(), "Should return a default object if the enumerable is empyt.");
+    _result = TS.Linq.Extensions.lastOrDefault(customersEnumerable.where(Item => Item.Country == "NOP"), TS_Linq_test_common.Customer);
+    assert.deepEqual(_result, new TS_Linq_test_common.Customer(), "Should return a default object if the enumerable is empyt.");
 
-    _result = TS.Linq.Extensions.lastOrDefault(customersEnumerable, Customer, (Item) => Item.Country == "USA");
+    _result = TS.Linq.Extensions.lastOrDefault(customersEnumerable, TS_Linq_test_common.Customer, (Item) => Item.Country == "USA");
     assert.equal(_result.CompanyName, "White Clover Markets", "Should return the last match in the result set when called with a predicate."); 
 
-    _result = TS.Linq.Extensions.lastOrDefault(customersEnumerable, Customer, (Item) => Item.Country == "NOP");
-    assert.deepEqual(_result, new Customer(), "Should return a default object when called with a prdicate that doesn't match.");
+    _result = TS.Linq.Extensions.lastOrDefault(customersEnumerable, TS_Linq_test_common.Customer, (Item) => Item.Country == "NOP");
+    assert.deepEqual(_result, new TS_Linq_test_common.Customer(), "Should return a default object when called with a prdicate that doesn't match.");
 
     assert.throws(() => 
     {
-      TS.Linq.Extensions.lastOrDefault(null, Customer);
+      TS.Linq.Extensions.lastOrDefault(null, TS_Linq_test_common.Customer);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'enumerable' argument.");
 
     assert.throws(() => 
     {
-      TS.Linq.Extensions.lastOrDefault(_undefined, Customer);
+      TS.Linq.Extensions.lastOrDefault(_undefined, TS_Linq_test_common.Customer);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'enumerable' argument.");
 
     assert.throws(() => 
@@ -1033,7 +1035,7 @@ module TS_Linq_Extensions_test
     _max = TS.Linq.Extensions.max(<TS.Linq.Enumerable<number>> ordersEnumerable.select<Number>(_ORD => _ORD.Freight));
     assert.equal(_max, 1007.64, "Should return the expected value.");
 
-    _max = TS.Linq.Extensions.max(TS.Linq.Extensions.fromArray(CreateNumberArray()));
+    _max = TS.Linq.Extensions.max(TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateNumberArray()));
     assert.equal(_max, 10, "Should return the expected value.");
 
     assert.throws(() => 
@@ -1064,7 +1066,7 @@ module TS_Linq_Extensions_test
     _min = TS.Linq.Extensions.min(<TS.Linq.Enumerable<number>> ordersEnumerable.select<Number>(_ORD => _ORD.Freight));
     assert.equal(_min, 0.02, "Should return the expected value.");
 
-    _min = TS.Linq.Extensions.min(TS.Linq.Extensions.fromArray(CreateNumberArray()));
+    _min = TS.Linq.Extensions.min(TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateNumberArray()));
     assert.equal(_min, 1, "Should return the expected value.");
 
     assert.throws(() => 
@@ -1088,18 +1090,19 @@ module TS_Linq_Extensions_test
   {
     var _sortTestArray: Array<any>;
     var _randomNumberArray: Array<number>;
-    var _resultISortTestArray: Array<ISortTestItem>;
+    var _resultISortTestArray: Array<TS_Linq_test_common.ISortTestItem>;
     var _resultNumberTestArray: Array<number>;
+    var _resultCustomersTestArray: Array<TS_Linq_test_common.Customer>;
     var _orderCorrect: boolean;
     var _index: number;
     var _undefined;
 
-    _sortTestArray = CreateSortTestArray();
-    _resultISortTestArray = TS.Linq.Extensions.orderBy(TS.Linq.Extensions.fromArray(_sortTestArray), (item: any) => (<ISortTestItem> item).color).toArray();
+    _sortTestArray = TS_Linq_test_common.CreateSortTestArray();
+    _resultISortTestArray = TS.Linq.Extensions.toArray(TS.Linq.Extensions.orderBy(TS.Linq.Extensions.fromArray(_sortTestArray), (item: any) => (<TS_Linq_test_common.ISortTestItem> item).color));
 
     _orderCorrect = true;
 
-    for (_index = 0; _index < _resultISortTestArray.length - 1; _index++)
+    for (_index = 0; _index < _resultISortTestArray.length - 2; _index++)
     {
       if (_resultISortTestArray[_index].color > _resultISortTestArray[_index + 1].color)
       {
@@ -1110,12 +1113,12 @@ module TS_Linq_Extensions_test
 
     assert.ok(_orderCorrect, "The array of ISortTestItems should be sorted by color in ascending order.");
 
-    _randomNumberArray = CreateRandomNumberArray(100);
-    _resultNumberTestArray = TS.Linq.Extensions.orderBy(TS.Linq.Extensions.fromArray(_randomNumberArray), item => item).toArray();
+    _randomNumberArray = TS_Linq_test_common.CreateRandomNumberArray(100);
+    _resultNumberTestArray = TS.Linq.Extensions.toArray(TS.Linq.Extensions.orderBy(TS.Linq.Extensions.fromArray(_randomNumberArray), item => item));
 
     _orderCorrect = true;
 
-    for (_index = 0; _index < _resultNumberTestArray.length - 1; _index++)
+    for (_index = 0; _index < _resultNumberTestArray.length - 2; _index++)
     {
       if (_resultNumberTestArray[_index] > _resultNumberTestArray[_index + 1])
       {
@@ -1126,6 +1129,23 @@ module TS_Linq_Extensions_test
 
     assert.ok(_orderCorrect, "Should returns an array of numbers sorted in ascending order.");
 
+    _resultCustomersTestArray = TS.Linq.Extensions.toArray(TS.Linq.Extensions.orderBy(customersEnumerable, item => item.Country, (first, second) =>
+    {
+      if (first > second)
+      {
+        return 1;
+      };
+      if (first < second)
+      {
+        return -1;
+      };
+      return 0;
+    }));
+
+    var _resultString = _resultCustomersTestArray[0].Country + ", " + _resultCustomersTestArray[_resultCustomersTestArray.length - 1].Country;
+
+    assert.equal(_resultString, "Argentina, Venezuela", "Should return an array sorted by country in descending order using the specified key and comparer.");
+
     assert.throws(() =>
     {
       TS.Linq.Extensions.orderBy(null, item => item);
@@ -1135,6 +1155,100 @@ module TS_Linq_Extensions_test
     {
       TS.Linq.Extensions.orderBy(_undefined, item => item);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'enumerable' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.orderBy(customersEnumerable, null);
+    }, (err) => ((err.name == "TS.InvalidTypeException") ? true : false), "Should throw a 'TS.InvalidTypeException' for a null 'selctor' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.orderBy(customersEnumerable, _undefined);
+    }, (err) => ((err.name == "TS.InvalidTypeException") ? true : false), "Should throw a 'TS.InvalidTypeException' for an undefined 'selector' argument.");
+
+  });
+
+
+  QUnit.test("orderByDescending", (assert) =>
+  {
+    var _sortTestArray: Array<any>;
+    var _randomNumberArray: Array<number>;
+    var _resultISortTestArray: Array<TS_Linq_test_common.ISortTestItem>;
+    var _resultNumberTestArray: Array<number>;
+    var _resultCustomersTestArray: Array<TS_Linq_test_common.Customer>;
+    var _orderCorrect: boolean;
+    var _index: number;
+    var _undefined;
+
+    _sortTestArray = TS_Linq_test_common.CreateSortTestArray();
+    _resultISortTestArray = TS.Linq.Extensions.toArray(TS.Linq.Extensions.orderByDescending(TS.Linq.Extensions.fromArray(_sortTestArray), (item) => (<TS_Linq_test_common.ISortTestItem> item).color));
+
+    _orderCorrect = true;
+
+    for (_index = 0; _index < _resultISortTestArray.length - 2; _index++)
+    {
+      if (_resultISortTestArray[_index].color < _resultISortTestArray[_index + 1].color)
+      {
+        _orderCorrect = false;
+        break;
+      }//END if
+    }//END for
+
+    assert.ok(_orderCorrect, "The array of ISortTestItems should be sorted by color in descending order.");
+
+    _randomNumberArray = TS_Linq_test_common.CreateRandomNumberArray(100);
+    _resultNumberTestArray = TS.Linq.Extensions.toArray(TS.Linq.Extensions.orderByDescending(TS.Linq.Extensions.fromArray(_randomNumberArray), item => item));
+
+    _orderCorrect = true;
+
+    for (_index = 0; _index < _resultNumberTestArray.length - 2; _index++)
+    {
+      if (_resultNumberTestArray[_index] < _resultNumberTestArray[_index + 1])
+      {
+        _orderCorrect = false;
+        break;
+      }//END if
+    }//END for
+
+    assert.ok(_orderCorrect, "Should returns an array of numbers sorted in descending order.");
+
+    _resultCustomersTestArray = TS.Linq.Extensions.toArray(TS.Linq.Extensions.orderByDescending(customersEnumerable, item => item.Country, (first, second) =>
+    {
+      if (first > second)
+      {
+        return 1;
+      };
+      if (first < second)
+      {
+        return -1;
+      };
+      return 0;
+    }));
+
+    var _resultString = _resultCustomersTestArray[0].Country + ", " + _resultCustomersTestArray[_resultCustomersTestArray.length - 1].Country;
+
+    assert.equal(_resultString, "Venezuela, Argentina", "Should return an array sorted by country in descending order using the specified key and comparer.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.orderByDescending(null, item => item);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'enumerable' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.orderByDescending(_undefined, item => item);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'enumerable' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.orderByDescending(customersEnumerable, null);
+    }, (err) => ((err.name == "TS.InvalidTypeException") ? true : false), "Should throw a 'TS.InvalidTypeException' for a null 'selctor' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.orderByDescending(customersEnumerable, _undefined);
+    }, (err) => ((err.name == "TS.InvalidTypeException") ? true : false), "Should throw a 'TS.InvalidTypeException' for an undefined 'selector' argument.");
+
   });
 
 
@@ -1149,9 +1263,9 @@ module TS_Linq_Extensions_test
     var _index: number;
     var _undefined;
 
-    _stringArray = CreateStringArray();
+    _stringArray = TS_Linq_test_common.CreateStringArray();
     _stringEnumerable = TS.Linq.Extensions.fromArray(_stringArray);
-    _stringResultArray = TS.Linq.Extensions.random(_stringEnumerable).take(50).toArray();
+    _stringResultArray = TS.Linq.Extensions.toArray(TS.Linq.Extensions.random(_stringEnumerable).take(50));
 
     for (_index = 0; _index < _stringArray.length; _index++)
     {
@@ -1165,7 +1279,7 @@ module TS_Linq_Extensions_test
     assert.ok(_isRandom, "Should return a string array in random order.");
 
     _emptyEnumerable = TS.Linq.Extensions.empty<number>();
-    _numberResultArray = TS.Linq.Extensions.random(_emptyEnumerable).take(50).toArray();
+    _numberResultArray = TS.Linq.Extensions.toArray(TS.Linq.Extensions.random(_emptyEnumerable).take(50));
 
     assert.equal(_numberResultArray.length, 0, "Should return an empty enumeration if the input enumeration was also empty.");
 
@@ -1188,11 +1302,11 @@ module TS_Linq_Extensions_test
     var _undefined;
 
     _resultEnum = TS.Linq.Extensions.range(1, 50);
-    _resultArray = _resultEnum.toArray();
+    _resultArray = TS.Linq.Extensions.toArray(_resultEnum);
     assert.equal(_resultEnum.count(), 50, "Should return an enumerable with 50 elements.");
 
     _resultEnum = TS.Linq.Extensions.range(111, 0);
-    _resultArray = _resultEnum.toArray();
+    _resultArray = TS.Linq.Extensions.toArray(_resultEnum);
     assert.equal(_resultEnum.count(), 0, "Should return an enumerable with 0 elements.");
 
     assert.throws(() =>
@@ -1224,13 +1338,13 @@ module TS_Linq_Extensions_test
 
   QUnit.test("repeat", (assert) =>
   {
-    var _sourceElement: ICar;
+    var _sourceElement: TS_Linq_test_common.ICar;
     var _undefined;
-    var _resultArray: Array<ICar>;
+    var _resultArray: Array<TS_Linq_test_common.ICar>;
 
-    _sourceElement = CreateCarsArray()[0];
+    _sourceElement = TS_Linq_test_common.CreateCarsArray()[0];
 
-    _resultArray = TS.Linq.Extensions.repeat(_sourceElement, 50).toArray();
+    _resultArray = TS.Linq.Extensions.toArray(TS.Linq.Extensions.repeat(_sourceElement, 50));
     assert.ok(_resultArray.length == 50 && _resultArray[0].name == "BMW", "Should return a result with as much elements as required in repeat and of the same type.");
 
     assert.throws(() =>
@@ -1260,10 +1374,10 @@ module TS_Linq_Extensions_test
     var _failed: boolean;
     var _undefined;
 
-    _numberArray = CreateNumberArray();
-    _controlArray = CreateNumberArray().reverse();
+    _numberArray = TS_Linq_test_common.CreateNumberArray();
+    _controlArray = TS_Linq_test_common.CreateNumberArray().reverse();
 
-    _resultArray = TS.Linq.Extensions.reverse(TS.Linq.Extensions.fromArray(_numberArray)).toArray();
+    _resultArray = TS.Linq.Extensions.toArray(TS.Linq.Extensions.reverse(TS.Linq.Extensions.fromArray(_numberArray)));
     _failed = false;
 
     for (_index = 0; _index < _resultArray.length; _index++)
@@ -1278,7 +1392,7 @@ module TS_Linq_Extensions_test
     assert.ok(!_failed, "Should return an array which matches with the control array.");
 
     _emptyEnumerable = TS.Linq.Extensions.empty<number>();
-    _resultArray = TS.Linq.Extensions.reverse(_emptyEnumerable).toArray();
+    _resultArray = TS.Linq.Extensions.toArray(TS.Linq.Extensions.reverse(_emptyEnumerable));
 
     assert.equal(_resultArray.length, 0, "Should return an empty enumerabe if the input enumerable was also empty.");
 
@@ -1298,14 +1412,14 @@ module TS_Linq_Extensions_test
 
   QUnit.test("select", (assert) =>
   {
-    var _carsEnumerable: TS.Linq.Enumerable<ICar>;
+    var _carsEnumerable: TS.Linq.Enumerable<TS_Linq_test_common.ICar>;
     var _resultArray: Array<any>;
     var _expensiveCount: number;
     var _undefined;
     var _index: number;
 
-    _carsEnumerable = TS.Linq.Extensions.fromArray(CreateCarsArray());
-    _resultArray = TS.Linq.Extensions.select(_carsEnumerable, (item) => ({ buildYear: "'" + item.buildYear + "'", name: "'" + item.name + "'", expensive: ((item.price > 5000) ? "yes" : "no") })).toArray();
+    _carsEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
+    _resultArray = TS.Linq.Extensions.toArray(TS.Linq.Extensions.select(_carsEnumerable, (item) => ({ buildYear: "'" + item.buildYear + "'", name: "'" + item.name + "'", expensive: ((item.price > 5000) ? "yes" : "no") })));
 
     _expensiveCount = 0;
     for (_index = 0; _index < _resultArray.length; _index++)
@@ -1320,7 +1434,7 @@ module TS_Linq_Extensions_test
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.select<any, any>(mmEnumerable, item => item.NOP).toArray();
+      TS.Linq.Extensions.toArray(TS.Linq.Extensions.select<any, any>(mmEnumerable, item => item.NOP));
     }, (err) => ((err.name == "TS.Linq.SelectorException") ? true : false), "Should throw a TS.Linq.SelectorException if called with an invalid selector.");
 
     assert.throws(() =>
@@ -1346,8 +1460,8 @@ module TS_Linq_Extensions_test
     var _resultSimpleExpanded: Array<any>;
     var _undefined;
 
-    var _resultMany = TS.Linq.Extensions.selectMany<any, any>(mmEnumerable, item => item.vars).toArray();
-    var _resultSimple = TS.Linq.Extensions.select<any, any>(mmEnumerable, item => item.vars).toArray();
+    var _resultMany = TS.Linq.Extensions.toArray(TS.Linq.Extensions.selectMany<any, any>(mmEnumerable, item => item.vars));
+    var _resultSimple = TS.Linq.Extensions.toArray(TS.Linq.Extensions.select<any, any>(mmEnumerable, item => item.vars));
 
     _simpleElementsCount = 0;
     _resultSimpleExpanded = new Array<any>();
@@ -1369,7 +1483,7 @@ module TS_Linq_Extensions_test
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.selectMany<any, any>(mmEnumerable, item => item.NOP).toArray();
+      TS.Linq.Extensions.toArray(TS.Linq.Extensions.selectMany<any, any>(mmEnumerable, item => item.NOP));
     }, (err) => ((err.name == "TS.Linq.SelectorException") ? true : false), "Should throw a TS.Linq.SelectorException if called with an invalid selector.");
 
     assert.throws(() =>
@@ -1387,14 +1501,14 @@ module TS_Linq_Extensions_test
   QUnit.test("sequenceEqual", (assert) =>
   {
     var _numberArray: Array<Number>;
-    var _customerArray: Array<ICustomer>;
+    var _customerArray: Array<TS_Linq_test_common.ICustomer>;
     var _firstNumberEnumerable: TS.Linq.Enumerable<Number>;
     var _secondNumberEnumerable: TS.Linq.Enumerable<Number>;
     var _compareResult: boolean;
     var _undefined;
 
-    _firstNumberEnumerable = TS.Linq.Extensions.fromArray(CreateNumberArray());
-    _secondNumberEnumerable = TS.Linq.Extensions.fromArray(CreateNumberArray());
+    _firstNumberEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateNumberArray());
+    _secondNumberEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateNumberArray());
 
     _compareResult = TS.Linq.Extensions.sequenceEqual(_firstNumberEnumerable, _secondNumberEnumerable);
     assert.ok(_compareResult, "Should return true when comparing two equal enumerables");
@@ -1402,25 +1516,25 @@ module TS_Linq_Extensions_test
     _compareResult = TS.Linq.Extensions.sequenceEqual(customersEnumerable, customersEnumerable, (first, second) => first.ContactName == second.ContactName);
     assert.ok(_compareResult, "Should return true when comparing two equal enumerables using an equalityComparer");
 
-    _customerArray = customersEnumerable.toArray();
-    _customerArray[55] = new Customer();
+    _customerArray = TS.Linq.Extensions.toArray(customersEnumerable);
+    _customerArray[55] = new TS_Linq_test_common.Customer();
     _customerArray[55].ContactName = "No Contact Name";
     _compareResult = TS.Linq.Extensions.sequenceEqual(customersEnumerable, TS.Linq.Extensions.fromArray(_customerArray), (first, second) => first.ContactName == second.ContactName);
     assert.ok(!_compareResult, "Should return false when comparing two enumerables with different elements usin an equalityComparer");
 
-    _numberArray = CreateNumberArray();
+    _numberArray = TS_Linq_test_common.CreateNumberArray();
     _numberArray.pop();
     _secondNumberEnumerable = TS.Linq.Extensions.fromArray(_numberArray);
     _compareResult = TS.Linq.Extensions.sequenceEqual(_firstNumberEnumerable, _secondNumberEnumerable);
     assert.ok(!_compareResult, "Should return false when comparing two enumerables with different length");
 
-    _numberArray = CreateNumberArray();
+    _numberArray = TS_Linq_test_common.CreateNumberArray();
     _numberArray.push(11);
     _secondNumberEnumerable = TS.Linq.Extensions.fromArray(_numberArray);
     _compareResult = TS.Linq.Extensions.sequenceEqual(_firstNumberEnumerable, _secondNumberEnumerable);
     assert.ok(!_compareResult, "Should return false when comparing two enumerables with different length");
 
-    _numberArray = CreateNumberArray();
+    _numberArray = TS_Linq_test_common.CreateNumberArray();
     _numberArray[5] = Math.PI;
     _secondNumberEnumerable = TS.Linq.Extensions.fromArray(_numberArray);
     _compareResult = TS.Linq.Extensions.sequenceEqual(_firstNumberEnumerable, _secondNumberEnumerable);
@@ -1455,14 +1569,14 @@ module TS_Linq_Extensions_test
     var _nuberEnumerable: TS.Linq.Enumerable<number>;
     var _undefined;
 
-    _nuberEnumerable = TS.Linq.Enumerable.fromArray(CreateNumberArray());
+    _nuberEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateNumberArray());
     _nuberEnumerable = TS.Linq.Extensions.shuffle(_nuberEnumerable);
-    _numberArr = _nuberEnumerable.toArray();
+    _numberArr = TS.Linq.Extensions.toArray(_nuberEnumerable);
 
-    assert.equal(_numberArr.length, CreateNumberArray().length, "Should return a result array with the same length as the source array.");
-    assert.notDeepEqual(_numberArr, CreateNumberArray(), "Should return a shuffled array which doesn't be equal to the source array");
+    assert.equal(_numberArr.length, TS_Linq_test_common.CreateNumberArray().length, "Should return a result array with the same length as the source array.");
+    assert.notDeepEqual(_numberArr, TS_Linq_test_common.CreateNumberArray(), "Should return a shuffled array which doesn't be equal to the source array");
     _numberArr = _numberArr.sort((first, second) => { return first - second; });
-    assert.deepEqual(_numberArr, CreateNumberArray(), "Should match with the source array after sorting.");
+    assert.deepEqual(_numberArr, TS_Linq_test_common.CreateNumberArray(), "Should match with the source array after sorting.");
 
     assert.throws(() =>
     {
@@ -1478,7 +1592,7 @@ module TS_Linq_Extensions_test
 
   QUnit.test("single", (assert) =>
   {
-    var _result: Customer;
+    var _result: TS_Linq_test_common.Customer;
     var _undedined;
 
     _result = TS.Linq.Extensions.single(customersEnumerable.where(_CUST => _CUST.CustomerID == "OTTIK"));
@@ -1523,39 +1637,39 @@ module TS_Linq_Extensions_test
 
   QUnit.test("singleOrDefault", (assert) =>
   {
-    var _result: Customer;
+    var _result: TS_Linq_test_common.Customer;
     var _undedined;
 
-    _result = TS.Linq.Extensions.singleOrDefault(customersEnumerable.where(_CUST => _CUST.CustomerID == "OTTIK"), Customer);
+    _result = TS.Linq.Extensions.singleOrDefault(customersEnumerable.where(_CUST => _CUST.CustomerID == "OTTIK"), TS_Linq_test_common.Customer);
     assert.equal(_result.CustomerID, "OTTIK", "Should return the expected single result.");
 
-    _result = TS.Linq.Extensions.singleOrDefault(customersEnumerable, Customer, (_CUST) => _CUST.CustomerID == "OTTIK");
+    _result = TS.Linq.Extensions.singleOrDefault(customersEnumerable, TS_Linq_test_common.Customer, (_CUST) => _CUST.CustomerID == "OTTIK");
     assert.equal(_result.CustomerID, "OTTIK", "Should return the expected single result.");
 
-    _result = TS.Linq.Extensions.singleOrDefault(customersEnumerable.where(_CUST => _CUST.CustomerID == "NOP"), Customer);
-    assert.deepEqual(_result, new Customer(), "Shoud return a default object for an 'enumerable' which is empty.");
+    _result = TS.Linq.Extensions.singleOrDefault(customersEnumerable.where(_CUST => _CUST.CustomerID == "NOP"), TS_Linq_test_common.Customer);
+    assert.deepEqual(_result, new TS_Linq_test_common.Customer(), "Shoud return a default object for an 'enumerable' which is empty.");
 
-    _result = TS.Linq.Extensions.singleOrDefault(customersEnumerable, Customer, (_CUST) => _CUST.CustomerID == "NOP");
-    assert.deepEqual(_result, new Customer(), "Shoud return a default object for a 'predicate' which doesn't match with the enumerable.");
+    _result = TS.Linq.Extensions.singleOrDefault(customersEnumerable, TS_Linq_test_common.Customer, (_CUST) => _CUST.CustomerID == "NOP");
+    assert.deepEqual(_result, new TS_Linq_test_common.Customer(), "Shoud return a default object for a 'predicate' which doesn't match with the enumerable.");
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.singleOrDefault(customersEnumerable.where(_CUST => _CUST.CustomerID.indexOf("BO") > -1), Customer);
+      TS.Linq.Extensions.singleOrDefault(customersEnumerable.where(_CUST => _CUST.CustomerID.indexOf("BO") > -1), TS_Linq_test_common.Customer);
     }, (err) => ((err.name == "TS.Linq.MoreThanOneElementException") ? true : false), "Should throw a 'TS.Linq.MoreThanOneElementException' for an 'enumerable' argument with more than one element.");
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.singleOrDefault(customersEnumerable, Customer, (_CUST) => _CUST.CustomerID.indexOf("BO") > -1);
+      TS.Linq.Extensions.singleOrDefault(customersEnumerable, TS_Linq_test_common.Customer, (_CUST) => _CUST.CustomerID.indexOf("BO") > -1);
     }, (err) => ((err.name == "TS.Linq.MoreThanOneElementException") ? true : false), "Should throw a 'TS.Linq.MoreThanOneElementException' for an for a 'predicate' which matches more than one element.");
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.singleOrDefault(null, Customer);
+      TS.Linq.Extensions.singleOrDefault(null, TS_Linq_test_common.Customer);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'enumerable' argument.");
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.singleOrDefault(_undedined, Customer);
+      TS.Linq.Extensions.singleOrDefault(_undedined, TS_Linq_test_common.Customer);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'enumerable' argument.");
 
     assert.throws(() =>
@@ -1579,8 +1693,8 @@ module TS_Linq_Extensions_test
 
     _expectedArr = new Array();
     _expectedArr.push(5, 6, 7, 8, 9, 10);
-    _numberEnumerable = TS.Linq.Enumerable.fromArray(CreateNumberArray());
-    _numberArr = TS.Linq.Extensions.skip(_numberEnumerable, 4).toArray();
+    _numberEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateNumberArray());
+    _numberArr = TS.Linq.Extensions.toArray(TS.Linq.Extensions.skip(_numberEnumerable, 4));
     assert.deepEqual(_numberArr, _expectedArr, "Should return a result array which matches with the expected array.");
 
     assert.throws(() =>
@@ -1609,8 +1723,8 @@ module TS_Linq_Extensions_test
 
     _expectedArr = new Array();
     _expectedArr.push(5, 6, 7, 8, 9, 10);
-    _numberEnumerable = TS.Linq.Enumerable.fromArray(CreateNumberArray());
-    _numberArr = TS.Linq.Extensions.skipWhile(_numberEnumerable, (item) => item < 5).toArray();
+    _numberEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateNumberArray());
+    _numberArr = TS.Linq.Extensions.toArray(TS.Linq.Extensions.skipWhile(_numberEnumerable, (item) => item < 5));
     assert.deepEqual(_numberArr, _expectedArr, "Should return a result array which matches with the expected array.");
 
     assert.throws(() =>
@@ -1641,7 +1755,7 @@ module TS_Linq_Extensions_test
     var _testResult: number;
     var _undefined;
 
-    _testNumberArray = CreateNumberArray();
+    _testNumberArray = TS_Linq_test_common.CreateNumberArray();
     _testResult = TS.Linq.Extensions.sum(TS.Linq.Enumerable.fromArray(_testNumberArray));
     assert.equal(_testResult, 55, "Should return expected sum.");
 
@@ -1679,8 +1793,8 @@ module TS_Linq_Extensions_test
 
     _expectedArr = new Array();
     _expectedArr.push(1, 2, 3, 4);
-    _numberEnumerable = TS.Linq.Enumerable.fromArray(CreateNumberArray());
-    _numberArr = TS.Linq.Extensions.take(_numberEnumerable, 4).toArray();
+    _numberEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateNumberArray());
+    _numberArr = TS.Linq.Extensions.toArray(TS.Linq.Extensions.take(_numberEnumerable, 4));
     assert.deepEqual(_numberArr, _expectedArr, "Should return a result array which matches with the expected array.");
 
     assert.throws(() =>
@@ -1709,8 +1823,8 @@ module TS_Linq_Extensions_test
 
     _expectedArr = new Array();
     _expectedArr.push(1, 2, 3, 4);
-    _numberEnumerable = TS.Linq.Enumerable.fromArray(CreateNumberArray());
-    _numberArr = TS.Linq.Extensions.takeWhile(_numberEnumerable, (item) => item < 5).toArray();
+    _numberEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateNumberArray());
+    _numberArr = TS.Linq.Extensions.toArray(TS.Linq.Extensions.takeWhile(_numberEnumerable, (item) => item < 5));
     assert.deepEqual(_numberArr, _expectedArr, "Should return a result array which matches with the expected array.");
 
     assert.throws(() =>
@@ -1742,8 +1856,8 @@ module TS_Linq_Extensions_test
     var _expectedArr: Array<number>;
     var _undefined;
 
-    _expectedArr = CreateNumberArray()
-    _numberEnumerable = TS.Linq.Enumerable.fromArray(CreateNumberArray());
+    _expectedArr = TS_Linq_test_common.CreateNumberArray()
+    _numberEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateNumberArray());
     _numberArr = TS.Linq.Extensions.toArray(_numberEnumerable);
     assert.deepEqual(_numberArr, _expectedArr, "Should return a result array which matches with the expected array.");
 
@@ -1761,19 +1875,19 @@ module TS_Linq_Extensions_test
 
   QUnit.test("thenBy", (assert) =>
   {
-    var _sortTestEnumerable: TS.Linq.Enumerable<ISortTestItem>;
-    var _orderedEnumerable: TS.Linq.OrderedEnumerable<ISortTestItem>;
-    var _resultArray: Array<ISortTestItem>;
-    var _resultArrayColorGroup: Array<ISortTestItem>;
+    var _sortTestEnumerable: TS.Linq.Enumerable<TS_Linq_test_common.ISortTestItem>;
+    var _orderedEnumerable: TS.Linq.OrderedEnumerable<TS_Linq_test_common.ISortTestItem>;
+    var _resultArray: Array<TS_Linq_test_common.ISortTestItem>;
+    var _resultArrayColorGroup: Array<TS_Linq_test_common.ISortTestItem>;
     var _colorsArray: Array<string>;
     var _index: number;
     var _sortedAsExpected: boolean;
     var _undefined;
 
-    _sortTestEnumerable = TS.Linq.Enumerable.fromArray(CreateSortTestArray());
+    _sortTestEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateSortTestArray());
     _orderedEnumerable = _sortTestEnumerable.orderBy(Item => Item.color);
     _orderedEnumerable = TS.Linq.Extensions.thenBy(_orderedEnumerable, Item => Item.location);
-    _resultArray = _orderedEnumerable.toArray();
+    _resultArray = TS.Linq.Extensions.toArray(_orderedEnumerable);
 
     _sortedAsExpected = true;
 
@@ -1800,7 +1914,7 @@ module TS_Linq_Extensions_test
     //Check that in each color group the items 
     //are sorted by location as expected.
     //
-    _colorsArray = TS.Linq.Enumerable.fromArray<ISortTestItem>(_resultArray).select<string>(Item => Item.color).distinct().toArray();
+    _colorsArray = TS.Linq.Extensions.toArray(TS.Linq.Enumerable.fromArray<TS_Linq_test_common.ISortTestItem>(_resultArray).select<string>(Item => Item.color).distinct());
     _colorsArray.forEach((value) => 
     {
       _resultArrayColorGroup = _resultArray.filter(Item => Item.color == value);
@@ -1824,31 +1938,31 @@ module TS_Linq_Extensions_test
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.thenBy<ISortTestItem, string>(null, Item => Item.location);
+      TS.Linq.Extensions.thenBy<TS_Linq_test_common.ISortTestItem, string>(null, Item => Item.location);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'enumerable' argument.");
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.thenBy<ISortTestItem, string>(_undefined, Item => Item.location);
+      TS.Linq.Extensions.thenBy<TS_Linq_test_common.ISortTestItem, string>(_undefined, Item => Item.location);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'enumerable' argument.");
   });
 
 
   QUnit.test("thenByDescending", (assert) =>
   {
-    var _sortTestEnumerable: TS.Linq.Enumerable<ISortTestItem>;
-    var _orderedEnumerable: TS.Linq.OrderedEnumerable<ISortTestItem>;
-    var _resultArray: Array<ISortTestItem>;
-    var _resultArrayColorGroup: Array<ISortTestItem>;
+    var _sortTestEnumerable: TS.Linq.Enumerable<TS_Linq_test_common.ISortTestItem>;
+    var _orderedEnumerable: TS.Linq.OrderedEnumerable<TS_Linq_test_common.ISortTestItem>;
+    var _resultArray: Array<TS_Linq_test_common.ISortTestItem>;
+    var _resultArrayColorGroup: Array<TS_Linq_test_common.ISortTestItem>;
     var _colorsArray: Array<string>;
     var _index: number;
     var _sortedAsExpected: boolean;
     var _undefined;
 
-    _sortTestEnumerable = TS.Linq.Enumerable.fromArray(CreateSortTestArray());
+    _sortTestEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateSortTestArray());
     _orderedEnumerable = _sortTestEnumerable.orderBy(Item => Item.color);
     _orderedEnumerable = TS.Linq.Extensions.thenByDescending(_orderedEnumerable, Item => Item.location);
-    _resultArray = _orderedEnumerable.toArray();
+    _resultArray = TS.Linq.Extensions.toArray(_orderedEnumerable);
 
     _sortedAsExpected = true;
 
@@ -1875,7 +1989,7 @@ module TS_Linq_Extensions_test
     //Check that in each color group the items 
     //are sorted by location as expected.
     //
-    _colorsArray = TS.Linq.Enumerable.fromArray<ISortTestItem>(_resultArray).select<string>(Item => Item.color).distinct().toArray();
+    _colorsArray = TS.Linq.Extensions.toArray(TS.Linq.Enumerable.fromArray<TS_Linq_test_common.ISortTestItem>(_resultArray).select<string>(Item => Item.color).distinct());
     _colorsArray.forEach((value) => 
     {
       _resultArrayColorGroup = _resultArray.filter(Item => Item.color == value);
@@ -1899,29 +2013,29 @@ module TS_Linq_Extensions_test
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.thenByDescending<ISortTestItem, string>(null, Item => Item.location);
+      TS.Linq.Extensions.thenByDescending<TS_Linq_test_common.ISortTestItem, string>(null, Item => Item.location);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'enumerable' argument.");
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.thenByDescending<ISortTestItem, string>(_undefined, Item => Item.location);
+      TS.Linq.Extensions.thenByDescending<TS_Linq_test_common.ISortTestItem, string>(_undefined, Item => Item.location);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'enumerable' argument.");
   });
 
 
   QUnit.test("union", (assert) =>
   {
-    var _carsEnumOne: TS.Linq.Enumerable<ICar>;
-    var _carsEnumTwo: TS.Linq.Enumerable<ICar>;
-    var _carsEnumResult: TS.Linq.Enumerable<ICar>;
-    var _carsArrayResult: Array<ICar>;
+    var _carsEnumOne: TS.Linq.Enumerable<TS_Linq_test_common.ICar>;
+    var _carsEnumTwo: TS.Linq.Enumerable<TS_Linq_test_common.ICar>;
+    var _carsEnumResult: TS.Linq.Enumerable<TS_Linq_test_common.ICar>;
+    var _carsArrayResult: Array<TS_Linq_test_common.ICar>;
     var _undefined;
 
-    _carsEnumOne = TS.Linq.Enumerable.fromArray(CreateCarsArray());
-    _carsEnumTwo = TS.Linq.Enumerable.fromArray(CreateCarsUnionTestArray());
+    _carsEnumOne = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateCarsArray());
+    _carsEnumTwo = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateCarsUnionTestArray());
 
     _carsEnumResult = TS.Linq.Extensions.union(_carsEnumOne, _carsEnumTwo);
-    _carsArrayResult = _carsEnumResult.toArray();
+    _carsArrayResult = TS.Linq.Extensions.toArray(_carsEnumResult);
 
     assert.ok(_carsArrayResult.length == 10, "Should return a result with 8 elements.");
 
@@ -1949,10 +2063,10 @@ module TS_Linq_Extensions_test
 
   QUnit.test("where", (assert) =>
   {
-    var _resultArrayBob = TS.Linq.Extensions.where(personEnumerable, (item: any) => item.FirstName == "Bob").toArray();
-    var _resultArrayMichael = TS.Linq.Extensions.where(personEnumerable, (item: any) => item.FirstName == "Michael").toArray();
-    var _resultArrayEdward = TS.Linq.Extensions.where(personEnumerable, (item: any) => item.FirstName == "Edward").toArray();
-    var _allArray = TS.Linq.Extensions.orderBy(personEnumerable, (item: any) => item.FirstName).select((item: any) => item.FirstName).toArray();
+    var _resultArrayBob = TS.Linq.Extensions.toArray(TS.Linq.Extensions.where(personEnumerable, (item: any) => item.FirstName == "Bob"));
+    var _resultArrayMichael = TS.Linq.Extensions.toArray(TS.Linq.Extensions.where(personEnumerable, (item: any) => item.FirstName == "Michael"));
+    var _resultArrayEdward = TS.Linq.Extensions.toArray(TS.Linq.Extensions.where(personEnumerable, (item: any) => item.FirstName == "Edward"));
+    var _allArray = TS.Linq.Extensions.toArray(TS.Linq.Extensions.orderBy(personEnumerable, (item: any) => item.FirstName).select((item: any) => item.FirstName));
     var _undefined;
 
     assert.ok((_resultArrayBob.length == 1 && _resultArrayMichael.length == 5 && _resultArrayEdward.length == 3 && _allArray.length == 400), "Should return the expected number of items for the executed 'where' causes.");
@@ -1969,238 +2083,4 @@ module TS_Linq_Extensions_test
   });
 
 
-  export interface IOrders
-  {
-    CustomerID: string;
-    EmployeeID: number;
-    Freight: number;
-    OrderDate: Date;
-    OrderID: number;
-    RequiredDate: Date;
-    ShipAddress: string;
-    ShipCity: string;
-    ShipCountry: string;
-    ShipName: string;
-    ShippedDate: Date;
-    ShipPostalCode: string;
-    ShipRegion: string;
-    ShipVia: number;
-  }
-
-
-  export interface ICustomer
-  {
-    Address: string;
-    City: string;
-    CompanyName: string;
-    ContactName: string;
-    ContactTitle: string;
-    Country: string;
-    CustomerID: string;
-    Fax: string;
-    Phone: string;
-    PostalCode: string;
-    Region: string;
-  }
-
-
-  export class Customer implements ICustomer
-  {
-    constructor(public Address: string = "", public City: string = "", public CompanyName: string = "", public ContactName: string = "", public ContactTitle: string = "", public Country: string = "", public CustomerID: string = "", public Fax: string = "", public Phone: string = "", public PostalCode: string = "", public Region: string = "")
-    {
-    }
-
-  }
-
-
-  export interface ICar
-  {
-    name: string;
-    horsePower: number;
-    disel: boolean;
-    buildYear: number;
-    price: number;
-  }
-
-
-  export class Car implements ICar
-  {
-    constructor(public name: string = "", public horsePower: number = 0, public disel: boolean = false, public buildYear: number = Date.parse("1970-01-01"), public price: number = 0)
-    {
-    }
-
-  }
-
-
-  /**
-  *  @description
-  *    Creates and returns an array containing
-  *    5 elements of type 'ICar'. Two of the elements
-  *    are also part of the array created by the
-  *    function 'CreateCarsArray'. (AUDI, FIAT)
-  */
-  export function CreateCarsUnionTestArray(): Array<ICar>
-  {
-    var _resultCarArray: Array<ICar>;
-
-    _resultCarArray = new Array<ICar>();
-
-    _resultCarArray.push(new Car("VOLVO", 220, false, Date.parse("1999-01-01"), 21000));
-    _resultCarArray.push(new Car("AUDI", 160, true, Date.parse("2000-09-01"), 15000));
-    _resultCarArray.push(new Car("BENTLEY", 350, false, Date.parse("2012-01-01"), 55000));
-    _resultCarArray.push(new Car("FIAT", 80, true, Date.parse("1980-12-01"), 1000));
-    _resultCarArray.push(new Car("SCODA", 133, true, Date.parse("1999-01-01"), 3333));
-    return _resultCarArray;
-  }
-
-
-  /**
-  *  @description
-  *    Creates and returns an array containing
-  *    5 elements of type 'ICar'.
-  */
-  export function CreateCarsArray(): Array<ICar>
-  {
-    return new Array<ICar>(
-      { name: "BMW", horsePower: 200, disel: false, buildYear: Date.parse("2010-01-01"), price: 22000 },
-      { name: "AUDI", horsePower: 160, disel: true, buildYear: Date.parse("2000-09-01"), price: 15000 },
-      { name: "VW", horsePower: 120, disel: false, buildYear: Date.parse("1999-04-01"), price: 4000 },
-      { name: "FIAT", horsePower: 80, disel: true, buildYear: Date.parse("1980-12-01"), price: 1000 },
-      { name: "TRABANT", horsePower: 35, disel: false, buildYear: Date.parse("1977-06-01"), price: 1 }
-      );
-  }
-
-
-  export interface ISortTestItem
-  {
-    color: string;
-    number: number;
-    location: string;
-  }
-
-
-  /**
-  *  @description
-  *    Creates and returns an array containing
-  *    12 elements of type 'ISortTestItem'.
-  */
-  export function CreateSortTestArray(): Array<any>
-  {
-    return new Array(
-      { color: "red", number: 1, location: "europe" },
-      { color: "blue", number: 3, location: "asia" },
-      { color: "red", number: 1, location: "europe" },
-      { color: "red", number: 2, location: "america" },
-      { color: "blue", number: 2, location: "australia" },
-      { color: "red", number: 1, location: "america" },
-      { color: "green", number: 1, location: "asia" },
-      { color: "red", number: 1, location: "america" },
-      { color: "green", number: 3, location: "greenland" },
-      { color: "red", number: 3, location: "europe" },
-      { color: "blue", number: 1, location: "africa" },
-      { color: "red", number: 3, location: "greenland" });
-  }
-
-
-  export interface IStorage
-  {
-    Room: string;
-    Rack: number;
-    Shelf: number;
-    Sector: number;
-    Place: number;
-    Amount: number;
-    Unit: string;
-  }
-
-
-  export interface IProduct
-  {
-    ID: number;
-    Name: string;
-    Price: number;
-    Currency: string;
-    Storage: IStorage;
-  }
-
-
-  export function CreateProductArray() 
-  {
-    var _productArray : Array<IProduct>;
-    var _product: IProduct;
-
-    _productArray = new Array<IProduct>();
-    _product = { ID: 1234, Name: "Nexus 1530", Price: 250.0, Currency: "Euro", Storage: { Room: "STR 001", Rack: 25, Shelf: 13, Sector: 8, Place: 44, Amount: 15, Unit: "Piece" } };
-    _productArray.push(_product);
-    _product = { ID: 2345, Name: "Hair Dryer", Price: 20.0, Currency: "$", Storage: { Room: "STR 001", Rack: 20, Shelf: 44, Sector: 12, Place: 8, Amount: 200, Unit: "Piece" } };
-    _productArray.push(_product);
-    _product = { ID: 3456, Name: "Digital Clock", Price: 5.0, Currency: "YEN", Storage: { Room: "STR 001", Rack: 20, Shelf: 45, Sector: 4, Place: 1, Amount: 2000, Unit: "Piece" } };
-    _productArray.push(_product);
-    _product = { ID: 4567, Name: "Wrench", Price: 4.30, Currency: "£", Storage: { Room: "STR 002", Rack: 4, Shelf: 1, Sector: 1, Place: 5, Amount: 400, Unit: "Piece" } };
-    _productArray.push(_product);
-    _product = { ID: 5678, Name: "Screw Driver", Price: 5.20, Currency: "¥", Storage: { Room: "STR 002", Rack: 4, Shelf: 1, Sector: 1, Place: 6, Amount: 400, Unit: "Piece" } };
-    _productArray.push(_product);
-    _product = { ID: 6789, Name: "Nuts", Price: 0.04, Currency: "€", Storage: { Room: "STR 002", Rack: 4, Shelf: 1, Sector: 1, Place: 7, Amount: 5000, Unit: "Piece" } };
-    _productArray.push(_product);
-    _product = { ID: 7890, Name: "Shim", Price: 0.01, Currency: "GBP", Storage: { Room: "STR 002", Rack: 4, Shelf: 1, Sector: 1, Place: 8, Amount: 50000, Unit: "Piece" } };
-    _productArray.push(_product);
-    _product = { ID: 8901, Name: "Nail", Price: 0.01, Currency: "EUR", Storage: { Room: "STR 002", Rack: 4, Shelf: 1, Sector: 1, Place: 8, Amount: 50000, Unit: "Piece" } };
-    _productArray.push(_product);
-    _product = { ID: 9012, Name: "Glue", Price: 4.0, Currency: "$", Storage: { Room: "STR 002", Rack: 5, Shelf: 2, Sector: 7, Place: 10, Amount: 500, Unit: "Litre" } };
-    _productArray.push(_product);
-    _product = { ID: 9013, Name: "Cast", Price: 5.0, Currency: "€", Storage: { Room: "STR 002", Rack: 5, Shelf: 2, Sector: 7, Place: 11, Amount: 1500, Unit: "Kilo" } };
-    _productArray.push(_product);
-    _product = { ID: 2222, Name: "Grain", Price: 0.5, Currency: "EURO", Storage: { Room: "STR 003", Rack: 1, Shelf: 1, Sector: 1, Place: 1, Amount: 1000, Unit: "Kilo" } };
-    _productArray.push(_product);
-    _product = { ID: 3333, Name: "Meet", Price: 5.0, Currency: "¥", Storage: { Room: "STR 003", Rack: 1, Shelf: 1, Sector: 1, Place: 2, Amount: 2000, Unit: "Kilo" } };
-    _productArray.push(_product);
-    _product = { ID: 4444, Name: "Fish", Price: 6.0, Currency: "£", Storage: { Room: "STR 003", Rack: 1, Shelf: 1, Sector: 1, Place: 3, Amount: 3000, Unit: "Kilo" } };
-    _productArray.push(_product);
-    _product = { ID: 5555, Name: "Vegetables", Price: 3.0, Currency: "YEN", Storage: { Room: "STR 003", Rack: 1, Shelf: 1, Sector: 1, Place: 4, Amount: 4000, Unit: "Kilo" } };
-    _productArray.push(_product);
-
-    return _productArray;
-  }
-
-  /**
-  *  @description
-  *    Creates and returns an array containing
-  *    as much random number as defined in 
-  *    argument 'number'.
-  */
-  export function CreateRandomNumberArray(numbers: number)
-  {
-    var _index: number;
-    var _resultArr: Array<number>;
-
-    _resultArr = new Array<number>();
-
-    for (_index = 0; _index < numbers; _index++)
-    {
-      _resultArr.push(Math.floor(Math.random() * numbers));
-    }//END for;
-
-    return _resultArr;
-  }
-
-  /**
-  *  @description
-  *    Creates and returns an array containing
-  *    the numbers from 1 to 10.
-  */
-  export function CreateNumberArray()
-  {
-    return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  }
-
-
-  /**
-  *  @description
-  *    Creates and returns an array containing
-  *    the worde "one" to "ten".
-  */
-  export function CreateStringArray()
-  {
-    return ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
-  }
 }//END module

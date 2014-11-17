@@ -322,6 +322,41 @@ module TS
 
       /**
       *  @description
+      *    This function retuns as much elements from the 
+      *    base enumeration as required. The function starts
+      *    over with the first element in the base enumeration
+      *    when the end of the base enumeration is reached.
+      *    The generator runs in cycles over the underlying
+      *    data source. Hence the name for that function. This 
+      *    function will never run out of data.
+      *    There is one exception of that rule. If the
+      *    underlying enumeration was empty, the 
+      *    cycle function will never give a result.
+      *
+      *    Attention:
+      *    Use this function with a subsequent call to
+      *    'take' to limit the output or you will run out 
+      *    of memeory.
+      *
+      *    Deferred execution.
+      *
+      *  @returns
+      *    Enumerable<TSource>, the result enumerable.
+      *
+      *  @throws
+      *    TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      */
+      public cycle()
+      {
+        return Extensions.cycle(this);
+      }
+
+
+      /**
+      *  @description
       *    Returns the elements of an Enumerable<T>, or a default valued singleton collection if the sequence is empty.
       *
       *    Deferred execution.
@@ -444,17 +479,16 @@ module TS
 
       /**
       *  @description
-      *    Returns an empty Enumerable<T> that has the specified type argument.
+      *    Returns an empty Enumerable<TResult> that has the specified type argument.
       *
-      *    Deferred execution.
+      *    Immediate execution.
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/bb341042.aspx | MSDN}
       *
       *  @retuns
-      *    Enumerable<T>, an empty enumerable.
-      *
+      *    Enumerable<TResult>, an empty enumerable.
       */
-      public empty(): IEnumerable<T>
+      public static empty<T>(): Enumerable<T>
       {
         return Extensions.empty<T>();
       }
@@ -480,7 +514,7 @@ module TS
       *    TS.ArgumentNullOrUndefinedException
       *
       */
-      public except(otherEnumerable: Enumerable<T>): IEnumerable<T>
+      public except(otherEnumerable: Enumerable<T>): Enumerable<T>
       /**
       *  @description
       *    Produces the set difference of two sequences by using the specified
@@ -497,8 +531,8 @@ module TS
       *    TS.ArgumentNullOrUndefinedException
       *
       */
-      public except(otherEnumerable: Enumerable<T>, equalityComparer: <T>(first: T, second: T) => boolean): IEnumerable<T>
-      public except(otherEnumerable: Enumerable<T>, equalityComparer?: <T>(first: T, second: T) => boolean): IEnumerable<T>
+      public except(otherEnumerable: Enumerable<T>, equalityComparer: <T>(first: T, second: T) => boolean): Enumerable<T>
+      public except(otherEnumerable: Enumerable<T>, equalityComparer?: <T>(first: T, second: T) => boolean): Enumerable<T>
       {
         return Extensions.except(this, otherEnumerable, equalityComparer);
       }
@@ -707,9 +741,9 @@ module TS
       *  @throws
       *    TS.InvalidTypeException.
       */
-      public groupJoin<TOuter, TInner, TKey, TResult>(outerEnumerable: Enumerable<TOuter>, innerEnumerable: Enumerable<TInner>, outerKeySelector: (outerItem: TOuter) => TKey, innerKeySelector: (innerItem: TInner) => TKey, resultSelector: (outerItem: TOuter, group: IEnumerable<TInner>) => TResult, equalityComparer?: <TKey>(first: TKey, second: TKey) => boolean): Enumerable<TResult>
+      public groupJoin<T, TInner, TKey, TResult>(innerEnumerable: Enumerable<TInner>, outerKeySelector: (outerItem: T) => TKey, innerKeySelector: (innerItem: TInner) => TKey, resultSelector: (outerItem: T, group: IEnumerable<TInner>) => TResult, equalityComparer?: <TKey>(first: TKey, second: TKey) => boolean): Enumerable<TResult>
       {
-        return Extensions.groupJoin(this, innerEnumerable, outerKeySelector, innerKeySelector, resultSelector);
+        return Extensions.groupJoin(this, innerEnumerable, outerKeySelector, innerKeySelector, resultSelector, equalityComparer);
       }
 
 
@@ -896,6 +930,7 @@ module TS
         }//END if
 
         _enumerator = this.getEnumerator();
+        _numberArray = new Array<number>();
 
         while (_enumerator.moveNext())
         {
@@ -934,9 +969,9 @@ module TS
       *  @throws
       *    TS.InvalidTypeException.
       */
-      public orderBy(selector: (item: T) => any, comparer?: (first: any, second: any) => number): OrderedEnumerable<T>
+      public orderBy<TKey>(keySelector: (item: T) => TKey, comparer?: (first: TKey, second: TKey) => number): OrderedEnumerable<T>
       {
-        return Extensions.orderBy(this, selector, comparer);
+        return Extensions.orderBy(this, keySelector, comparer);
       }
 
 
@@ -961,9 +996,9 @@ module TS
       *  @throws
       *    TS.InvalidTypeException.
       */
-      public orderByDescending(selector: (item: T) => any, comparer?: (first: any, second: any) => number): OrderedEnumerable<T>
+      public orderByDescending<TKey>(keySelector: (item: T) => TKey, comparer?: (first: TKey, second: TKey) => number): OrderedEnumerable<T>
       {
-        return Extensions.orderByDescending(this, selector, comparer);
+        return Extensions.orderByDescending(this, keySelector, comparer);
       }
 
 

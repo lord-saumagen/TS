@@ -22,7 +22,7 @@
           throw new ArgumentNullOrUndefinedException("dataArray", "Argument 'dataArray' must not be null or undefined in the constructor of 'TArrayEnumerable'.");
         }//END if
 
-        super(() => { return new ArrayEnumerator(dataArray); });
+        super(() => { return new ArrayEnumerator<TSource>(dataArray); });
       }
 
       /**

@@ -756,9 +756,14 @@ module TS
       *    underlying enumeration was empty, the 
       *    cycle function will never give a result.
       *
+      *    Attention:
+      *    Use this function with a subsequent call to
+      *    'take' to limit the output or you will run out 
+      *    of memeory.
+      *
       *    Deferred execution.
       *
-      *  @retuns
+      *  @returns
       *    Enumerable<TSource>, the result enumerable.
       *
       *  @throws
@@ -1184,7 +1189,7 @@ module TS
           return new ArrayEnumerator(_resultArray);
         }
 
-        return new Enumerable(_callback);
+        return new Enumerable<TSource>(_callback);
       }
 
 
@@ -2123,7 +2128,7 @@ module TS
       *  @throws
       *    TS.ArgumentNullOrUndefinedException
       */
-      export function orderBy<TSource, U>(enumerable: Enumerable<TSource>, selector: (item: TSource) => U): OrderedEnumerable<TSource>
+      export function orderBy<TSource, TKey>(enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey): OrderedEnumerable<TSource>
       /**
       *  @description
       *    Sorts the elements of a sequence in ascending order by using a specified comparer.
@@ -2141,8 +2146,8 @@ module TS
       *  @throws
       *    TS.InvalidTypeException.
       */
-      export function orderBy<TSource, U>(enumerable: Enumerable<TSource>, selector: (item: TSource) => U, comparer: (first: U, second: U) => number): OrderedEnumerable<TSource>
-      export function orderBy<TSource, U>(enumerable: Enumerable<TSource>, selector: (item: TSource) => U, comparer?: (first: U, second: U) => number): OrderedEnumerable<TSource>
+      export function orderBy<TSource, TKey>(enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey, comparer: (first: TKey, second: TKey) => number): OrderedEnumerable<TSource>
+      export function orderBy<TSource, TKey>(enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey, comparer?: (first: TKey, second: TKey) => number): OrderedEnumerable<TSource>
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
         var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
@@ -2151,7 +2156,7 @@ module TS
         var _callback: () => IEnumerator<TSource>;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.orderBy");
-        _checkFunctionParameter(selector, "selector", "TS.Linq.Extensions.orderBy");
+        _checkFunctionParameter(keySelector, "keySelector", "TS.Linq.Extensions.orderBy");
 
         if (!TS.Utils.TypeInfo.isNullOrUndefined(comparer))
         {
@@ -2170,9 +2175,9 @@ module TS
           _checkFunctionParameter(comparer, "comparer", "TS.Linq.Extensions.orderBy");
         }//END else
 
-        _callback = () => new ArrayEnumerator(enumerable.toArray().sort((first, second) => { var _first = selector(first); var _second = selector(second); return comparer(_first, _second); }));
+        _callback = () => new ArrayEnumerator(enumerable.toArray().sort((first, second) => { var _first = keySelector(first); var _second = keySelector(second); return comparer(_first, _second); }));
 
-        return new OrderedEnumerable<TSource>(_callback, selector, comparer);
+        return new OrderedEnumerable<TSource>(_callback, keySelector, comparer);
       }
 
 
@@ -2190,7 +2195,7 @@ module TS
       *  @throws
       *    TS.ArgumentNullOrUndefinedException
       */
-      export function orderByDescending<TSource, U>(enumerable: Enumerable<TSource>, selector: (item: TSource) => U): OrderedEnumerable<TSource>
+      export function orderByDescending<TSource, TKey>(enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey): OrderedEnumerable<TSource>
       /**
       *  @description
       *    Sorts the elements of a sequence in descending order by using a specified comparer.
@@ -2208,8 +2213,8 @@ module TS
       *  @throws
       *    TS.InvalidTypeException.
       */
-      export function orderByDescending<TSource, U>(enumerable: Enumerable<TSource>, selector: (item: TSource) => U, comparer: (first: U, second: U) => number): OrderedEnumerable<TSource>
-      export function orderByDescending<TSource, U>(enumerable: Enumerable<TSource>, selector: (item: TSource) => U, comparer?: (first: U, second: U) => number): OrderedEnumerable<TSource>
+      export function orderByDescending<TSource, TKey>(enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey, comparer: (first: TKey, second: TKey) => number): OrderedEnumerable<TSource>
+      export function orderByDescending<TSource, TKey>(enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey, comparer?: (first: TKey, second: TKey) => number): OrderedEnumerable<TSource>
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
         var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
@@ -2218,7 +2223,7 @@ module TS
         var _callback: () => IEnumerator<TSource>;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.orderBy");
-        _checkFunctionParameter(selector, "selector", "TS.Linq.Extensions.orderBy");
+        _checkFunctionParameter(keySelector, "keySelector", "TS.Linq.Extensions.orderBy");
 
         if (!TS.Utils.TypeInfo.isNullOrUndefined(comparer))
         {
@@ -2237,9 +2242,9 @@ module TS
           _checkFunctionParameter(comparer, "comparer", "TS.Linq.Extensions.orderBy");
         }//END else
 
-        _callback = () => new ArrayEnumerator(enumerable.toArray().sort((first, second) => { var _first = selector(first); var _second = selector(second); return -1 * comparer(_first, _second); }));
+        _callback = () => new ArrayEnumerator(enumerable.toArray().sort((first, second) => { var _first = keySelector(first); var _second = keySelector(second); return -1 * comparer(_first, _second); }));
 
-        return new OrderedEnumerable<TSource>(_callback, selector, comparer);
+        return new OrderedEnumerable<TSource>(_callback, keySelector, comparer);
       }
 
 
@@ -2465,8 +2470,6 @@ module TS
         _checkEnumerable(enumerable, "TS.Linq.Extensions.select");
         _checkParameter(selector, "selector", "TS.Linq.Extensions.select");
         _checkFunctionParameter(selector, "selector", "TS.Linq.Extensions.select");
-
-        _enumerator = enumerable.getEnumerator();
 
         _callback = () =>
         {

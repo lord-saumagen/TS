@@ -22,7 +22,7 @@
       /**
       * @constructs
       * @param
-      *    dataArray, a none null array of type T.
+      *    dataArray, a none null array of type TSource.
       * @throws
       *    TArgumentNullOrUndefinedException
       */

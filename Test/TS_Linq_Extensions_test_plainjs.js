@@ -12,7 +12,7 @@ var TS_Linq_Extensions_test;
   {
     assert.throws(function ()
     {
-      TS.Linq.Extensions.aggregate(TS.Linq.Enumerable.fromArray(TS_Linq_Extensions_test.CreateStringArray()), new TS_Linq_Extensions_test.Car(), null);
+      TS.Linq.Extensions.aggregate(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()), new TS_Linq_test_common.Car(), null);
     }, function (err)
     {
       return (err.name == "TS.InvalidTypeException") ? true : false;
@@ -26,7 +26,7 @@ var TS_Linq_Extensions_test;
 
     assert.throws(function ()
     {
-      TS.Linq.Extensions.all(TS.Linq.Enumerable.fromArray(TS_Linq_Extensions_test.CreateStringArray()), {});
+      TS.Linq.Extensions.all(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()), {});
     }, function (err)
     {
       return (err.name == "TS.InvalidTypeException") ? true : false;
@@ -40,7 +40,7 @@ var TS_Linq_Extensions_test;
 
     assert.throws(function ()
     {
-      TS.Linq.Extensions.any(TS.Linq.Enumerable.fromArray(TS_Linq_Extensions_test.CreateStringArray()), {});
+      TS.Linq.Extensions.any(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()), {});
     }, function (err)
     {
       return (err.name == "TS.InvalidTypeException") ? true : false;
@@ -75,7 +75,7 @@ var TS_Linq_Extensions_test;
   {
     assert.throws(function ()
     {
-      TS.Linq.Extensions.concat({}, TS.Linq.Enumerable.fromArray(TS_Linq_Extensions_test.CreateStringArray()));
+      TS.Linq.Extensions.concat({}, TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()));
     }, function (err)
     {
       return (err.name == "TS.InvalidTypeException") ? true : false;
@@ -83,7 +83,7 @@ var TS_Linq_Extensions_test;
 
     assert.throws(function ()
     {
-      TS.Linq.Extensions.concat(TS.Linq.Enumerable.fromArray(TS_Linq_Extensions_test.CreateStringArray()), {});
+      TS.Linq.Extensions.concat(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()), {});
     }, function (err)
     {
       return (err.name == "TS.InvalidTypeException") ? true : false;
@@ -96,7 +96,7 @@ var TS_Linq_Extensions_test;
   {
     assert.throws(function ()
     {
-      TS.Linq.Extensions.contains(TS.Linq.Enumerable.fromArray(TS_Linq_Extensions_test.CreateStringArray()), "NOP", {});
+      TS.Linq.Extensions.contains(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()), "NOP", {});
     }, function (err)
     {
       return (err.name == "TS.InvalidTypeException") ? true : false;
@@ -117,7 +117,7 @@ var TS_Linq_Extensions_test;
 
     assert.throws(function ()
     {
-      TS.Linq.Extensions.count(TS.Linq.Enumerable.fromArray(TS_Linq_Extensions_test.CreateStringArray()), new TS_Linq_Extensions_test.Car());
+      TS.Linq.Extensions.count(TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateStringArray()), new TS_Linq_test_common.Car());
     }, function (err)
     {
       return (err.name == "TS.InvalidTypeException") ? true : false;
@@ -144,7 +144,7 @@ var TS_Linq_Extensions_test;
     var _testInputCarEnumerable;
     var _testResultCar;
 
-    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
+    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
     assert.throws(function ()
     {
@@ -170,7 +170,7 @@ var TS_Linq_Extensions_test;
     var _testInputCarEnumerable;
     var _testResultCar;
 
-    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
+    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
     assert.throws(function ()
     {
@@ -196,7 +196,7 @@ var TS_Linq_Extensions_test;
     var _testInputCarEnumerable;
     var _testResultCar;
 
-    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
+    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
     assert.throws(function ()
     {
@@ -221,11 +221,11 @@ var TS_Linq_Extensions_test;
   {
     var _testInputCarEnumerable;
 
-    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
+    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
     assert.throws(function ()
     {
-      TS.Linq.Extensions.elementAtOrDefault({}, 2, TS_Linq_Extensions_test.Car);
+      TS.Linq.Extensions.elementAtOrDefault({}, 2, TS_Linq_test_common.Car);
     }, function (err)
     {
       return (err.name == "TS.InvalidTypeException") ? true : false;
@@ -233,7 +233,7 @@ var TS_Linq_Extensions_test;
 
     assert.throws(function ()
     {
-      TS.Linq.Extensions.elementAtOrDefault(_testInputCarEnumerable, "2", TS_Linq_Extensions_test.Car);
+      TS.Linq.Extensions.elementAtOrDefault(_testInputCarEnumerable, "2", TS_Linq_test_common.Car);
     }, function (err)
     {
       return (err.name == "TS.InvalidTypeException") ? true : false;
@@ -255,7 +255,7 @@ var TS_Linq_Extensions_test;
     var _testInputCarEnumerable;
     var _testResultCar;
 
-    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
+    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
     assert.throws(function ()
     {
@@ -289,7 +289,7 @@ var TS_Linq_Extensions_test;
     var _testInputCarEnumerable;
     var _testResultCar;
 
-    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
+    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
     assert.throws(function ()
     {
@@ -315,14 +315,14 @@ var TS_Linq_Extensions_test;
     var _testInputCarEnumerable;
     var _testResultCar;
 
-    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
+    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
-    _testResultCar = TS.Linq.Extensions.firstOrDefault(_testInputCarEnumerable, TS_Linq_Extensions_test.Car, function (item) { return item.NOP == "NOP" });
-    assert.deepEqual(_testResultCar, new TS_Linq_Extensions_test.Car(), "Should return a default object if the predicate is erroneous.");
+    _testResultCar = TS.Linq.Extensions.firstOrDefault(_testInputCarEnumerable, TS_Linq_test_common.Car, function (item) { return item.NOP == "NOP" });
+    assert.deepEqual(_testResultCar, new TS_Linq_test_common.Car(), "Should return a default object if the predicate is erroneous.");
 
     assert.throws(function ()
     {
-      TS.Linq.Extensions.firstOrDefault({}, TS_Linq_Extensions_test.Car, function (item) { return true; });
+      TS.Linq.Extensions.firstOrDefault({}, TS_Linq_test_common.Car, function (item) { return true; });
     }, function (err)
     {
       return (err.name == "TS.InvalidTypeException") ? true : false;
@@ -338,7 +338,7 @@ var TS_Linq_Extensions_test;
 
     assert.throws(function ()
     {
-      TS.Linq.Extensions.firstOrDefault(_testInputCarEnumerable, TS_Linq_Extensions_test.Car, {});
+      TS.Linq.Extensions.firstOrDefault(_testInputCarEnumerable, TS_Linq_test_common.Car, {});
     }, function (err)
     {
       return (err.name == "TS.InvalidTypeException") ? true : false;
@@ -364,7 +364,7 @@ var TS_Linq_Extensions_test;
   {
     var _productEnumerable
 
-    _productEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateProductArray());
+    _productEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateProductArray());
 
     assert.throws(function ()
     {
@@ -610,7 +610,7 @@ var TS_Linq_Extensions_test;
     var _testInputCarEnumerable;
     var _testResultCar;
 
-    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
+    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
     assert.throws(function ()
     {
@@ -636,14 +636,14 @@ var TS_Linq_Extensions_test;
     var _testInputCarEnumerable;
     var _testResultCar;
 
-    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
+    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
-    _testResultCar = TS.Linq.Extensions.lastOrDefault(_testInputCarEnumerable, TS_Linq_Extensions_test.Car, function (item) { return item.NOP == "NOP" });
-    assert.deepEqual(_testResultCar, new TS_Linq_Extensions_test.Car(), "Should return a default object if the predicate is erroneous.");
+    _testResultCar = TS.Linq.Extensions.lastOrDefault(_testInputCarEnumerable, TS_Linq_test_common.Car, function (item) { return item.NOP == "NOP" });
+    assert.deepEqual(_testResultCar, new TS_Linq_test_common.Car(), "Should return a default object if the predicate is erroneous.");
 
     assert.throws(function ()
     {
-      TS.Linq.Extensions.lastOrDefault({}, TS_Linq_Extensions_test.Car, function (item) { return true; });
+      TS.Linq.Extensions.lastOrDefault({}, TS_Linq_test_common.Car, function (item) { return true; });
     }, function (err)
     {
       return (err.name == "TS.InvalidTypeException") ? true : false;
@@ -659,7 +659,7 @@ var TS_Linq_Extensions_test;
 
     assert.throws(function ()
     {
-      TS.Linq.Extensions.lastOrDefault(_testInputCarEnumerable, TS_Linq_Extensions_test.Car, {});
+      TS.Linq.Extensions.lastOrDefault(_testInputCarEnumerable, TS_Linq_test_common.Car, {});
     }, function (err)
     {
       return (err.name == "TS.InvalidTypeException") ? true : false;
@@ -671,7 +671,7 @@ var TS_Linq_Extensions_test;
   {
     var _stringEnumerable;
 
-    _stringEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateStringArray());
+    _stringEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateStringArray());
 
     assert.throws(function ()
     {
@@ -696,7 +696,7 @@ var TS_Linq_Extensions_test;
   {
     var _stringEnumerable;
 
-    _stringEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateStringArray());
+    _stringEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateStringArray());
 
     assert.throws(function ()
     {
@@ -722,7 +722,7 @@ var TS_Linq_Extensions_test;
     var _testInputCarEnumerable;
     var _testResultCar;
 
-    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
+    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
     assert.throws(function ()
     {
@@ -804,7 +804,7 @@ var TS_Linq_Extensions_test;
     var _carsEnumerable;
     var _resultArray;
 
-    _carsEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
+    _carsEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
     assert.throws(function ()
     {
@@ -830,7 +830,7 @@ var TS_Linq_Extensions_test;
     var _carsEnumerable;
     var _resultArray;
 
-    _carsEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
+    _carsEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
     assert.throws(function ()
     {
@@ -855,7 +855,7 @@ var TS_Linq_Extensions_test;
   {
     var _numberEnumerable;
 
-    _numberEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateNumberArray())
+    _numberEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateNumberArray())
     assert.throws(function ()
     {
       TS.Linq.Extensions.sequenceEqual({}, _numberEnumerable);
@@ -887,7 +887,7 @@ var TS_Linq_Extensions_test;
   {
     var _carsEnumerable;
 
-    _carsEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
+    _carsEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
     assert.throws(function ()
     {
@@ -912,7 +912,7 @@ var TS_Linq_Extensions_test;
   {
     var _carsEnumerable;
 
-    _carsEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
+    _carsEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
     assert.throws(function ()
     {
@@ -959,7 +959,7 @@ var TS_Linq_Extensions_test;
   {
     var _carsEnumerable;
 
-    _carsEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
+    _carsEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
     assert.throws(function ()
     {
@@ -984,7 +984,7 @@ var TS_Linq_Extensions_test;
   {
     var _carsEnumerable;
 
-    _carsEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
+    _carsEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
     assert.throws(function ()
     {
@@ -1003,7 +1003,7 @@ var TS_Linq_Extensions_test;
     var _orderedEnumerable;
     var _undefined;
 
-    _sortTestEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_Extensions_test.CreateSortTestArray());
+    _sortTestEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateSortTestArray());
     _orderedEnumerable = _sortTestEnumerable.orderBy(function (item) { return item.color; });
 
     assert.throws(function ()
@@ -1031,7 +1031,7 @@ var TS_Linq_Extensions_test;
     var _orderedEnumerable;
     var _undefined;
 
-    _sortTestEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_Extensions_test.CreateSortTestArray());
+    _sortTestEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateSortTestArray());
     _orderedEnumerable = _sortTestEnumerable.orderBy(function (item) { return item.color; });
 
     assert.throws(function ()
@@ -1057,7 +1057,7 @@ var TS_Linq_Extensions_test;
   {
     var _carsEnumerable;
 
-    _carsEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
+    _carsEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
     assert.throws(function ()
     {
@@ -1082,7 +1082,7 @@ var TS_Linq_Extensions_test;
   {
     var _carsEnumerable;
 
-    _carsEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_Extensions_test.CreateCarsArray());
+    _carsEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
 
     assert.throws(function ()
     {
