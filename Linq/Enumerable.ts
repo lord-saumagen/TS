@@ -12,7 +12,7 @@ module TS
 
   export module Linq
   {
-    
+
     /**
     * @class
     * @classdesc 
@@ -217,7 +217,7 @@ module TS
         }//END while
 
         _enumerator.dispose();
-       
+
         return Extensions.average(Enumerable.fromArray(_numberArray));
       }
 
@@ -716,7 +716,7 @@ module TS
       */
       public groupBy<TKey, TResult>(keySelector: (item: T) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, resultSelector?: (key: TKey, group: Enumerable<T>) => TResult): Enumerable<TResult>
 
-      public groupBy<TKey, any>(keySelector: (item: T) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, elementOrResultSelector?: any) : Enumerable<any>
+      public groupBy<TKey, any>(keySelector: (item: T) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, elementOrResultSelector?: any): Enumerable<any>
       {
         return TS.Linq.Extensions.groupBy(this, keySelector, equalityComparer, elementOrResultSelector);
       }
@@ -767,7 +767,7 @@ module TS
       *
       *  @throws
       *    TS.InvalidTypeException.
-      */     
+      */
       public intersect(otherEnumerable: Enumerable<T>, equalityComparer?: (first: T, second: T) => boolean): Enumerable<T>
       {
         return Extensions.intersect(this, otherEnumerable, equalityComparer);
@@ -1000,6 +1000,44 @@ module TS
       {
         return Extensions.orderByDescending(this, keySelector, comparer);
       }
+      
+
+      /**
+      *  @description
+      *    Retuns random elements from the curren enumerable.
+      *    The function uses a generator to select the
+      *    current randome element. For that reason the
+      *    function will return as much elements as required,
+      *    regardless how much elements the underlying enumerable
+      *    holds. There is one exception of that rule.
+      *    If the underlying enumerable is empty, the
+      *    random function will never give a result.
+      *
+      *    Limit the number of returned elements by calling
+      *    a 'take' operator or some other limiting operator.
+      *    Otherwise you will run out fo memory.
+      *
+      *    This function uses the "TS.Linq.RandomGenerator" class
+      *    which must be referenced in order to function normally.
+      *
+      *    Deferred execution.
+      *
+      *  @requires
+      *    TS.Linq.RandomGenerator
+      *
+      *  @returns
+      *    TEnumerable<TSource>, the resulting enumerable.
+      *
+      *  @throws
+      *    TS.ArgumentNullOrUndefinedException
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      */
+      public random(): Enumerable<T>
+      {
+        return TS.Linq.Extensions.random(this);
+      }
 
 
       /**
@@ -1022,7 +1060,7 @@ module TS
       *  @throws
       *    TS.ArgumentOutOfRangeException
       */
-      public static range(start: number, count: number) : Enumerable<Number>
+      public static range(start: number, count: number): Enumerable<Number>
       {
         return Extensions.range(start, count);
       }
@@ -1103,7 +1141,7 @@ module TS
 
       /**
       *  @description
-      *    Projects each element of a sequence to an IEnumerable<T> and flattens 
+      *    Projects each element of a sequence to an IEnumerable<T> and flattens
       *    the resulting sequences into one sequence
       *
       *    Deferred execution.
@@ -1130,12 +1168,12 @@ module TS
 
       /**
       *  @description
-      *    Determines whether two sequences are equal by comparing the elements 
+      *    Determines whether two sequences are equal by comparing the elements
       *    by using the default equality comparer (===).
       *
       *    If the equalityComparer is provided:
       *
-      *    Determines whether two sequences are equal by comparing their 
+      *    Determines whether two sequences are equal by comparing their
       *    elements by using the specified equalityComparer.
       *
       *    Immediate execution.
@@ -1159,12 +1197,34 @@ module TS
 
       /**
       *  @description
-      *    Returns the only element of a sequence, and throws an exception 
+      *    Returns a shuffled version from the current enumerable.
+      *    That means, the resulting enumerable has exact the same elements
+      *    but in a randomized order.
+      *
+      *    Deferred execution.
+      *
+      *  @see {@link http://www.dotnetperls.com/fisher-yates-shuffle}
+      *
+      *  @returns
+      *    Enumerable<T>, the resulting enumerable.
+      *
+      *  @throws
+      *    TS.InvalidTypeException
+      */
+      public shuffle(): Enumerable<T>
+      {
+        return Extensions.shuffle<T>(this);
+      }
+
+
+      /**
+      *  @description
+      *    Returns the only element of a sequence, and throws an exception
       *    if there is not exactly one element in the sequence.
       *
       *    If the predicate is provided:
       *
-      *    Returns the only element of a sequence that satisfies a specified condition, 
+      *    Returns the only element of a sequence that satisfies a specified condition,
       *    and throws an exception if more than one such element exists.
       *
       *    Immediate execution.
@@ -1194,14 +1254,14 @@ module TS
 
       /**
       *  @description
-      *    Returns the only element of a sequence, or a default value if the sequence is empty. This method throws an 
+      *    Returns the only element of a sequence, or a default value if the sequence is empty. This method throws an
       *    exception if there is more than one element in the sequence.
       *
       *    If the predicate is provided:
       *
-      *    Returns the only element of a sequence that satisfies a specified condition or a default value 
+      *    Returns the only element of a sequence that satisfies a specified condition or a default value
       *    if no such element exists. This method throws an exception if more than one element satisfies the condition.
-      * 
+      *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.singleordefault.aspx : MSDN }
       *
       *  @returns
@@ -1224,7 +1284,7 @@ module TS
 
       /**
       *  @description
-      *    Bypasses a specified number of elements in a sequence and 
+      *    Bypasses a specified number of elements in a sequence and
       *    returns the remaining elements.
       *
       *    Deferred execution.
@@ -1235,7 +1295,7 @@ module TS
       *    Enumerable<TSource>, the resulting enumerable.
       *
       *  @throws
-      *    TS.ArgumentOutOfRangeException. Thrown in case where the 
+      *    TS.ArgumentOutOfRangeException. Thrown in case where the
       *    argument 'count' is invalid.
       *
       *  @throws
@@ -1252,7 +1312,7 @@ module TS
 
       /**
       *  @description
-      *    Bypasses elements in a sequence as long as a specified condition 
+      *    Bypasses elements in a sequence as long as a specified condition
       *    is true and then returns the remaining elements.
       *
       *    Deferred execution.
@@ -1276,9 +1336,9 @@ module TS
 
       /**
       *  @description
-      *    Computes the sum of the sequence of numeric values that are obtained by 
+      *    Computes the sum of the sequence of numeric values that are obtained by
       *    invoking a selector function on each element of the input sequence.
-      *    
+      *
       *    Computes the sum of a sequence of numeric values if the selector is null
       *    or undefined.
       *
@@ -1309,6 +1369,7 @@ module TS
         }//END if
 
         _enumerator = this.getEnumerator();
+        _numberArray = new Array<number>();
 
         while (_enumerator.moveNext())
         {
@@ -1328,7 +1389,7 @@ module TS
 
       /**
       *  @description
-      *    Returns a specified number of contiguous elements from the 
+      *    Returns a specified number of contiguous elements from the
       *    start of a sequence.
       *
       *    Deffered execution.
@@ -1339,7 +1400,7 @@ module TS
       *    Enumerable<TSource>, the resulting enumerable.
       *
       *  @throws
-      *    TS.ArgumentOutOfRangeException. Thrown in case where the 
+      *    TS.ArgumentOutOfRangeException. Thrown in case where the
       *    argument 'count' is invalid.
       *
       *  @throws
@@ -1356,7 +1417,7 @@ module TS
 
       /**
       *  @description
-      *    Returns elements from a sequence as long as a specified condition is true. 
+      *    Returns elements from a sequence as long as a specified condition is true.
       *
       *    Deffered execution.
       *
@@ -1402,7 +1463,7 @@ module TS
 
       /**
       *  @description
-      *    Produces the set union of two sequences by using the strict 
+      *    Produces the set union of two sequences by using the strict
       *    comparsion operator (===).
       *    This function may produce results that differ from the C# counterpart,
       *    because the comparsion operators have different implementations in C#

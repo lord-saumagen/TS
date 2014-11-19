@@ -961,12 +961,12 @@ module TS_Linq_Enumerable_test
     assert.throws(() =>
     {
       customersEnumerable.orderBy(null);
-    }, (err) => ((err.name == "TS.InvalidTypeException") ? true : false), "Should throw a 'TS.InvalidTypeException' for a null 'selector' argument.");
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'selector' argument.");
 
     assert.throws(() =>
     {
       customersEnumerable.orderBy(_undefined);
-    }, (err) => ((err.name == "TS.InvalidTypeException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'selector' argument.");
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'selector' argument.");
   });
 
 
@@ -1032,23 +1032,665 @@ module TS_Linq_Enumerable_test
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.orderByDescending(null, item => item);
+      customersEnumerable.orderByDescending(null);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'selector' argument.");
+
+    assert.throws(() =>
+    {
+      customersEnumerable.orderByDescending( _undefined);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'selector' argument.");
+
+  });
+
+
+  QUnit.test("random", (assert) =>
+  {
+    var _emptyEnumerable: TS.Linq.Enumerable<number>;
+    var _stringEnumerable: TS.Linq.Enumerable<string>;
+    var _stringArray: Array<string>;
+    var _stringResultArray: Array<string>;
+    var _numberResultArray: Array<number>;
+    var _isRandom = false;
+    var _index: number;
+
+    _stringArray = TS_Linq_test_common.CreateStringArray();
+    _stringEnumerable = TS.Linq.Extensions.fromArray(_stringArray);
+    _stringResultArray = _stringEnumerable.random().take(50).toArray();
+
+    for (_index = 0; _index < _stringArray.length; _index++)
+    {
+      if (_stringArray[_index] != _stringResultArray[_index])
+      {
+        _isRandom = true;
+        break;
+      }//END if
+    }//END for
+
+    assert.ok(_isRandom, "Should return a string array in random order.");
+
+    _emptyEnumerable = TS.Linq.Extensions.empty<number>();
+    _numberResultArray = _emptyEnumerable.random().take(50).toArray();
+
+    assert.equal(_numberResultArray.length, 0, "Should return an empty enumeration if the input enumeration was also empty.");
+
+  });
+
+
+  QUnit.test("range", (assert) => 
+  {
+    var _resultEnum: TS.Linq.Enumerable<Number>;
+    var _resultArray: Array<Number>
+    var _undefined;
+
+    _resultEnum = TS.Linq.Enumerable.range(1, 50);
+    _resultArray = _resultEnum.toArray()
+    assert.equal(_resultEnum.count(), 50, "Should return an enumerable with 50 elements.");
+
+    _resultEnum = TS.Linq.Enumerable.range(111, 0);
+    _resultArray = _resultEnum.toArray();
+    assert.equal(_resultEnum.count(), 0, "Should return an enumerable with 0 elements.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Enumerable.range(1, -3);
+    }, (err) => ((err.name == "TS.ArgumentOutOfRangeException") ? true : false), "Should trow a TS.ArgumentOutOfRangeException for a negative 'count' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Enumerable.range(null, 33);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should trow a TS.ArgumentNullOrUndefinedException for a null 'start' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Enumerable.range(_undefined, 33);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should trow a TS.ArgumentNullOrUndefinedException for an undefined 'start' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Enumerable.range(12, null);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should trow a TS.ArgumentNullOrUndefinedException for a null 'count' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Enumerable.range(12, _undefined);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should trow a TS.ArgumentNullOrUndefinedException for an undefined 'count' argument.");
+  });
+
+
+  QUnit.test("repeat", (assert) =>
+  {
+    var _sourceElement: TS_Linq_test_common.ICar;
+    var _undefined;
+    var _resultArray: Array<TS_Linq_test_common.ICar>;
+
+    _sourceElement = TS_Linq_test_common.CreateCarsArray()[0];
+
+    _resultArray = TS.Linq.Enumerable.repeat(_sourceElement, 50).toArray();
+    assert.ok(_resultArray.length == 50 && _resultArray[0].name == "BMW", "Should return a result with as much elements as required in repeat and of the same type.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Enumerable.repeat(null, 33);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should trow a TS.ArgumentNullOrUndefinedException for a null 'item' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Enumerable.repeat(_undefined, 33);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should trow a TS.ArgumentNullOrUndefinedException for an undefined 'item' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Enumerable.repeat(_sourceElement, -33);
+    }, (err) => ((err.name == "TS.ArgumentOutOfRangeException") ? true : false), "Should trow a TS.TS.ArgumentOutOfRangeException on a negative 'count' argument.");
+  });
+
+
+  QUnit.test("reverse", (assert) =>
+  {
+    var _numberArray: Array<number>;
+    var _resultArray: Array<number>;
+    var _controlArray: Array<number>;
+    var _emptyEnumerable: TS.Linq.Enumerable<number>;
+    var _index: number;
+    var _failed: boolean;
+
+    _numberArray = TS_Linq_test_common.CreateNumberArray();
+    _controlArray = TS_Linq_test_common.CreateNumberArray().reverse();
+
+    _resultArray = TS.Linq.Extensions.fromArray(_numberArray).reverse().toArray();
+    _failed = false;
+
+    for (_index = 0; _index < _resultArray.length; _index++)
+    {
+      if (_resultArray[_index] != _controlArray[_index])
+      {
+        _failed = true;
+        break;
+      }//END if
+    }//END for
+
+    assert.ok(!_failed, "Should return an array which matches with the control array.");
+
+    _emptyEnumerable = TS.Linq.Enumerable.empty<number>();
+    _resultArray = _emptyEnumerable.reverse().toArray();
+
+    assert.equal(_resultArray.length, 0, "Should return an empty enumerabe if the input enumerable was also empty.");
+
+  });
+
+
+  QUnit.test("select", (assert) =>
+  {
+    var _carsEnumerable: TS.Linq.Enumerable<TS_Linq_test_common.ICar>;
+    var _resultArray: Array<any>;
+    var _expensiveCount: number;
+    var _index: number;
+
+    _carsEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
+    _resultArray = _carsEnumerable.select((item) => ({ buildYear: "'" + item.buildYear + "'", name: "'" + item.name + "'", expensive: ((item.price > 5000) ? "yes" : "no") })).toArray();
+
+    _expensiveCount = 0;
+    for (_index = 0; _index < _resultArray.length; _index++)
+    {
+      if (_resultArray[_index].expensive == "yes")
+      {
+        _expensiveCount++;
+      }//END if
+    }//END for
+
+    assert.ok(_expensiveCount == 2, "Should return two expensive cars from the cars enumerable.");
+
+  });
+
+
+  QUnit.test("selectMany", (assert) =>
+  {
+    var _outerIndex: number;
+    var _innerIndex: number;
+    var _simpleElementsCount: number;
+    var _resultMany: Array<{}>;
+    var _resultSimple: Array<any>;
+    var _resultSimpleExpanded: Array<any>;
+
+    var _resultMany = mmEnumerable.selectMany(item => item.vars).toArray();
+    var _resultSimple = mmEnumerable.select(item => item.vars).toArray();
+
+    _simpleElementsCount = 0;
+    _resultSimpleExpanded = new Array<any>();
+
+    for (_outerIndex = 0; _outerIndex < _resultSimple.length; _outerIndex++)
+    {
+      if (_resultSimple[_outerIndex].length > 0)
+      {
+        for (_innerIndex = 0; _innerIndex < _resultSimple[_outerIndex].length; _innerIndex++)
+        {
+          _simpleElementsCount++;
+          _resultSimpleExpanded.push(_resultSimple[_outerIndex][_innerIndex]);
+        }//END for
+      }//END for
+    }//END for
+
+    assert.equal(_simpleElementsCount, _resultMany.length, "Should return a result which has the same length as an expanded simple select.");
+    assert.deepEqual(_resultMany, _resultSimpleExpanded, "Should return a result which should be equal to the expanded simple select result.");
+
+    assert.throws(() =>
+    {
+      mmEnumerable.selectMany(item => item.NOP).toArray();
+    }, (err) => ((err.name == "TS.Linq.SelectorException") ? true : false), "Should throw a TS.Linq.SelectorException if called with an invalid selector.");
+
+  });
+
+
+  QUnit.test("sequenceEqual", (assert) =>
+  {
+    var _numberArray: Array<Number>;
+    var _customerArray: Array<TS_Linq_test_common.ICustomer>;
+    var _firstNumberEnumerable: TS.Linq.Enumerable<Number>;
+    var _secondNumberEnumerable: TS.Linq.Enumerable<Number>;
+    var _compareResult: boolean;
+    var _undefined;
+
+    _firstNumberEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateNumberArray());
+    _secondNumberEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateNumberArray());
+
+    _compareResult = _firstNumberEnumerable.sequenceEqual(_secondNumberEnumerable);
+    assert.ok(_compareResult, "Should return true when comparing two equal enumerables");
+
+    _compareResult = customersEnumerable.sequenceEqual(customersEnumerable, (first, second) => first.ContactName == second.ContactName);
+    assert.ok(_compareResult, "Should return true when comparing two equal enumerables using an equalityComparer");
+
+    _customerArray = TS.Linq.Extensions.toArray(customersEnumerable);
+    _customerArray[55] = new TS_Linq_test_common.Customer();
+    _customerArray[55].ContactName = "No Contact Name";
+    _compareResult = customersEnumerable.sequenceEqual(TS.Linq.Enumerable.fromArray(_customerArray), (first, second) => first.ContactName == second.ContactName);
+    assert.ok(!_compareResult, "Should return false when comparing two enumerables with different elements usin an equalityComparer");
+
+    _numberArray = TS_Linq_test_common.CreateNumberArray();
+    _numberArray.pop();
+    _secondNumberEnumerable = TS.Linq.Enumerable.fromArray(_numberArray);
+    _compareResult = _firstNumberEnumerable.sequenceEqual(_secondNumberEnumerable);
+    assert.ok(!_compareResult, "Should return false when comparing two enumerables with different length");
+
+    _numberArray = TS_Linq_test_common.CreateNumberArray();
+    _numberArray.push(11);
+    _secondNumberEnumerable = TS.Linq.Enumerable.fromArray(_numberArray);
+    _compareResult = _firstNumberEnumerable.sequenceEqual(_secondNumberEnumerable);
+    assert.ok(!_compareResult, "Should return false when comparing two enumerables with different length");
+
+    _numberArray = TS_Linq_test_common.CreateNumberArray();
+    _numberArray[5] = Math.PI;
+    _secondNumberEnumerable = TS.Linq.Enumerable.fromArray(_numberArray);
+    _compareResult = _firstNumberEnumerable.sequenceEqual(_secondNumberEnumerable);
+    assert.ok(!_compareResult, "Should return false when comparing two unequal enumerables");
+
+    assert.throws(() =>
+    {
+      _firstNumberEnumerable.sequenceEqual(null);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'secondEnumerable' argument.");
+
+    assert.throws(() =>
+    {
+      _firstNumberEnumerable.sequenceEqual(_undefined);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'secondEnumerable' argument.");
+
+  });
+
+
+  QUnit.test("shuffle", (assert) =>
+  {
+    var _numberArr: Array<number>;
+    var _nuberEnumerable: TS.Linq.Enumerable<number>;
+
+    _nuberEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateNumberArray());
+    _numberArr = _nuberEnumerable.shuffle().toArray();
+
+    assert.equal(_numberArr.length, TS_Linq_test_common.CreateNumberArray().length, "Should return a result array with the same length as the source array.");
+    assert.notDeepEqual(_numberArr, TS_Linq_test_common.CreateNumberArray(), "Should return a shuffled array which doesn't be equal to the source array");
+    _numberArr = _numberArr.sort((first, second) => { return first - second; });
+    assert.deepEqual(_numberArr, TS_Linq_test_common.CreateNumberArray(), "Should match with the source array after sorting.");
+
+  });
+
+
+  QUnit.test("single", (assert) =>
+  {
+    var _result: TS_Linq_test_common.Customer;
+
+    _result = customersEnumerable.where(_CUST => _CUST.CustomerID == "OTTIK").single();
+    assert.equal(_result.CustomerID, "OTTIK", "Should return the expected single result.");
+
+    _result = customersEnumerable.single((_CUST) => _CUST.CustomerID == "OTTIK");
+    assert.equal(_result.CustomerID, "OTTIK", "Should return the expected single result.");
+
+    assert.throws(() =>
+    {
+      customersEnumerable.where(_CUST => _CUST.CustomerID.indexOf("BO") > -1).single();
+    }, (err) => ((err.name == "TS.Linq.MoreThanOneElementException") ? true : false), "Should throw a 'TS.Linq.MoreThanOneElementException' for an 'enumerable' argument with more than one element.");
+
+    assert.throws(() =>
+    {
+      customersEnumerable.single((_CUST) => _CUST.CustomerID.indexOf("BO") > -1);
+    }, (err) => ((err.name == "TS.Linq.MoreThanOneElementException") ? true : false), "Should throw a 'TS.Linq.MoreThanOneElementException' for an for a 'predicate' which matches more than one element.");
+
+    assert.throws(() =>
+    {
+      customersEnumerable.where(_CUST => _CUST.CustomerID.indexOf("NOP") > -1).single();
+    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should throw a 'TS.InvalidOperationException' for an empty 'enumerable' argument.");
+
+    assert.throws(() =>
+    {
+      customersEnumerable.single((_CUST) => _CUST.CustomerID == "NOP");
+    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should throw a 'TS.InvalidOperationException' for a 'predicate' which doesn't match.");
+
+  });
+
+
+  QUnit.test("singleOrDefault", (assert) =>
+  {
+    var _result: TS_Linq_test_common.Customer;
+    var _undedined;
+
+    _result = customersEnumerable.where(_CUST => _CUST.CustomerID == "OTTIK").singleOrDefault(TS_Linq_test_common.Customer);
+    assert.equal(_result.CustomerID, "OTTIK", "Should return the expected single result.");
+
+    _result = customersEnumerable.singleOrDefault(TS_Linq_test_common.Customer, (_CUST) => _CUST.CustomerID == "OTTIK");
+    assert.equal(_result.CustomerID, "OTTIK", "Should return the expected single result.");
+
+    _result = customersEnumerable.where(_CUST => _CUST.CustomerID == "NOP").singleOrDefault(TS_Linq_test_common.Customer);
+    assert.deepEqual(_result, new TS_Linq_test_common.Customer(), "Shoud return a default object for an 'enumerable' which is empty.");
+
+    _result = customersEnumerable.singleOrDefault(TS_Linq_test_common.Customer, (_CUST) => _CUST.CustomerID == "NOP");
+    assert.deepEqual(_result, new TS_Linq_test_common.Customer(), "Shoud return a default object for a 'predicate' which doesn't match with the enumerable.");
+
+    assert.throws(() =>
+    {
+      customersEnumerable.where(_CUST => _CUST.CustomerID.indexOf("BO") > -1).singleOrDefault(TS_Linq_test_common.Customer);
+    }, (err) => ((err.name == "TS.Linq.MoreThanOneElementException") ? true : false), "Should throw a 'TS.Linq.MoreThanOneElementException' for an 'enumerable' argument with more than one element.");
+
+    assert.throws(() =>
+    {
+      customersEnumerable.singleOrDefault(TS_Linq_test_common.Customer, (_CUST) => _CUST.CustomerID.indexOf("BO") > -1);
+    }, (err) => ((err.name == "TS.Linq.MoreThanOneElementException") ? true : false), "Should throw a 'TS.Linq.MoreThanOneElementException' for an for a 'predicate' which matches more than one element.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.singleOrDefault(customersEnumerable, null);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'defaultConstructor' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.singleOrDefault(customersEnumerable, _undedined);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'defaultConstructor' argument.");
+  });
+
+
+  QUnit.test("skip", (assert) =>
+  {
+    var _numberArr: Array<number>;
+    var _numberEnumerable: TS.Linq.Enumerable<number>;
+    var _expectedArr: Array<number>;
+
+    _expectedArr = new Array();
+    _expectedArr.push(5, 6, 7, 8, 9, 10);
+    _numberEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateNumberArray());
+    _numberArr = _numberEnumerable.skip(4).toArray();
+    assert.deepEqual(_numberArr, _expectedArr, "Should return a result array which matches with the expected array.");
+
+    assert.throws(() =>
+    {
+      _numberEnumerable.skip(-5);
+    }, (err) => ((err.name == "TS.ArgumentOutOfRangeException") ? true : false), "Should throw a 'TS.ArgumentOutOfRangeException' for a negative 'count' argument.");
+
+  });
+
+
+  QUnit.test("skipWhile", (assert) =>
+  {
+    var _numberArr: Array<number>;
+    var _numberEnumerable: TS.Linq.Enumerable<number>;
+    var _expectedArr: Array<number>;
+    var _undefined;
+
+    _expectedArr = new Array();
+    _expectedArr.push(5, 6, 7, 8, 9, 10);
+    _numberEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateNumberArray());
+    _numberArr = _numberEnumerable.skipWhile(item => item < 5).toArray();
+    assert.deepEqual(_numberArr, _expectedArr, "Should return a result array which matches with the expected array.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.skipWhile(_numberEnumerable, null);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'predicate' argument.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.skipWhile(_numberEnumerable, _undefined);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'predicate' argument.");
+  });
+
+
+  QUnit.test("sum", (assert) =>
+  {
+    var _testNumberArray: Array<number>;
+    var _testResult: number;
+    var _undefined;
+
+    _testNumberArray = TS_Linq_test_common.CreateNumberArray();
+    _testResult = TS.Linq.Enumerable.fromArray(_testNumberArray).sum();
+    assert.equal(_testResult, 55, "Should return expected sum.");
+
+    assert.throws(() =>
+    {
+      TS.Linq.Extensions.empty<number>().sum();
+    }, (err) => ((err.name == "TS.Linq.EmptyEnumerableException") ? true : false), "Should throw a 'TS.Linq.EmptyEnumerableException' for an empty 'enumerable' argument.");
+
+
+    _testNumberArray.push(Number.MAX_VALUE / 2);
+    _testNumberArray.push(Number.MAX_VALUE);
+
+    assert.throws(() =>
+    {
+      TS.Linq.Enumerable.fromArray(_testNumberArray).sum();
+    }, (err) => ((err.name == "TS.OverflowException") ? true : false), "Should throw a 'TS.OverflowException' for an enumerable which exceeds the number range in sum.");
+  });
+
+
+  QUnit.test("take", (assert) =>
+  {
+    var _numberArr: Array<number>;
+    var _numberEnumerable: TS.Linq.Enumerable<number>;
+    var _expectedArr: Array<number>;
+
+    _expectedArr = new Array();
+    _expectedArr.push(1, 2, 3, 4);
+    _numberEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateNumberArray());
+    _numberArr = _numberEnumerable.take(4).toArray();
+    assert.deepEqual(_numberArr, _expectedArr, "Should return a result array which matches with the expected array.");
+
+    assert.throws(() =>
+    {
+      _numberEnumerable.take(-5);
+    }, (err) => ((err.name == "TS.ArgumentOutOfRangeException") ? true : false), "Should throw a 'TS.ArgumentOutOfRangeException' for a negative 'count' argument.");
+
+  });
+
+
+  QUnit.test("takeWhile", (assert) =>
+  {
+    var _numberArr: Array<number>;
+    var _numberEnumerable: TS.Linq.Enumerable<number>;
+    var _expectedArr: Array<number>;
+    var _undefined;
+
+    _expectedArr = new Array();
+    _expectedArr.push(1, 2, 3, 4);
+    _numberEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateNumberArray());
+    _numberArr = _numberEnumerable.takeWhile(item => item < 5).toArray();
+    assert.deepEqual(_numberArr, _expectedArr, "Should return a result array which matches with the expected array.");
+
+    assert.throws(() =>
+    {
+      _numberEnumerable.takeWhile(null);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'predicate' argument.");
+
+    assert.throws(() =>
+    {
+      _numberEnumerable.takeWhile(_undefined);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'predicate' argument.");
+  });
+
+
+  QUnit.test("toArray", (assert) =>
+  {
+    var _numberArr: Array<number>;
+    var _numberEnumerable: TS.Linq.Enumerable<number>;
+    var _expectedArr: Array<number>;
+
+    _expectedArr = TS_Linq_test_common.CreateNumberArray()
+    _numberEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateNumberArray());
+    _numberArr = _numberEnumerable.toArray();
+    assert.deepEqual(_numberArr, _expectedArr, "Should return a result array which matches with the expected array.");
+
+  });
+
+
+  QUnit.test("thenBy", (assert) =>
+  {
+    var _sortTestEnumerable: TS.Linq.Enumerable<TS_Linq_test_common.ISortTestItem>;
+    var _orderedEnumerable: TS.Linq.OrderedEnumerable<TS_Linq_test_common.ISortTestItem>;
+    var _resultArray: Array<TS_Linq_test_common.ISortTestItem>;
+    var _resultArrayColorGroup: Array<TS_Linq_test_common.ISortTestItem>;
+    var _colorsArray: Array<string>;
+    var _index: number;
+    var _sortedAsExpected: boolean;
+
+    _sortTestEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateSortTestArray());
+    _orderedEnumerable = _sortTestEnumerable.orderBy(Item => Item.color);
+    _orderedEnumerable = _orderedEnumerable.thenBy(Item => Item.location);
+    _resultArray = _orderedEnumerable.toArray();
+
+    _sortedAsExpected = true;
+
+    //
+    //Check that the items are sorted by color as 
+    //expected.
+    //
+    for (_index = 0; _index < _resultArray.length; _index++)
+    {
+      if (_index < 1)
+      {
+        continue;
+      }//END if
+
+      if (_resultArray[_index].color < _resultArray[_index - 1].color)
+      {
+        _sortedAsExpected = false;
+        break;
+      }//END if
+
+    }//END for
+
+    //
+    //Check that in each color group the items 
+    //are sorted by location as expected.
+    //
+    _colorsArray = TS.Linq.Enumerable.fromArray(_resultArray).select(Item => Item.color).distinct().toArray();
+    _colorsArray.forEach((value) => 
+    {
+      _resultArrayColorGroup = _resultArray.filter(Item => Item.color == value);
+
+      for (_index = 0; _index < _resultArrayColorGroup.length; _index++)
+      {
+        if (_index < 1)
+        {
+          continue;
+        }//END if
+
+        if (_resultArrayColorGroup[_index].location < _resultArrayColorGroup[_index - 1].location)
+        {
+          _sortedAsExpected = false;
+          break;
+        }//END if
+
+      }//END for
+    });
+    assert.ok(_sortedAsExpected, "Should return a result array which is sorted by color in first order and by location in secondary order.");
+
+  });
+
+
+  QUnit.test("thenByDescending", (assert) =>
+  {
+    var _sortTestEnumerable: TS.Linq.Enumerable<TS_Linq_test_common.ISortTestItem>;
+    var _orderedEnumerable: TS.Linq.OrderedEnumerable<TS_Linq_test_common.ISortTestItem>;
+    var _resultArray: Array<TS_Linq_test_common.ISortTestItem>;
+    var _resultArrayColorGroup: Array<TS_Linq_test_common.ISortTestItem>;
+    var _colorsArray: Array<string>;
+    var _index: number;
+    var _sortedAsExpected: boolean;
+
+    _sortTestEnumerable = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateSortTestArray());
+    _orderedEnumerable = _sortTestEnumerable.orderBy(Item => Item.color);
+    _orderedEnumerable = _orderedEnumerable.thenByDescending(Item => Item.location);
+    _resultArray = _orderedEnumerable.toArray();
+
+    _sortedAsExpected = true;
+
+    //
+    //Check that the items are sorted by color as 
+    //expected.
+    //
+    for (_index = 0; _index < _resultArray.length; _index++)
+    {
+      if (_index < 1)
+      {
+        continue;
+      }//END if
+
+      if (_resultArray[_index].color < _resultArray[_index - 1].color)
+      {
+        _sortedAsExpected = false;
+        break;
+      }//END if
+
+    }//END for
+
+    //
+    //Check that in each color group the items 
+    //are sorted by location as expected.
+    //
+    _colorsArray = TS.Linq.Extensions.fromArray(_resultArray).select(Item => Item.color).distinct().toArray();
+    _colorsArray.forEach((value) => 
+    {
+      _resultArrayColorGroup = _resultArray.filter(Item => Item.color == value);
+
+      for (_index = 0; _index < _resultArrayColorGroup.length; _index++)
+      {
+        if (_index < 1)
+        {
+          continue;
+        }//END if
+
+        if (_resultArrayColorGroup[_index].location > _resultArrayColorGroup[_index - 1].location)
+        {
+          _sortedAsExpected = false;
+          break;
+        }//END if
+
+      }//END for
+    });
+    assert.ok(_sortedAsExpected, "Should return a result array which is sorted by color in first order and by location descending in secondary order.");
+
+  });
+
+
+  QUnit.test("union", (assert) =>
+  {
+    var _carsEnumOne: TS.Linq.Enumerable<TS_Linq_test_common.ICar>;
+    var _carsEnumTwo: TS.Linq.Enumerable<TS_Linq_test_common.ICar>;
+    var _carsEnumResult: TS.Linq.Enumerable<TS_Linq_test_common.ICar>;
+    var _carsArrayResult: Array<TS_Linq_test_common.ICar>;
+    var _undefined;
+
+    _carsEnumOne = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateCarsArray());
+    _carsEnumTwo = TS.Linq.Enumerable.fromArray(TS_Linq_test_common.CreateCarsUnionTestArray());
+
+    _carsEnumResult = _carsEnumOne.union(_carsEnumTwo);
+    _carsArrayResult = _carsEnumResult.toArray();
+
+    assert.ok(_carsArrayResult.length == 10, "Should return a result with 10 elements.");
+
+    assert.throws(() =>
+    {
+      _carsEnumOne.union(null);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null second 'enumerable' argument.");
+
+    assert.throws(() =>
+    {
+      _carsEnumOne.union(_undefined);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined second 'enumerable' argument.");
+  });
+
+
+  QUnit.test("where", (assert) =>
+  {
+    var _resultArrayBob = personEnumerable.where(item => item.FirstName == "Bob").toArray();
+    var _resultArrayMichael = personEnumerable.where(item => item.FirstName == "Michael").toArray();
+    var _resultArrayEdward = personEnumerable.where(item => item.FirstName == "Edward").toArray();
+    var _allArray = personEnumerable.where(item => true).select(item => item.FirstName).toArray();
+    var _undefined;
+
+    assert.ok((_resultArrayBob.length == 1 && _resultArrayMichael.length == 5 && _resultArrayEdward.length == 3 && _allArray.length == 400), "Should return the expected number of items for the executed 'where' causes.");
+
+    assert.throws(() =>
+    {
+      personEnumerable.where(null).toArray();
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'enumerable' argument.");
 
     assert.throws(() =>
     {
-      TS.Linq.Extensions.orderByDescending(_undefined, item => item);
+      personEnumerable.where(_undefined).toArray();
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'enumerable' argument.");
-
-    assert.throws(() =>
-    {
-      TS.Linq.Extensions.orderByDescending(customersEnumerable, null);
-    }, (err) => ((err.name == "TS.InvalidTypeException") ? true : false), "Should throw a 'TS.InvalidTypeException' for a null 'selctor' argument.");
-
-    assert.throws(() =>
-    {
-      TS.Linq.Extensions.orderByDescending(customersEnumerable, _undefined);
-    }, (err) => ((err.name == "TS.InvalidTypeException") ? true : false), "Should throw a 'TS.InvalidTypeException' for an undefined 'selector' argument.");
 
   });
 

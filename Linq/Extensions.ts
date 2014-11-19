@@ -421,24 +421,21 @@ module TS
         {
           _checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.any");
         }//END if
+        else
+        {
+          predicate = item => true;
+        }//END else
 
         _enumerator = enumerable.getEnumerator();
 
-        if (TS.Utils.TypeInfo.isNullOrUndefined(predicate))
+        while (_enumerator.moveNext())
         {
-          _resultValue = _enumerator.moveNext();
-        }//END if
-        else
-        {
-          while (_enumerator.moveNext())
+          if (predicate(_enumerator.current))
           {
-            if (predicate(_enumerator.current))
-            {
-              _resultValue = true;
-              break;
-            }//END if
-          }//END while
-        }//END else
+            _resultValue = true;
+            break;
+          }//END if
+        }//END while
 
         _enumerator.dispose();
 
@@ -725,7 +722,7 @@ module TS
         }//END if
         else
         {
-          predicate = (item) => true;
+          predicate = item => true;
         }//END else
 
         _enumerator = enumerable.getEnumerator();
@@ -988,7 +985,7 @@ module TS
         var _currentElement: TSource;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.elementAt");
-        _checkParameter(index, "index", "Argument 'index' must not be null or undefined in function 'TS.Linq.Extensions.elementAt'.");
+        _checkParameter(index, "index", "TS.Linq.Extensions.elementAt");
 
         if (!TS.Utils.TypeInfo.isPositiveIntegerNumber(index))
         {
@@ -1616,7 +1613,7 @@ module TS
           while (_enumeratorOuter.moveNext())
           {
             _outerKey = outerKeySelector(_enumeratorOuter.current);
-            _enumeratorInner =  TS.Linq.Extensions.where(innerEnumerable, Item => equalityComparer(_outerKey, innerKeySelector(Item))).getEnumerator();
+            _enumeratorInner = TS.Linq.Extensions.where(innerEnumerable, Item => equalityComparer(_outerKey, innerKeySelector(Item))).getEnumerator();
             _groupArray = new Array<TInner>();
             while (_enumeratorInner.moveNext())
             {
@@ -1687,7 +1684,6 @@ module TS
 
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
         var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _set: Set<TSource>;
         var _firstEnumerator: IEnumerator<TSource>;
@@ -1849,7 +1845,6 @@ module TS
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
         var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _enumerator: IEnumerator<TSource>;
         var _result: TSource;
@@ -1864,7 +1859,7 @@ module TS
         }//END if
         else
         {
-          predicate = (item) => true;
+          predicate = item => true;
         }//END else
 
         _enumerator = enumerable.getEnumerator();
@@ -1961,42 +1956,33 @@ module TS
         {
           _checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.lastOrDefault");
         }//END if
+        else
+        {
+          predicate = item => true;
+        }//END else
 
         _enumerator = enumerable.getEnumerator();
 
-        if (TS.Utils.TypeInfo.isNullOrUndefined(predicate))
+        _resultAssigned = false;
+
+        while (_enumerator.moveNext())
         {
-          while (_enumerator.moveNext())
+          if (predicate(_enumerator.current))
           {
             _result = _enumerator.current;
+            _resultAssigned = true;
           }//END if
+        }//END while
 
-          _enumerator.dispose();
+        _enumerator.dispose();
+
+        if (_resultAssigned)
+        {
           return _result;
         }//END if
-        else
-        {
-          _resultAssigned = false;
 
-          while (_enumerator.moveNext())
-          {
-            if (predicate(_enumerator.current))
-            {
-              _result = _enumerator.current;
-              _resultAssigned = true;
-            }//END if
-          }//END while
+        return new defaultConstructor();
 
-          _enumerator.dispose();
-
-          if (_resultAssigned)
-          {
-            return _result;
-          }//END if
-
-          return new defaultConstructor();
-
-        }//END else
       }
 
 
@@ -2156,6 +2142,7 @@ module TS
         var _callback: () => IEnumerator<TSource>;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.orderBy");
+        _checkParameter(keySelector, "keySelector", "TS.Linq.Extensions.orderBy");
         _checkFunctionParameter(keySelector, "keySelector", "TS.Linq.Extensions.orderBy");
 
         if (!TS.Utils.TypeInfo.isNullOrUndefined(comparer))
@@ -2223,6 +2210,7 @@ module TS
         var _callback: () => IEnumerator<TSource>;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.orderBy");
+        _checkParameter(keySelector, "keySelector", "TS.Linq.Extensions.orderBy");
         _checkFunctionParameter(keySelector, "keySelector", "TS.Linq.Extensions.orderBy");
 
         if (!TS.Utils.TypeInfo.isNullOrUndefined(comparer))
@@ -2252,16 +2240,15 @@ module TS
       *  @description
       *    Retuns random elements from the base enumeration. 
       *    The function uses a generator to select the 
-      *    current randome element. For that reason the 
+      *    current random element. For that reason the 
       *    function will return as much elements as required, 
-      *    regardless how much elments the underlying enumeration
-      *    could offer. There is one exception of that rule.
+      *    regardless how much elements the underlying enumeration
+      *    holds. There is one exception of that rule.
       *    If the underlying enumeration is empty, the 
       *    random function will never give a result.
       *
       *    Limit the number of returned elements by calling
-      *    a 'take' operator or some other limiting operator
-      *    before you call 'toArray' after the random operator. 
+      *    a 'take' operator or some other limiting operator.
       *    Otherwise you will run out fo memory.
       *
       *    This function uses the "TS.Linq.RandomGenerator" class
@@ -2380,6 +2367,7 @@ module TS
         var _resultArray: Array<TSource>;
 
         _checkParameter(item, "item", "TS.Linq.Extensions.repeat");
+        _checkParameter(count, "count", "TS.Linq.Extensions.repeat");
 
         if (!TS.Utils.TypeInfo.isNumber(count))
         {
@@ -2604,7 +2592,6 @@ module TS
       {
         var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _firstEnumerator: IEnumerator<TSource>;
         var _secondEnumerator: IEnumerator<TSource>;
@@ -2856,7 +2843,6 @@ module TS
       export function sum(enumerable: Enumerable<number>): number
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _sum = 0;
         var _count = 0;
@@ -2977,6 +2963,7 @@ module TS
       export function skip<TSource>(enumerable: Enumerable<TSource>, count: number): Enumerable<TSource>
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
+        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _index = 0;
         var _resultArray: Array<TSource>;
@@ -2985,6 +2972,7 @@ module TS
 
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.skip");
+        _checkParameter(count, "count", "TS.Linq.Extensions.skip");
 
         if (!TS.Utils.TypeInfo.isNumber(count))
         {
@@ -3114,6 +3102,7 @@ module TS
         var _arrayEnumerable: Enumerable<TSource>
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.take");
+        _checkParameter(count, "count", "TS.Linq.Extensions.take");
 
         if (!TS.Utils.TypeInfo.isNumber(count))
         {
@@ -3268,6 +3257,7 @@ module TS
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
         var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
+        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _callback: () => IEnumerator<TSource>;
         var _partitionedEnumerator: IEnumerator<TSource>;
@@ -3275,6 +3265,7 @@ module TS
         var _resultArray: Array<TSource>;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.thenBy");
+        _checkParameter(selector, "selector", "TS.Linq.Extensions.thenBy");
         _checkFunctionParameter(selector, "selector", "TS.Linq.Extensions.thenBy");
 
 
@@ -3348,6 +3339,7 @@ module TS
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
         var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
+        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _callback: () => IEnumerator<TSource>;
         var _partitionedEnumerator: IEnumerator<TSource>;
@@ -3355,6 +3347,7 @@ module TS
         var _resultArray: Array<TSource>;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.thenByDescending");
+        _checkParameter(selector, "selector", "TS.Linq.Extensions.thenByDescending");
         _checkFunctionParameter(selector, "selector", "TS.Linq.Extensions.thenByDescending");
 
         if (TS.Utils.TypeInfo.isNullOrUndefined(enumerable.getPartitionEnumerator))
@@ -3495,12 +3488,14 @@ module TS
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
         var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
+        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _resultArray: Array<TSource>;
         var _enumerator: IEnumerator<TSource>;
         var _callback: () => IEnumerator<TSource>;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.where");
+        _checkParameter(predicate, "predicate", "TS.Linq.Extensions.where");
         _checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.where");
 
         _callback = () =>

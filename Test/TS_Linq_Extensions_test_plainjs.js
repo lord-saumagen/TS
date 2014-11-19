@@ -751,6 +751,40 @@ var TS_Linq_Extensions_test;
   });
 
 
+  QUnit.test("orderByDescending", function (assert)
+  {
+    var _testInputCarEnumerable;
+    var _testResultCar;
+
+    _testInputCarEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateCarsArray());
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.orderByDescending({}, function (item) { return item; }, function (first, second) { return first == second; });
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'enumerable' argument type.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.orderByDescending(_testInputCarEnumerable, {}, function (first, second) { return first == second; });
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'selector' argument type.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.orderByDescending(_testInputCarEnumerable, function (item) { return item; }, {});
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for an invalid 'comparer' argument type.");
+
+  });
+
+
   QUnit.test("range", function (assert)
   {
     assert.throws(function ()

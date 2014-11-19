@@ -18,9 +18,11 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Documentation\google66e3e0757876dccf.html" />
     <Content Include="Documentation\index.css" />
     <Content Include="Documentation\index.html" />
     <Content Include="README.md" />
+    <Content Include="Documentation\OSL_V3.0.html" />
     <None Include="git-local.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
@@ -29,11 +31,12 @@
     <Content Include="Scripts\qunit-1.15.0.js" />
     <Content Include="Scripts\qunit-once.js" />
     <Content Include="Test\TestSuite.html" />
+    <Content Include="Test\TS_Linq_Enumerable_test.html" />
     <Content Include="Test\TS_Linq_Exception_test.html" />
     <Content Include="Test\TS_Linq_Extensions_test_plainjs.js" />
     <Content Include="Test\TS_Encoding_test.html" />
+    <Content Include="Test\TS_Utils_test.html" />
     <Content Include="Test\TS_Utils_TypeInfo_test.html" />
-    <Content Include="Test\TS_Utils_Compare_test.html" />
     <Content Include="Test\TS_Exception_test.html" />
     <Content Include="Test\TS_Linq_Extensions_test.html" />
     <Content Include="Test\TS_Utils_TypeInfo_test_plainjs.js" />
@@ -46,6 +49,7 @@
     <TypeScriptCompile Include="Exception\Exception.ts" />
     <TypeScriptCompile Include="Linq\ArrayEnumerable.ts" />
     <TypeScriptCompile Include="Linq\ArrayEnumerator.ts" />
+    <TypeScriptCompile Include="Linq\Grouping.ts" />
     <TypeScriptCompile Include="Linq\Linq.ts" />
     <TypeScriptCompile Include="Linq\RandomGenerator.ts" />
     <TypeScriptCompile Include="Linq\CycleGenerator.ts" />
@@ -59,15 +63,16 @@
     <TypeScriptCompile Include="Linq\OrderedEnumerable.ts" />
     <TypeScriptCompile Include="Scripts\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\qunit.d.ts" />
+    <TypeScriptCompile Include="Test\TS_Linq_Enumerable_test.ts" />
     <TypeScriptCompile Include="Test\TS_Linq_Exception_test.ts" />
     <TypeScriptCompile Include="Test\TS_Encoding_test.ts" />
+    <TypeScriptCompile Include="Test\TS_Linq_test_common.ts" />
+    <TypeScriptCompile Include="Test\TS_Utils_test.ts" />
     <TypeScriptCompile Include="Test\TS_Utils_TypeInfo_test.ts" />
-    <TypeScriptCompile Include="Test\TS_Utils_Compare_test.ts" />
     <TypeScriptCompile Include="Test\TS_Exception_test.ts" />
     <TypeScriptCompile Include="Test\TS_Linq_Extensions_test.ts" />
     <TypeScriptCompile Include="TS.ts" />
     <TypeScriptCompile Include="Encoding\Base64.ts" />
-    <TypeScriptCompile Include="Utils\Compare.ts" />
     <TypeScriptCompile Include="Utils\TypeInfo.ts" />
     <TypeScriptCompile Include="Utils\Utils.ts" />
   </ItemGroup>
@@ -79,9 +84,7 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Test\Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
   </PropertyGroup>
