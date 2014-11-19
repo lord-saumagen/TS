@@ -17,6 +17,7 @@
         <li><a href="#Utils">Utils</a></li>
         <li><a href="#Exception">Exception</a></li>
         <li><a href="#Test">Test</a></li>
+        <li><a href="#License">License</a></li>
       </ul>
     </div>
     <div id="content" style="margin-left: 12em; vertical-align: top;">
@@ -37,10 +38,10 @@
         <br />
         But then came <a href="http://en.wikipedia.org/wiki/Anders_Hejlsberg">Anders Hejlsberg</a>, my personal hero and inventor of <a href="http://en.wikipedia.org/wiki/TypeScript">TypeScript.</a><br />
         <br />
-        He showed us a way out of the misery. He created a language which looks and feels almost like a real OO programming language.
+        He showed us a way out of the misery and created a language which looks and feels almost like a real OO programming language.
         You do not longer have to deal with all the crap and hacks and well known errors to keep your JavaScript programs running. 
         Now you can program your script code just
-        like you always did in C#. You also get full intellisense and error messages at compile
+        like you always did in C#. You also get full IntelliSense and error messages at compile
         time. At least when you use visual studio for
         your programming task.
         <br />
@@ -51,15 +52,18 @@
         &quot;Because he didn&#39;t even try.&quot;<br />
         <br />
         TypeScript code compiles ( or transpiles, if you like ) to JavaScript. This way your browser won&#39;t even notice that you are
-        already a lightyear ahead of the lame script engine restriction. Someday, somebody should investigate why one of the
-        worst programming languages man invented,&nbsp; was the only thing the browser vendors could agree on, during the dark ages of the
+        already a lightyear ahead of the lame script engine restriction. Your browser will only see JavaScript code. This way he was able to introduce a new language without the need to create a runtime environment for it.
+        <br />
+        <br />
+        Someday, somebody should investigate why one of the
+        worst programming languages man invented (JavaScript),&nbsp; was the only thing the browser vendors could agree on, during the dark ages of the
         browser war in the last millenium.
         <br />
         <br />
         Anders Hejlsberg did a great job and gave us lambda expressions, inheritance, something like a type system, typed function arguments, access modifiers and much much more. All that stuff you always wanted to have in JavaScript but didn&#39;t dare to ask for. Since the language is all new,&nbsp; he is still focused on developing the language itself and the compiler. So he didn&#39;t have time to create a full blown ecosystem around that language, like you may know from &quot;Phyton&quot; or &quot;Node.js&quot;. You can use existing javasript libraries in TypeScript with the help of TypeScript definition files (&quot;d.ts&quot;). Those &quot;d.ts&quot; files work much like header files in C or C++. They introduce the javscript library functions to TypeScript so that you can use them from within your TypeScript code. That gives you a headstart when you want to use TypeScript for serious coding, but don&#39;t have the time to wirte all necessary libraries by yourself. But you shouldn&#39;t settle for this. With TypeScript you have the tool to write much 
         more robust JavaScript code than ever before. My vision is, that there will come a time when those libraries are written in typescript in the first place. That will give us more robust libraries, code which is much easier to understand and you get also rid of the &quot;d.ts&quot; files. Event those which are not enlightened can still use your code, because after compiling it is plain JavaScript for them. That&#39;s the reason why I started this project.<br />
         <br />
-        Since I&#39;m a great fan of LINQ in C#, it was a natural choice for me to start with a LINQ library. There are also some modules which are not LINQ specific at all, but build the foundation of a robust and eloquent coding style. Namely that are the type info function in the &quot;TS.Utils&quot; module and the exception classes.
+        Since I&#39;m a great fan of LINQ in C#, it was a natural choice for me to start with a LINQ library. There are also some modules which are not LINQ specific at all, but build the foundation of a robust and eloquent coding style. Namely that are the type info functions in the &quot;TS.Utils&quot; module and the exception classes.
         <br />
         <br />
         After all,&nbsp; I must say it is fun to write code in TypeScript. I had already lost my hope and didn&#39;t belive that there will one day fun
@@ -673,7 +677,7 @@
         If you want to use the extension functions you have to create an instance of "Enumerable&lt;T&gt" in the first place. You get one by casting
         an array of any type into an enumerable by calling the function "fromArray" which is defined in the "TS.Linq.Extensions" module. Since there 
         are no other collection types available in JavaScript, there is also no other type you could cast to an enumerable.
-        <br />
+        Below is an excample which shows how to call that function.<br />
         <br />
         <code>newEnumerable = TS.Linq.Extensions.fromArray([anyArray]);
         </code>
@@ -983,6 +987,15 @@ catch (ex)
         The subdirectory &quot;Data&quot; in the &quot;Test&quot; directory holds the test data for the unit tests.<br />
         <br />
         The test files in plain JavaScript need a little explanation. Some tests regarding the error handling of the modules wasn&#39;t realizeable in TypeScript. The simple reason for that is, TypeScript doesn&#39;t allow you to write as erroneous code as you can write in plain JavaScript. So I had to write those tests in plain JavaScript. </div>
+        <div id="License">
+          <h2>License</h2>
+          This software is licensed under the <a href="http://opensource.org/licenses/OSL-3.0 " title="[Open Software License version 3.0]">Open Software License version 3.0.</a>
+          <br />
+          You will find the full licens text in file <span class="italic">OSL_V3.0.html</span> in the <span class="italic">Documentation</span> directory of this project.
+          <br />
+          <br />
+          &copy; lord.saumagen@gmail.com, 2014
+        </div>
     </div>
   </body>
 </html>
