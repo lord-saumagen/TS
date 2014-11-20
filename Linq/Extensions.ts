@@ -115,7 +115,7 @@ module TS
       *    This function checks the argument 'enumerable' against null and 
       *    undefined and throws a 'TS.ArgumentNullOrUndefinedException' if
       *    the argument is either null or undefined.
-      *    The exceptions message uses the 'functionName' to signal from
+      *    The exceptions message uses the 'functionName' to signal
       *    which function received the invalid enumerable.
       *
       *  @requires
@@ -154,7 +154,7 @@ module TS
       *    This function checks whether argument 'paramToCheck' is a
       *    function or not.
       *    If not, a 'InvalidTypeException' is thrown.
-      *    The exceptions message uses the 'pramName' and 'functionName'
+      *    The exceptions message uses the 'paramName' and 'functionName'
       *    in its message to signal which parameter failed the check and 
       *    which function received the invalid parameter.
       *
@@ -275,7 +275,7 @@ module TS
       *    TS.InvalidTypeException.
       */
       export function aggregate<TSource, TAccumulate>(enumerable: Enumerable<TSource>, accumulator: (first: TAccumulate, second: TSource) => TAccumulate, seed: TAccumulate): TAccumulate
-      export function aggregate<TSource, any>(enumerable: Enumerable<TSource>, accumulator: (first: any, second: TSource) => any, seed?: any): any
+      export function aggregate<TSource>(enumerable: Enumerable<TSource>, accumulator: (first: any, second: TSource) => any, seed?: any): any
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
         var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
@@ -1465,7 +1465,7 @@ module TS
       */
       export function groupBy<TSource, TKey, TResult>(enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, resultSelector?: (key: TKey, group: Enumerable<TSource>) => TResult): Enumerable<TResult>
 
-      export function groupBy<TSource, TKey, any>(enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, elementOrResultSelector?: any): Enumerable<any>
+      export function groupBy<TSource, TKey>(enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, elementOrResultSelector?: any): Enumerable<any>
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
         var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
@@ -2006,7 +2006,7 @@ module TS
       *  @throws
       *    TS.InvalidTypeException.
       */
-      export function max<number>(enumerable: Enumerable<number>): number
+      export function max<Number>(enumerable: Enumerable<number>): number
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
 
@@ -2063,7 +2063,7 @@ module TS
       *  @throws
       *    TS.InvalidTypeException.
       */
-      export function min<number>(enumerable: Enumerable<number>): number
+      export function min<Number>(enumerable: Enumerable<number>): number
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
 

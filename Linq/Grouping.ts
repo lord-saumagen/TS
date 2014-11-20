@@ -16,7 +16,7 @@
       private _enumerable: Enumerable<TSource>;
       private _keySelector: (item: TSource) => TKey;
       private _equalityComparer: (first: TKey, second: TKey) => boolean;
-      private _elementSelector: any;
+      private _elementSelector: (item: TSource) => any;
 
       public get key(): TKey
       {
@@ -39,6 +39,9 @@
 
       private callbackOverride(): IEnumerator<any>
       {
+        //
+        // Use the element selector if available.
+        //
         if (!TS.Utils.TypeInfo.isNullOrUndefined(this._elementSelector) && (this._elementSelector.length == 1))
         {
           return TS.Linq.Extensions.select(TS.Linq.Extensions.where(this._enumerable, item => this._equalityComparer(this._keySelector(item), this._key)), item => this._elementSelector(item)).getEnumerator();
@@ -53,7 +56,7 @@
     *    This function checks whether argument 'paramToCheck' is a
     *    function or not.
     *    If not, a 'InvalidTypeException' is thrown.
-    *    The exceptions message uses the 'pramName' and 'functionName'
+    *    The exceptions message uses the 'paramName' and 'functionName'
     *    in its message to signal which parameter failed the check and 
     *    which function received the invalid parameter.
     *

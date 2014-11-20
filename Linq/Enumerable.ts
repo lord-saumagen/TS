@@ -716,7 +716,7 @@ module TS
       */
       public groupBy<TKey, TResult>(keySelector: (item: T) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, resultSelector?: (key: TKey, group: Enumerable<T>) => TResult): Enumerable<TResult>
 
-      public groupBy<TKey, any>(keySelector: (item: T) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, elementOrResultSelector?: any): Enumerable<any>
+      public groupBy<TKey>(keySelector: (item: T) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, elementOrResultSelector?: any): Enumerable<any>
       {
         return TS.Linq.Extensions.groupBy(this, keySelector, equalityComparer, elementOrResultSelector);
       }
@@ -873,7 +873,7 @@ module TS
       *  @throws
       *    TS.InvalidTypeException.
       */
-      public max<number>(): number
+      public max<Number>(): number
       {
         var _numberArray: Array<number>;
         var _enumerator: IEnumerator<T>;
@@ -919,7 +919,7 @@ module TS
       *  @throws
       *    TS.InvalidTypeException.
       */
-      public min<number>(): number
+      public min<Number>(): number
       {
         var _numberArray: Array<number>;
         var _enumerator: IEnumerator<T>;
@@ -1482,7 +1482,7 @@ module TS
       *  @throws
       *    TS.InvalidTypeException
       */
-      public union<TSource>(secondEnumerable: Enumerable<TSource>): Enumerable<TSource>
+      public union(secondEnumerable: Enumerable<T>): Enumerable<T>
       {
         return Extensions.union(this, secondEnumerable);
       }

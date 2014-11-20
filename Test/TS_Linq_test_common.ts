@@ -185,7 +185,7 @@
     _productArray.push(_product);
     _product = { ID: 2222, Name: "Grain", Price: 0.5, Currency: "EURO", Storage: { Room: "STR 003", Rack: 1, Shelf: 1, Sector: 1, Place: 1, Amount: 1000, Unit: "Kilo" } };
     _productArray.push(_product);
-    _product = { ID: 3333, Name: "Meet", Price: 5.0, Currency: "¥", Storage: { Room: "STR 003", Rack: 1, Shelf: 1, Sector: 1, Place: 2, Amount: 2000, Unit: "Kilo" } };
+    _product = { ID: 3333, Name: "Meat", Price: 5.0, Currency: "¥", Storage: { Room: "STR 003", Rack: 1, Shelf: 1, Sector: 1, Place: 2, Amount: 2000, Unit: "Kilo" } };
     _productArray.push(_product);
     _product = { ID: 4444, Name: "Fish", Price: 6.0, Currency: "£", Storage: { Room: "STR 003", Rack: 1, Shelf: 1, Sector: 1, Place: 3, Amount: 3000, Unit: "Kilo" } };
     _productArray.push(_product);

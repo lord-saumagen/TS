@@ -121,7 +121,7 @@ module TS_Linq_Extensions_test
     assert.equal(TS.Linq.Extensions.all(TS.Linq.Extensions.fromArray([]), (item) => false), true, "Should return true for an empty enumerable.");
     _testResult = TS.Linq.Extensions.all(TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateStringArray()), (item) => item.length >= 3);
     assert.ok(_testResult, "Should return true on a predicate that should pass.");
-    _testResult = TS.Linq.Extensions.all(TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateStringArray()), (item) => item.lenght > 4);
+    _testResult = TS.Linq.Extensions.all(TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateStringArray()), (item) => item.length > 4);
     assert.ok(!_testResult, "Should return false on a predicate that shouldn't pass.");
 
     assert.throws(() =>
