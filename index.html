@@ -5,6 +5,12 @@
     <meta charset="utf-8" />
     <title>Typescript LINQ library</title>
     <link rel="stylesheet" href="index.css" type="text/css" />
+    <style type="text/css">
+      .auto-style1 {
+        width: 649px;
+        height: 164px;
+      }
+    </style>
   </head>
   <body>
     <h1>TS - A TypeScript module collection.</h1>
@@ -18,6 +24,7 @@
         <li><a href="#Exception">Exception</a></li>
         <li><a href="#Test">Test</a></li>
         <li><a href="#License">License</a></li>
+        <li><a href="#Version">Version</a></li>
       </ul>
     </div>
     <div id="content" style="margin-left: 12em; vertical-align: top;">
@@ -121,10 +128,10 @@
         'Linq' directory. The module functions resemble the public static functions defined in C#.
         <br />
         <br />
-        Most of the extension functions are also bound to the 'TS.Linq.Enumerable' class which you can find in file 'Enumerable.ts'. This way you can
+        Most of the extension functions are also bound to the 'TS.Linq.Enumerable' class which can be found in file 'Enumerable.ts'. This way you can
         use the fluent interface for the LINQ extensions which you may already know from C#.<br />
         <br />
-        The table below shows all 
+        The table below shows all default 
         LINQ extensions as defined by Microsoft and theire execution behavior. Those wich are marked green are considered complete implemented and tested.<br />
         Those wich are marked yellow are not yet implemented or not tested. 
         <br />
@@ -996,6 +1003,12 @@ catch (ex)
           <br />
           &copy; lord.saumagen@gmail.com, 2014
         </div>
+        <div id="Version">
+          <h2>Version</h2>
+          The current version of this module collection is 1.0.1. Beginning with this version the TypeScript compiler in version 1.3.0.0 is used. That compiler came with the <a href="https://visualstudiogallery.msdn.microsoft.com/955e0262-0858-40c9-ab5a-1acc680e9bfd">"TypeScript 1.3 for Visual Studio 2013"</a> set up. The module collection will not be backward compatible, because it will make use of the new language features. If you are not sure which version you are currently using, you can proof by running the &quot;tsc.exe&quot; file with the &quot;-v&quot; flag as shown below.
+          <br />
+          <br />
+          <img alt="TSC_Version" class="auto-style1" src="tsc_version.png" /></div>
     </div>
   </body>
 </html>
