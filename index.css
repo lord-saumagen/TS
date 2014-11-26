@@ -9,4 +9,14 @@ table { border-collapse: collapse;}
 .notYetImplemented { background-color: #FFC125;}
 .fullyImplemented { background-color: #7CCD7C;}
 .italic { font-style:italic;}
+      ul
+      {
+        list-style: none;
+        margin-left: 1em;
+        margin-bottom: 0px;
+        margin-right: 0px;
+        margin-top: 0px;
+        padding: 0px;
+      }
+
 
