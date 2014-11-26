@@ -72,6 +72,10 @@ module TS_Encoding_test
 
   });
 
+  QUnit.test("UTF8.Encode", (assert) => 
+  {
+  });
+
   function getShortTestString()
   {
     return "ABCabc123";

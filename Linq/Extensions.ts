@@ -151,93 +151,6 @@ module TS
 
       /**
       *  @description
-      *    This function checks whether argument 'paramToCheck' is a
-      *    function or not.
-      *    If not, a 'InvalidTypeException' is thrown.
-      *    The exceptions message uses the 'paramName' and 'functionName'
-      *    in its message to signal which parameter failed the check and 
-      *    which function received the invalid parameter.
-      *
-      *  @throws
-      *    TS.InvalidTypeException
-      */
-      function checkFunctionParameter(paramToCheck: any, paramName: string, functionName: string)
-      {
-        if (!TS.Utils.TypeInfo.isFunction(paramToCheck))
-        {
-          throw new TS.InvalidTypeException(paramName, paramToCheck, "Argument '" + paramName + "' must be a function parameter in function '" + functionName + "'.");
-        }//END if
-      }
-
-
-      /**
-      *  @description
-      *    This function checks the argument 'paramToCheck' against null and 
-      *    undefined and throws a 'TS.ArgumentNullOrUndefinedException' if
-      *    the argument is either null or undefined. 
-      *    The exceptions message uses the 'paramName' and 'functionName' 
-      *    in its message to signal which parameter failed the check and 
-      *    which function received the invalid parameter.
-      *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      */
-      function checkParameter(paramToCheck: any, paramName: string, functionName: string)
-      {
-        if (TS.Utils.TypeInfo.isNullOrUndefined(paramToCheck))
-        {
-          throw new TS.ArgumentNullOrUndefinedException(paramName, "Argument '" + paramName + "' must not be null or undefinde in function '" + functionName + "'.");
-        }//END if
-      }
-
-
-      /**
-      *  @description
-      *    This function checks the argument 'constructorToCheck' against null and 
-      *    undefined and throws a 'TS.ArgumentNullOrUndefinedException' if
-      *    the argument is either null or undefined. 
-      *
-      *    The function checks also the type of the argument which must evaluate
-      *    to 'function' and checks whether the function is a constructor function.
-      *    The function throws a 'TS.InvalidTypeException' if one of the two
-      *    checks failed.
-      *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException
-      */
-      function checkConstructor(constructorToCheck: any, paramName: string, functionName: string)
-      {
-        var _object: any;
-
-        if (TS.Utils.TypeInfo.isNullOrUndefined(constructorToCheck))
-        {
-          throw new TS.ArgumentNullOrUndefinedException(paramName, "Argument '" + paramName + "' must not be null or undefinde in function '" + functionName + "'.");
-        }//END if
-
-        if (typeof (checkConstructor) != "function")
-        {
-          throw new TS.InvalidTypeException(paramName, "Argument '" + paramName + "' must not of type 'function' in function '" + functionName + "'.");
-        }//END if
-
-        try
-        {
-          _object = new constructorToCheck();
-        }//END try
-        catch (Ex) { };
-
-        if (TS.Utils.TypeInfo.isNullOrUndefined(_object))
-        {
-          throw new TS.InvalidTypeException(paramName, "Argument '" + paramName + "' must be a valid constructor function in function '" + functionName + "'.");
-        }//END if
-
-      }
-
-
-      /**
-      *  @description
       *    Applies an accumulator function over a sequence.
       *
       *    Immediate execution.
@@ -278,15 +191,13 @@ module TS
       export function aggregate<TSource>(enumerable: Enumerable<TSource>, accumulator: (first: any, second: TSource) => any, seed?: any): any
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
 
         var _resultValue: any;
         var _enumerator: IEnumerator<TSource>;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.aggregate");
-        _checkParameter(accumulator, "accumulator", "TS.Linq.Extensions.aggregate");
-        _checkFunctionParameter(accumulator, "accumulator", "TS.Linq.Extensions.aggregate");
+        TS.Utils.checkParameter(accumulator, "accumulator", "TS.Linq.Extensions.aggregate");
+        TS.Utils.checkFunctionParameter(accumulator, "accumulator", "TS.Linq.Extensions.aggregate");
 
         _enumerator = enumerable.getEnumerator();
 
@@ -343,16 +254,14 @@ module TS
       */
       export function all<TSource>(enumerable: Enumerable<TSource>, predicate: (item: TSource) => boolean): boolean
       {
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
 
         var _resultValue = true;
         var _enumerator: IEnumerator<TSource>
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.all");
-        _checkParameter(predicate, "predicate", "TS.Linq.Extensions.all");
-        _checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.all");
+        TS.Utils.checkParameter(predicate, "predicate", "TS.Linq.Extensions.all");
+        TS.Utils.checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.all");
 
         _enumerator = enumerable.getEnumerator();
 
@@ -409,7 +318,6 @@ module TS
       export function any<TSource>(enumerable: Enumerable<TSource>, predicate?: (item: TSource) => boolean): boolean
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
 
         var _resultValue = false;
         var _enumerator: IEnumerator<TSource>
@@ -419,7 +327,7 @@ module TS
 
         if (!TS.Utils.TypeInfo.isNullOrUndefined(predicate))
         {
-          _checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.any");
+          TS.Utils.checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.any");
         }//END if
         else
         {
@@ -529,7 +437,6 @@ module TS
       */
       export function concat<TSource>(firstEnumerable: Enumerable<TSource>, secondEnumerable: Enumerable<TSource>): Enumerable<TSource>
       {
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
 
         var _callback: () => IEnumerator<TSource>;
@@ -625,19 +532,17 @@ module TS
       export function contains<TSource>(enumerable: Enumerable<TSource>, element: TSource, equalityComparer: (first: TSource, second: TSource) => boolean): boolean
       export function contains<TSource>(enumerable: Enumerable<TSource>, element: TSource, equalityComparer?: (first: TSource, second: TSource) => boolean): boolean
       {
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
 
         var _contains: boolean;
         var _enumerator: IEnumerator<TSource>;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.contains");
-        _checkParameter(element, "element", "TS.Linq.Extensions.contains");
+        TS.Utils.checkParameter(element, "element", "TS.Linq.Extensions.contains");
 
         if (!TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer))
         {
-          _checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.contains");
+          TS.Utils.checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.contains");
         }//END if
         else
         {
@@ -709,7 +614,6 @@ module TS
       export function count<TSource>(enumerable: Enumerable<TSource>, predicate?: (item: TSource) => boolean): number
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
 
         var _count: number;
         var _enumerator: IEnumerator<TSource>;
@@ -718,7 +622,7 @@ module TS
 
         if (!TS.Utils.TypeInfo.isNullOrUndefined(predicate))
         {
-          _checkFunctionParameter(predicate, "equalityComparer", "TS.Linq.Extensions.count");
+          TS.Utils.checkFunctionParameter(predicate, "equalityComparer", "TS.Linq.Extensions.count");
         }//END if
         else
         {
@@ -807,14 +711,13 @@ module TS
       export function defaultIfEmpty<TSource>(enumerable: Enumerable<TSource>, defaultConstructor: { new (): TSource; }): Enumerable<TSource>
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkConstructor: (constructorToCheck: any, paramName: string, functionName: string) => void = checkConstructor;
 
         var _arr: Array<TSource>;
         var _callback: () => IEnumerator<TSource>;
         var _enumerator: IEnumerator<TSource>;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.defaultIfEmpty");
-        _checkConstructor(defaultConstructor, "defaultConstructor", "TS.Linq.Extensions.defaultIfEmpty");
+        TS.Utils.checkConstructorParameter(defaultConstructor, "defaultConstructor", "TS.Linq.Extensions.defaultIfEmpty");
 
         _callback = () => 
         {
@@ -888,7 +791,6 @@ module TS
       export function distinct<TSource>(enumerable: Enumerable<TSource>, equalityComparer?: (first: TSource, second: TSource) => boolean): Enumerable<TSource>
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
 
         var _arr: Array<TSource>;
         var _callback: () => IEnumerator<TSource>;
@@ -901,7 +803,7 @@ module TS
 
         if (!TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer))
         {
-          _checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.distinct");
+          TS.Utils.checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.distinct");
         }//END if
         else
         {
@@ -979,13 +881,12 @@ module TS
       export function elementAt<TSource>(enumerable: Enumerable<TSource>, index: number): TSource
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _enumerator: IEnumerator<TSource>;
         var _currentElement: TSource;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.elementAt");
-        _checkParameter(index, "index", "TS.Linq.Extensions.elementAt");
+        TS.Utils.checkParameter(index, "index", "TS.Linq.Extensions.elementAt");
 
         if (!TS.Utils.TypeInfo.isPositiveIntegerNumber(index))
         {
@@ -1038,15 +939,13 @@ module TS
       export function elementAtOrDefault<TSource>(enumerable: Enumerable<TSource>, index: number, defaultConstructor: { new (): TSource; }): TSource
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkConstructor: (constructorToCheck: any, paramName: string, functionName: string) => void = checkConstructor;
 
         var _enumerator: IEnumerator<TSource>;
         var _currentElement: TSource;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.elementAtOrDefault");
-        _checkParameter(index, "index", "TS.Linq.Extensions.elementAtOrDefault");
-        _checkConstructor(defaultConstructor, "defaultConstructor", "TS.Linq.Extensions.elementAtOrDefault");
+        TS.Utils.checkParameter(index, "index", "TS.Linq.Extensions.elementAtOrDefault");
+        TS.Utils.checkConstructorParameter(defaultConstructor, "defaultConstructor", "TS.Linq.Extensions.elementAtOrDefault");
 
         if (!TS.Utils.TypeInfo.isIntegerNumber(index))
         {
@@ -1135,7 +1034,6 @@ module TS
       export function except<TSource>(firstEnumerable: Enumerable<TSource>, secondEnumerable: Enumerable<TSource>, equalityComparer?: (first: TSource, second: TSource) => boolean): Enumerable<TSource>
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
 
         var _resultArray: Array<TSource>;
         var _secondEnumArray: Array<TSource>
@@ -1150,7 +1048,7 @@ module TS
 
         if (!TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer))
         {
-          _checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.except");
+          TS.Utils.checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.except");
         }//END if
         else
         {
@@ -1235,7 +1133,6 @@ module TS
       export function first<TSource>(enumerable: Enumerable<TSource>, predicate?: (item: TSource) => boolean): TSource
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
 
         var _enumerator: IEnumerator<TSource>;
         var _result: TSource;
@@ -1245,7 +1142,7 @@ module TS
 
         if (!TS.Utils.TypeInfo.isNullOrUndefined(predicate))
         {
-          _checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.first");
+          TS.Utils.checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.first");
         }//END if
         else
         {
@@ -1321,18 +1218,16 @@ module TS
       export function firstOrDefault<TSource>(enumerable: Enumerable<TSource>, defaultConstructor: { new (): TSource; }, predicate?: (item: TSource) => boolean): TSource
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkConstructor: (constructorToCheck: any, paramName: string, functionName: string) => void = checkConstructor;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
 
         var _enumerator: IEnumerator<TSource>;
         var _result: TSource;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.firstOrDefault");
-        _checkConstructor(defaultConstructor, "defaultConstructor", "TS.Linq.Extensions.firstOrDefault");
+        TS.Utils.checkConstructorParameter(defaultConstructor, "defaultConstructor", "TS.Linq.Extensions.firstOrDefault");
 
         if (!TS.Utils.TypeInfo.isNullOrUndefined(predicate))
         {
-          _checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.firstOrDefault");
+          TS.Utils.checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.firstOrDefault");
         }//END if
         else
         {
@@ -1358,6 +1253,62 @@ module TS
 
       /**
       *  @description
+      *    Performs the specified action on each element of the enumerable
+      *
+      *    Deffered execution.
+      *
+      *    That function is not a linq extension because it is a command and not
+      *    a query at all. 
+      *    I implemented this extension for your convenience. Without that function
+      *    you had to call 'toArray' first before you could use the array method
+      *    for each. Please read the article below from 'Eric Lippert's' blog to
+      *    make sure that you understand all the implications of this extension
+      *    function.
+      *
+      *  @see {@link http://blogs.msdn.com/b/ericlippert/archive/2009/05/18/foreach-vs-foreach.aspx | MSDN}
+      *
+      *  @retuns
+      *    Enumerable<TSource>, the resulting enumerable.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException.
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      */
+      export function forEach<TSource>(enumerable: Enumerable<TSource>, action: (item: TSource) => void): Enumerable<TSource>
+      {
+        var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
+
+
+        checkEnumerable(enumerable, "TS.Linq.Extensions.foreach");
+        TS.Utils.checkParameter(action, "action", "TS.Linq.Extensions.foreach");
+        TS.Utils.checkFunctionParameter(action, "action", "TS.Linq.Extensions.foreach");
+
+        var _enumerator: IEnumerator<TSource>;
+        var _callback: () => IEnumerator<TSource>;
+        var _resultArray: Array<TSource>;
+
+        _callback = () => 
+        {
+          _enumerator = enumerable.getEnumerator();
+          _resultArray = new Array<TSource>();
+
+          while (_enumerator.moveNext())
+          {
+            action(_enumerator.current);
+            _resultArray.push(_enumerator.current);
+          }//END while
+
+          return new ArrayEnumerator(_resultArray);
+        }
+
+        return new Enumerable<TSource>(_callback);
+      }
+
+
+      /**
+      *  @description
       *    Creates and returns a new 'Enumerable' form the array
       *    given in argument 'sourceArray'.
       *
@@ -1374,9 +1325,8 @@ module TS
       */
       export function fromArray<TSource>(sourceArray: Array<TSource>): TS.Linq.ArrayEnumerable<TSource>
       {
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
-        _checkParameter(sourceArray, "sourceArray", "TS.Linq.Extensions.fromArray");
+        TS.Utils.checkParameter(sourceArray, "sourceArray", "TS.Linq.Extensions.fromArray");
 
         if (!Utils.TypeInfo.isArray(sourceArray))
         {
@@ -1444,36 +1394,14 @@ module TS
       *    TS.InvalidTypeException
       */
       export function groupBy<TSource, TKey, TElement>(enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, elementSelector?: (item: TSource) => TElement): Enumerable<Grouping<TKey, TElement>>
-      /**
-      *  @description
-      *    Groups the elements of a sequence according to a specified key selector function and creates a result 
-      *    value from each group and its key.
-      *    The keys are compared by using the specified comparer in argument 'equalityComparer' if provided.
-      *
-      *    Deferred execution.
-      *
-      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.groupby.aspx | MSDN}
-      *
-      *  @returns
-      *    Enumerable<TResult>, the result enumerable.
-      *
-      *  @throws
-      *     TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException
-      */
-      export function groupBy<TSource, TKey, TResult>(enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, resultSelector?: (key: TKey, group: Enumerable<TSource>) => TResult): Enumerable<TResult>
 
-      export function groupBy<TSource, TKey>(enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, elementOrResultSelector?: any): Enumerable<any>
+      export function groupBy<TSource, TKey>(enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, elementSelector?: (item: TSource) => any): Enumerable<any>
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.groupBy");
-        _checkParameter(keySelector, "keySelector", "TS.Linq.Extensions.groupBy");
-        _checkFunctionParameter(keySelector, "keySelector", "TS.Linq.Extensions.groupBy");
+        TS.Utils.checkParameter(keySelector, "keySelector", "TS.Linq.Extensions.groupBy");
+        TS.Utils.checkFunctionParameter(keySelector, "keySelector", "TS.Linq.Extensions.groupBy");
 
         var _groupingArray: Array<any>;
         var _callback: () => IEnumerator<Grouping<TKey, TSource>>;
@@ -1485,18 +1413,13 @@ module TS
         }//END if
         else
         {
-          _checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.groupBy");
+          TS.Utils.checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.groupBy");
         }//END else
 
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(elementOrResultSelector))
+        if (!TS.Utils.TypeInfo.isNullOrUndefined(elementSelector))
         {
-          _checkFunctionParameter(elementOrResultSelector, "elementSelector or resultSelector", "TS.Linq.Extensions.groupBy");
+          TS.Utils.checkFunctionParameter(elementSelector, "elementSelector", "TS.Linq.Extensions.groupBy");
         }//END if
-
-        function createSingleResult(key: TKey, enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey, equalityComparer: (first: TKey, second: TKey) => boolean, resultSelector: (key: TKey, group: Enumerable<TSource>) => any): any
-        {
-          return resultSelector(key, TS.Linq.Extensions.where(enumerable, item => equalityComparer(keySelector(item), key)));
-        }
 
         _callback = () =>
         {
@@ -1507,17 +1430,7 @@ module TS
 
           while (_keyEnumerator.moveNext())
           {
-
-            if (TS.Utils.TypeInfo.isNullOrUndefined(elementOrResultSelector) || elementOrResultSelector.length == 1)
-            {
-              _groupingArray.push(new Grouping(_keyEnumerator.current, enumerable, keySelector, equalityComparer, elementOrResultSelector));
-            }//END if
-
-            if (!TS.Utils.TypeInfo.isNullOrUndefined(elementOrResultSelector) && elementOrResultSelector.length == 2)
-            {
-              _groupingArray.push(createSingleResult(_keyEnumerator.current, enumerable, keySelector, equalityComparer, elementOrResultSelector));
-            }//END if
-
+            _groupingArray.push(new Grouping(_keyEnumerator.current, enumerable, keySelector, equalityComparer, elementSelector));
           }//END while
 
           return new ArrayEnumerator(_groupingArray);
@@ -1568,8 +1481,6 @@ module TS
       export function groupJoin<TOuter, TInner, TKey, TResult>(outerEnumerable: Enumerable<TOuter>, innerEnumerable: Enumerable<TInner>, outerKeySelector: (outerItem: TOuter) => TKey, innerKeySelector: (innerItem: TInner) => TKey, resultSelector: (outerItem: TOuter, group: IEnumerable<TInner>) => TResult, equalityComparer?: <TKey>(outerKey: TKey, innerKey: TKey) => boolean): Enumerable<TResult>
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _joinArray: Array<Pair<TOuter, Enumerable<TInner>>>;
         var _index: number;
@@ -1583,18 +1494,18 @@ module TS
         _checkEnumerable(outerEnumerable, "TS.Linq.Extensions.groupJoin");
         _checkEnumerable(innerEnumerable, "TS.Linq.Extensions.groupJoin");
 
-        _checkParameter(outerKeySelector, "outerKeySelector", "TS.Linq.Extensions.groupJoin");
-        _checkFunctionParameter(outerKeySelector, "outerKeySelector", "TS.Linq.Extensions.groupJoin");
+        TS.Utils.checkParameter(outerKeySelector, "outerKeySelector", "TS.Linq.Extensions.groupJoin");
+        TS.Utils.checkFunctionParameter(outerKeySelector, "outerKeySelector", "TS.Linq.Extensions.groupJoin");
 
-        _checkParameter(innerKeySelector, "innerKeySelector", "TS.Linq.Extensions.groupJoin");
-        _checkFunctionParameter(innerKeySelector, "innerKeySelector", "TS.Linq.Extensions.groupJoin");
+        TS.Utils.checkParameter(innerKeySelector, "innerKeySelector", "TS.Linq.Extensions.groupJoin");
+        TS.Utils.checkFunctionParameter(innerKeySelector, "innerKeySelector", "TS.Linq.Extensions.groupJoin");
 
-        _checkParameter(resultSelector, "resultSelector", "TS.Linq.Extensions.groupJoin");
-        _checkFunctionParameter(resultSelector, "resultSelector", "TS.Linq.Extensions.groupJoin");
+        TS.Utils.checkParameter(resultSelector, "resultSelector", "TS.Linq.Extensions.groupJoin");
+        TS.Utils.checkFunctionParameter(resultSelector, "resultSelector", "TS.Linq.Extensions.groupJoin");
 
         if (!TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer))
         {
-          _checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.contains");
+          TS.Utils.checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.contains");
         }//END if
         else
         {
@@ -1683,7 +1594,6 @@ module TS
       {
 
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
 
         var _set: Set<TSource>;
         var _firstEnumerator: IEnumerator<TSource>;
@@ -1696,7 +1606,7 @@ module TS
 
         if (!TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer))
         {
-          _checkFunctionParameter(equalityComparer, "predicate", "TS.Linq.Extensions.intersect");
+          TS.Utils.checkFunctionParameter(equalityComparer, "predicate", "TS.Linq.Extensions.intersect");
         }//END if
         else
         {
@@ -1751,8 +1661,6 @@ module TS
       export function join<TOuter, TInner, TKey, TResult>(outerEnumerable: Enumerable<TOuter>, innerEnumerable: Enumerable<TInner>, outerKeySelector: (outerItem: TOuter) => TKey, innerKeySelector: (innerItem: TInner) => TKey, resultSelector: (outerItem: TOuter, innerItem: TInner) => TResult): Enumerable<TResult>
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _joinArray: Array<Pair<TOuter, TInner>>;
         var _index: number;
@@ -1764,14 +1672,14 @@ module TS
 
         _checkEnumerable(outerEnumerable, "TS.Linq.Extensions.join");
         _checkEnumerable(innerEnumerable, "TS.Linq.Extensions.join");
-        _checkParameter(outerKeySelector, "outerKeySelector", "TS.Linq.Extensions.join");
-        _checkFunctionParameter(outerKeySelector, "outerKeySelector", "TS.Linq.Extensions.join");
+        TS.Utils.checkParameter(outerKeySelector, "outerKeySelector", "TS.Linq.Extensions.join");
+        TS.Utils.checkFunctionParameter(outerKeySelector, "outerKeySelector", "TS.Linq.Extensions.join");
 
-        _checkParameter(innerKeySelector, "innerKeySelector", "TS.Linq.Extensions.join");
-        _checkFunctionParameter(innerKeySelector, "innerKeySelector", "TS.Linq.Extensions.join");
+        TS.Utils.checkParameter(innerKeySelector, "innerKeySelector", "TS.Linq.Extensions.join");
+        TS.Utils.checkFunctionParameter(innerKeySelector, "innerKeySelector", "TS.Linq.Extensions.join");
 
-        _checkParameter(resultSelector, "resultSelector", "TS.Linq.Extensions.join");
-        _checkFunctionParameter(resultSelector, "resultSelector", "TS.Linq.Extensions.join");
+        TS.Utils.checkParameter(resultSelector, "resultSelector", "TS.Linq.Extensions.join");
+        TS.Utils.checkFunctionParameter(resultSelector, "resultSelector", "TS.Linq.Extensions.join");
 
         _callback = () =>
         {
@@ -1844,7 +1752,6 @@ module TS
       export function last<TSource>(enumerable: Enumerable<TSource>, predicate?: (item: TSource) => boolean): TSource
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
 
         var _enumerator: IEnumerator<TSource>;
         var _result: TSource;
@@ -1855,7 +1762,7 @@ module TS
 
         if (!TS.Utils.TypeInfo.isNullOrUndefined(predicate))
         {
-          _checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.last");
+          TS.Utils.checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.last");
         }//END if
         else
         {
@@ -1937,15 +1844,13 @@ module TS
       export function lastOrDefault<TSource>(enumerable: Enumerable<TSource>, defaultConstructor: { new (): TSource; }, predicate?: (item: TSource) => boolean): TSource
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkConstructor: (constructorToCheck: any, paramName: string, functionName: string) => void = checkConstructor;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
 
         var _enumerator: IEnumerator<TSource>;
         var _result: TSource;
         var _resultAssigned: boolean;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.lastOrDefault");
-        _checkConstructor(defaultConstructor, "defaultConstructor", "TS.Linq.Extensions.lastOrDefault");
+        TS.Utils.checkConstructorParameter(defaultConstructor, "defaultConstructor", "TS.Linq.Extensions.lastOrDefault");
 
         if (enumerable.count() == 0)
         {
@@ -1954,7 +1859,7 @@ module TS
 
         if (!TS.Utils.TypeInfo.isNullOrUndefined(predicate))
         {
-          _checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.lastOrDefault");
+          TS.Utils.checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.lastOrDefault");
         }//END if
         else
         {
@@ -2136,18 +2041,16 @@ module TS
       export function orderBy<TSource, TKey>(enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey, comparer?: (first: TKey, second: TKey) => number): OrderedEnumerable<TSource>
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _callback: () => IEnumerator<TSource>;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.orderBy");
-        _checkParameter(keySelector, "keySelector", "TS.Linq.Extensions.orderBy");
-        _checkFunctionParameter(keySelector, "keySelector", "TS.Linq.Extensions.orderBy");
+        TS.Utils.checkParameter(keySelector, "keySelector", "TS.Linq.Extensions.orderBy");
+        TS.Utils.checkFunctionParameter(keySelector, "keySelector", "TS.Linq.Extensions.orderBy");
 
         if (!TS.Utils.TypeInfo.isNullOrUndefined(comparer))
         {
-          _checkFunctionParameter(comparer, "comparer", "TS.Linq.Extensions.orderBy");
+          TS.Utils.checkFunctionParameter(comparer, "comparer", "TS.Linq.Extensions.orderBy");
         }//END if
 
         if (TS.Utils.TypeInfo.isNullOrUndefined(comparer))
@@ -2159,7 +2062,7 @@ module TS
         }//END if
         else
         {
-          _checkFunctionParameter(comparer, "comparer", "TS.Linq.Extensions.orderBy");
+          TS.Utils.checkFunctionParameter(comparer, "comparer", "TS.Linq.Extensions.orderBy");
         }//END else
 
         _callback = () => new ArrayEnumerator(enumerable.toArray().sort((first, second) => { var _first = keySelector(first); var _second = keySelector(second); return comparer(_first, _second); }));
@@ -2204,18 +2107,16 @@ module TS
       export function orderByDescending<TSource, TKey>(enumerable: Enumerable<TSource>, keySelector: (item: TSource) => TKey, comparer?: (first: TKey, second: TKey) => number): OrderedEnumerable<TSource>
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _callback: () => IEnumerator<TSource>;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.orderBy");
-        _checkParameter(keySelector, "keySelector", "TS.Linq.Extensions.orderBy");
-        _checkFunctionParameter(keySelector, "keySelector", "TS.Linq.Extensions.orderBy");
+        TS.Utils.checkParameter(keySelector, "keySelector", "TS.Linq.Extensions.orderBy");
+        TS.Utils.checkFunctionParameter(keySelector, "keySelector", "TS.Linq.Extensions.orderBy");
 
         if (!TS.Utils.TypeInfo.isNullOrUndefined(comparer))
         {
-          _checkFunctionParameter(comparer, "comparer", "TS.Linq.Extensions.orderBy");
+          TS.Utils.checkFunctionParameter(comparer, "comparer", "TS.Linq.Extensions.orderBy");
         }//END if
 
         if (TS.Utils.TypeInfo.isNullOrUndefined(comparer))
@@ -2227,7 +2128,7 @@ module TS
         }//END if
         else
         {
-          _checkFunctionParameter(comparer, "comparer", "TS.Linq.Extensions.orderBy");
+          TS.Utils.checkFunctionParameter(comparer, "comparer", "TS.Linq.Extensions.orderBy");
         }//END else
 
         _callback = () => new ArrayEnumerator(enumerable.toArray().sort((first, second) => { var _first = keySelector(first); var _second = keySelector(second); return -1 * comparer(_first, _second); }));
@@ -2303,13 +2204,12 @@ module TS
       */
       export function range(start: number, count: number): Enumerable<Number>
       {
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _resultArray: Array<number>;
         var _index: number;
 
-        _checkParameter(start, "start", "TS.Linq.Extensions.range");
-        _checkParameter(count, "count", "TS.Linq.Extensions.range");
+        TS.Utils.checkParameter(start, "start", "TS.Linq.Extensions.range");
+        TS.Utils.checkParameter(count, "count", "TS.Linq.Extensions.range");
 
 
         if (!TS.Utils.TypeInfo.isNumber(start))
@@ -2361,13 +2261,12 @@ module TS
       */
       export function repeat<TSource>(item: TSource, count: number): Enumerable<TSource>
       {
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _index = 0;
         var _resultArray: Array<TSource>;
 
-        _checkParameter(item, "item", "TS.Linq.Extensions.repeat");
-        _checkParameter(count, "count", "TS.Linq.Extensions.repeat");
+        TS.Utils.checkParameter(item, "item", "TS.Linq.Extensions.repeat");
+        TS.Utils.checkParameter(count, "count", "TS.Linq.Extensions.repeat");
 
         if (!TS.Utils.TypeInfo.isNumber(count))
         {
@@ -2443,9 +2342,7 @@ module TS
       */
       export function select<TSource, TResult>(enumerable: Enumerable<TSource>, selector: (item: TSource) => TResult): Enumerable<TResult>
       {
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _resultArray: Array<TResult>;
         var _selectorResult: TResult;
@@ -2456,8 +2353,8 @@ module TS
 
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.select");
-        _checkParameter(selector, "selector", "TS.Linq.Extensions.select");
-        _checkFunctionParameter(selector, "selector", "TS.Linq.Extensions.select");
+        TS.Utils.checkParameter(selector, "selector", "TS.Linq.Extensions.select");
+        TS.Utils.checkFunctionParameter(selector, "selector", "TS.Linq.Extensions.select");
 
         _callback = () =>
         {
@@ -2509,9 +2406,7 @@ module TS
       */
       export function selectMany<TSource, TResult>(enumerable: Enumerable<TSource>, selector: (item: TSource) => Array<TResult>): Enumerable<TResult>
       {
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _callback: () => IEnumerator<TResult>;
         var _enumerator: IEnumerator<TSource>;
@@ -2521,8 +2416,8 @@ module TS
 
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.selectMany");
-        _checkParameter(selector, "selector", "TS.Linq.Extensions.selectMany");
-        _checkFunctionParameter(selector, "selector", "TS.Linq.Extensions.selectMany");
+        TS.Utils.checkParameter(selector, "selector", "TS.Linq.Extensions.selectMany");
+        TS.Utils.checkFunctionParameter(selector, "selector", "TS.Linq.Extensions.selectMany");
 
         _callback = () =>
         {
@@ -2590,7 +2485,6 @@ module TS
       export function sequenceEqual<TSource>(firstEnumerable: Enumerable<TSource>, secondEnumerable: Enumerable<TSource>, equalityComparer: (first: TSource, second: TSource) => boolean): boolean
       export function sequenceEqual<TSource>(firstEnumerable: Enumerable<TSource>, secondEnumerable: Enumerable<TSource>, equalityComparer?: (first: TSource, second: TSource) => boolean): boolean
       {
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
 
         var _firstEnumerator: IEnumerator<TSource>;
@@ -2601,7 +2495,7 @@ module TS
 
         if (!TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer))
         {
-          _checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.sequenceEqual");
+          TS.Utils.checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.sequenceEqual");
         }//END if
         else
         {
@@ -2684,12 +2578,11 @@ module TS
         var _gotOne: boolean;
 
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
 
 
         if (!TS.Utils.TypeInfo.isNullOrUndefined(predicate))
         {
-          _checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.single");
+          TS.Utils.checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.single");
         }//END if
         else
         {
@@ -2774,15 +2667,13 @@ module TS
         var _gotOne: boolean;
 
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkConstructor: (constructorToCheck: any, paramName: string, functionName: string) => void = checkConstructor;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.singleOrDefault");
-        _checkConstructor(defaultConstructor, "defaultConstructor", "TS.Linq.Extensions.singleOrDefault");
+        TS.Utils.checkConstructorParameter(defaultConstructor, "defaultConstructor", "TS.Linq.Extensions.singleOrDefault");
 
         if (!TS.Utils.TypeInfo.isNullOrUndefined(predicate))
         {
-          _checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.singleOrDefault");
+          TS.Utils.checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.singleOrDefault");
         }//END if
         else
         {
@@ -2963,7 +2854,6 @@ module TS
       export function skip<TSource>(enumerable: Enumerable<TSource>, count: number): Enumerable<TSource>
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _index = 0;
         var _resultArray: Array<TSource>;
@@ -2972,7 +2862,7 @@ module TS
 
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.skip");
-        _checkParameter(count, "count", "TS.Linq.Extensions.skip");
+        TS.Utils.checkParameter(count, "count", "TS.Linq.Extensions.skip");
 
         if (!TS.Utils.TypeInfo.isNumber(count))
         {
@@ -3031,8 +2921,6 @@ module TS
       export function skipWhile<TSource>(enumerable: Enumerable<TSource>, predicate: (item: TSource) => boolean): Enumerable<TSource>
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _resultArray: Array<TSource>;
         var _callback: () => IEnumerator<TSource>;
@@ -3040,8 +2928,8 @@ module TS
 
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.skipWhile");
-        _checkParameter(predicate, "predicate", "TS.Linq.Extensions.skipWhile");
-        _checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.skipWhile");
+        TS.Utils.checkParameter(predicate, "predicate", "TS.Linq.Extensions.skipWhile");
+        TS.Utils.checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.skipWhile");
 
         _enumerator = enumerable.getEnumerator();
 
@@ -3093,7 +2981,6 @@ module TS
       export function take<TSource>(enumerable: Enumerable<TSource>, count: number): Enumerable<TSource>
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _resultArray: Array<TSource>;
         var _callback: () => IEnumerator<TSource>;
@@ -3102,7 +2989,7 @@ module TS
         var _arrayEnumerable: Enumerable<TSource>
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.take");
-        _checkParameter(count, "count", "TS.Linq.Extensions.take");
+        TS.Utils.checkParameter(count, "count", "TS.Linq.Extensions.take");
 
         if (!TS.Utils.TypeInfo.isNumber(count))
         {
@@ -3160,16 +3047,14 @@ module TS
       export function takeWhile<TSource>(enumerable: Enumerable<TSource>, predicate: (item: TSource) => boolean): Enumerable<TSource>
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _resultArray: Array<TSource>;
         var _callback: () => IEnumerator<TSource>;
         var _enumerator: IEnumerator<TSource>
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.takeWhile");
-        _checkParameter(predicate, "predicate", "TS.Linq.Extensions.takeWhile");
-        _checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.takeWhile");
+        TS.Utils.checkParameter(predicate, "predicate", "TS.Linq.Extensions.takeWhile");
+        TS.Utils.checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.takeWhile");
 
         _callback = () => 
         {
@@ -3256,8 +3141,6 @@ module TS
       export function thenBy<TSource, TKey>(enumerable: OrderedEnumerable<TSource>, selector: (item: TSource) => TKey, comparer?: (first: TKey, second: TKey) => number): OrderedEnumerable<TSource>
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _callback: () => IEnumerator<TSource>;
         var _partitionedEnumerator: IEnumerator<TSource>;
@@ -3265,8 +3148,8 @@ module TS
         var _resultArray: Array<TSource>;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.thenBy");
-        _checkParameter(selector, "selector", "TS.Linq.Extensions.thenBy");
-        _checkFunctionParameter(selector, "selector", "TS.Linq.Extensions.thenBy");
+        TS.Utils.checkParameter(selector, "selector", "TS.Linq.Extensions.thenBy");
+        TS.Utils.checkFunctionParameter(selector, "selector", "TS.Linq.Extensions.thenBy");
 
 
         if (TS.Utils.TypeInfo.isNullOrUndefined(enumerable.getPartitionEnumerator))
@@ -3283,7 +3166,7 @@ module TS
         }//END if
         else
         {
-          _checkFunctionParameter(comparer, "comparer", "TS.Linq.Extensions.thenBy");
+          TS.Utils.checkFunctionParameter(comparer, "comparer", "TS.Linq.Extensions.thenBy");
         }//END else
 
         _callback = () =>
@@ -3338,8 +3221,6 @@ module TS
       export function thenByDescending<TSource, TKey>(enumerable: OrderedEnumerable<TSource>, selector: (item: TSource) => TKey, comparer?: (first: TKey, second: TKey) => number): OrderedEnumerable<TSource>
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _callback: () => IEnumerator<TSource>;
         var _partitionedEnumerator: IEnumerator<TSource>;
@@ -3347,8 +3228,8 @@ module TS
         var _resultArray: Array<TSource>;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.thenByDescending");
-        _checkParameter(selector, "selector", "TS.Linq.Extensions.thenByDescending");
-        _checkFunctionParameter(selector, "selector", "TS.Linq.Extensions.thenByDescending");
+        TS.Utils.checkParameter(selector, "selector", "TS.Linq.Extensions.thenByDescending");
+        TS.Utils.checkFunctionParameter(selector, "selector", "TS.Linq.Extensions.thenByDescending");
 
         if (TS.Utils.TypeInfo.isNullOrUndefined(enumerable.getPartitionEnumerator))
         {
@@ -3364,7 +3245,7 @@ module TS
         }//END if
         else
         {
-          _checkFunctionParameter(comparer, "comparer", "TS.Linq.Extensions.thenByDescending");
+          TS.Utils.checkFunctionParameter(comparer, "comparer", "TS.Linq.Extensions.thenByDescending");
         }//END else
 
         _callback = () =>
@@ -3487,16 +3368,14 @@ module TS
       export function where<TSource>(enumerable: Enumerable<TSource>, predicate: (item: TSource) => boolean): Enumerable<TSource>
       {
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
-        var _checkFunctionParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkFunctionParameter;
-        var _checkParameter: (paramToCheck: any, paramName: string, functionName: string) => void = checkParameter;
 
         var _resultArray: Array<TSource>;
         var _enumerator: IEnumerator<TSource>;
         var _callback: () => IEnumerator<TSource>;
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.where");
-        _checkParameter(predicate, "predicate", "TS.Linq.Extensions.where");
-        _checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.where");
+        TS.Utils.checkParameter(predicate, "predicate", "TS.Linq.Extensions.where");
+        TS.Utils.checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.where");
 
         _callback = () =>
         {

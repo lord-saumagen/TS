@@ -119,6 +119,18 @@ module TS_Utils_TypeInfo_test
   });
 
 
+  QUnit.test("isBinaryString", (assert) =>
+  {
+  });
+
+  QUnit.test("isDecimalString", (assert) =>
+  {
+  });
+
+  QUnit.test("isHexString", (assert) =>
+  {
+  });
+
   QUnit.test("isBooleanObject", (assert) =>
   {
     var _undefined;

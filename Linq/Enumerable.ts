@@ -609,6 +609,37 @@ module TS
 
       /**
       *  @description
+      *    Performs the specified action on each element of the enumerable
+      *
+      *    Deffered execution.
+      *
+      *    That function is not a linq extension because it is a command and not
+      *    a query at all. 
+      *    I implemented this extension for your convenience. Without that function
+      *    you had to call 'toArray' first before you could use the array method
+      *    for each. Please read the article below from 'Eric Lippert's' blog to
+      *    make sure that you understand all the implications of this extension
+      *    function.
+      *
+      *  @see {@link http://blogs.msdn.com/b/ericlippert/archive/2009/05/18/foreach-vs-foreach.aspx | MSDN}
+      *
+      *  @retuns
+      *    Enumerable<TSource>, the resulting enumerable.
+      *
+      *  @throws
+      *     TS.ArgumentNullOrUndefinedException.
+      *
+      *  @throws
+      *    TS.InvalidTypeException.
+      */
+      public forEach(action: (item: T) => void): Enumerable<T>
+      {
+        return TS.Linq.Extensions.forEach(this, action);
+      }
+
+
+      /**
+      *  @description
       *    Creates and returns a new 'Enumerable' form the array
       *    given in argument 'sourceArray'.
       *
@@ -695,30 +726,10 @@ module TS
       *    TS.InvalidTypeException
       */
       public groupBy<TKey, TElement>(keySelector: (item: T) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, elementSelector?: (item: T) => TElement): Enumerable<Grouping<TKey, TElement>>
-      /**
-      *  @description
-      *    Groups the elements of a sequence according to a specified key selector function and creates a result 
-      *    value from each group and its key.
-      *    The keys are compared by using the specified comparer in argument 'equalityComparer' if provided.
-      *
-      *    Deferred execution.
-      *
-      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.groupby.aspx | MSDN}
-      *
-      *  @returns
-      *    Enumerable<TResult>, the result enumerable.
-      *
-      *  @throws
-      *     TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException
-      */
-      public groupBy<TKey, TResult>(keySelector: (item: T) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, resultSelector?: (key: TKey, group: Enumerable<T>) => TResult): Enumerable<TResult>
 
-      public groupBy<TKey>(keySelector: (item: T) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, elementOrResultSelector?: any): Enumerable<any>
+      public groupBy<TKey>(keySelector: (item: T) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, elementSelector?: (item: T) => any): Enumerable<any>
       {
-        return TS.Linq.Extensions.groupBy(this, keySelector, equalityComparer, elementOrResultSelector);
+        return TS.Linq.Extensions.groupBy(this, keySelector, equalityComparer, elementSelector);
       }
 
 

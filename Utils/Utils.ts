@@ -6,6 +6,179 @@
   {
 
     /**
+    *  @throws
+    *    TS.ArgumentNullOrUndefinedException
+    *
+    *  @throws
+    *    TS.InvalidTypeException
+    */
+    export function checkPositivIntegerNumberParameter(parameter: number, parameterName: string, functionName: string)
+    {
+      if (TS.Utils.TypeInfo.isNullOrUndefined(parameter))
+      {
+        throw new TS.ArgumentNullOrUndefinedException(parameterName, "Argument '" + parameterName + "' must not be null or undefined in function '" + functionName + "'.");
+      }//END if
+
+
+      if (!TS.Utils.TypeInfo.isPositiveIntegerNumber(parameter))
+      {
+        throw new TS.InvalidTypeException("parameterName", parameter, "Argument '" + parameterName + "' must be a valid positive integer number in function'" + functionName + "'.");
+      }//END if
+    }
+
+
+    /**
+    *  @throws
+    *    TS.ArgumentNullOrUndefinedException
+    *
+    *  @throws
+    *    TS.InvalidTypeException
+    */
+    export function checkIntegerNumberParameter(parameter: number, parameterName: string, functionName: string)
+    {
+      if (TS.Utils.TypeInfo.isNullOrUndefined(parameter))
+      {
+        throw new TS.ArgumentNullOrUndefinedException(parameterName, "Argument '" + parameterName + "' must not be null or undefined in function '" + functionName + "'.");
+      }//END if
+
+
+      if (!TS.Utils.TypeInfo.isIntegerNumber(parameter))
+      {
+        throw new TS.InvalidTypeException("parameterName", parameter, "Argument '" + parameterName + "' must be a valid integer number in function'" + functionName + "'.");
+      }//END if
+    }
+
+
+    /**
+    *  @throws
+    *    TS.ArgumentNullOrUndefinedException
+    *
+    *  @throws
+    *    TS.InvalidTypeException
+    */
+    export function checkUInt64NumberParameter(parameter: TS.TypeCode.UInt64, parameterName: string, functionName: string)
+    {
+      if (TS.Utils.TypeInfo.isNullOrUndefined(parameter))
+      {
+        throw new TS.ArgumentNullOrUndefinedException(parameterName, "Argument '" + parameterName + "' must not be null or undefined in function '" + functionName + "'.");
+      }//END if
+
+
+      if (TS.Utils.TypeInfo.isNullOrUndefined(parameter.MSInteger) || TS.Utils.TypeInfo.isNullOrUndefined(parameter.LSInteger))
+      {
+        throw new TS.InvalidTypeException("parameterName", parameter, "Argument '" + parameterName + "' must be a valid UInt64 number in function'" + functionName + "'.");
+      }//END if
+    }
+
+
+    /**
+    *  @throws
+    *    TS.ArgumentNullOrUndefinedException
+    *
+    *  @throws
+    *    TS.ArgumentNullUndefOrWhiteSpaceException
+    */
+    export function checkStringParameter(parameter: string, parameterName: string, functionName: string)
+    {
+      if (TS.Utils.TypeInfo.isNullOrUndefined(parameter))
+      {
+        throw new TS.ArgumentNullOrUndefinedException(parameterName, "Argument '" + parameterName + "' must not be null or undefined in function '" + functionName + "'.");
+      }//END if
+
+      if (TS.Utils.TypeInfo.isNullUndefOrWhiteSpace(parameter))
+      {
+        throw new TS.ArgumentNullUndefOrWhiteSpaceException(parameterName, "Argument '" + parameterName + "' must not be empty or whitespace in function '" + functionName + "'.");
+      }
+    }
+
+
+    /**
+    *  @description
+    *    This function checks whether argument 'parameter' is a
+    *    function or not.
+    *    If not, a 'InvalidTypeException' is thrown.
+    *    The exceptions message uses the 'paramName' and 'functionName'
+    *    in its message to signal which parameter failed the check and 
+    *    which function received the invalid parameter.
+    *
+    *  @throws
+    *    TS.InvalidTypeException
+    */
+    export function checkFunctionParameter(parameter: any, paramName: string, functionName: string)
+    {
+      if (!TS.Utils.TypeInfo.isFunction(parameter))
+      {
+        throw new TS.InvalidTypeException(paramName, parameter, "Argument '" + paramName + "' must be a function parameter in function '" + functionName + "'.");
+      }//END if
+    }
+
+
+    /**
+    *  @description
+    *    This function checks the argument 'parameter' against null and 
+    *    undefined and throws a 'TS.ArgumentNullOrUndefinedException' if
+    *    the argument is either null or undefined. 
+    *    The exceptions message uses the 'paramName' and 'functionName' 
+    *    in its message to signal which parameter failed the check and 
+    *    which function received the invalid parameter.
+    *
+    *  @throws
+    *    TS.ArgumentNullOrUndefinedException
+    */
+    export function checkParameter(parameter: any, paramName: string, functionName: string)
+    {
+      if (TS.Utils.TypeInfo.isNullOrUndefined(parameter))
+      {
+        throw new TS.ArgumentNullOrUndefinedException(paramName, "Argument '" + paramName + "' must not be null or undefinde in function '" + functionName + "'.");
+      }//END if
+    }
+
+
+    /**
+    *  @description
+    *    This function checks the argument 'parameter' against null and 
+    *    undefined and throws a 'TS.ArgumentNullOrUndefinedException' if
+    *    the argument is either null or undefined. 
+    *
+    *    The function checks also the type of the argument which must evaluate
+    *    to 'function' and checks whether the function is a constructor function.
+    *    The function throws a 'TS.InvalidTypeException' if one of the two
+    *    checks failed.
+    *
+    *  @throws
+    *    TS.ArgumentNullOrUndefinedException
+    *
+    *  @throws
+    *    TS.InvalidTypeException
+    */
+    export function checkConstructorParameter(parameter: any, paramName: string, functionName: string)
+    {
+      var _object: any;
+
+      if (TS.Utils.TypeInfo.isNullOrUndefined(parameter))
+      {
+        throw new TS.ArgumentNullOrUndefinedException(paramName, "Argument '" + paramName + "' must not be null or undefinde in function '" + functionName + "'.");
+      }//END if
+
+      if (typeof (parameter) != "function")
+      {
+        throw new TS.InvalidTypeException(paramName, "Argument '" + paramName + "' must not of type 'function' in function '" + functionName + "'.");
+      }//END if
+
+      try
+      {
+      _object = new parameter();
+      }//END try
+      catch (Ex) { };
+
+      if (TS.Utils.TypeInfo.isNullOrUndefined(_object))
+      {
+        throw new TS.InvalidTypeException(paramName, "Argument '" + paramName + "' must be a valid constructor function in function '" + functionName + "'.");
+      }//END if
+    }
+
+
+    /**
     *  @description
     *    Takes a sparse array and returns a new created 
     *    dense array.
@@ -65,68 +238,6 @@
 
 
     /**
-    * @description 
-    *    Returns a string which is filled with leading
-    *    characters as define in argument 'fillChar'
-    *    until the length define in argument 'length'
-    *    is reached.
-    *
-    *    The function returns a copy of the source string
-    *    if the values of the arguments 'fillChar' or 
-    *    'length' are invalid.
-    *
-    *    A copy of the 'source' string is also returned if
-    *    the length of the source is greater or equal 
-    *    the value of the 'length' parameter. The function
-    *    doesn't return a truncated string.
-    *
-    *    The function returns a string consisting of
-    *    a concatenation of 'fillChar' up to the length
-    *    given in argument 'length' if the argument value
-    *    of argument 'source' is invalid, null or empty.
-    *
-    * @param  source
-    *    The string to fill.
-    *
-    * @returns  string
-    *    The filled string as result.
-    */
-    export function fillLeft(source: string, fillChar: string, length: number): string
-    {
-      var _fillString: string;
-      var _resultString: string;
-
-      if (TS.Utils.TypeInfo.isNullUndefOrEmpty(fillChar))
-      {
-        return new String(source).toString();
-      }//END if
-
-      if (!TS.Utils.TypeInfo.isPositiveIntegerNumber(length))
-      {
-        return new String(source).toString();
-      }//END if
-
-      _fillString = fillChar;
-      while (_fillString.length < length)
-      {
-        _fillString += _fillString;
-      }//END while
-      _fillString = _fillString.substr(0, length);
-
-      if (TS.Utils.TypeInfo.isNullUndefOrEmpty(source))
-      {
-        return _fillString;
-      }//END if
-      else
-      {
-        _fillString = _fillString.substr(0, length - source.length);
-        _fillString += source;
-        return _fillString;
-      }//END else
-    }
-
-
-    /**
     *  @description
     *    Converts a HTMLCollection into an array
     *    of HTML elements and returns that array.
@@ -170,7 +281,6 @@
     }
 
 
-
     /**
     * @description
     *    Takes the string from argument 'path' and
@@ -205,6 +315,69 @@
 
       return _returnPath.toString();
     }
+
+
+    /**
+    * @description 
+    *    Returns a string which is padded with leading
+    *    characters as define in argument 'fillChar'
+    *    until the length defined in argument 'length'
+    *    is reached.
+    *
+    *    The function returns a copy of the source string
+    *    if the values of the arguments 'fillChar' or 
+    *    'length' are invalid.
+    *
+    *    A copy of the 'source' string is also returned if
+    *    the length of the source is greater or equal 
+    *    the value of the 'length' parameter. The function
+    *    doesn't return a truncated string.
+    *
+    *    The function returns a string consisting of
+    *    a concatenation of 'fillChar' up to the length
+    *    given in argument 'length' if the argument value
+    *    of argument 'source' is invalid, null or empty.
+    *
+    * @param  source
+    *    The string to fill.
+    *
+    * @returns  string
+    *    The padded string as result.
+    */
+    export function padLeft(source: string, fillChar: string, length: number): string
+    {
+      var _fillString: string;
+      var _resultString: string;
+
+      if (TS.Utils.TypeInfo.isNullUndefOrEmpty(fillChar))
+      {
+        return new String(source).toString();
+      }//END if
+
+      if (!TS.Utils.TypeInfo.isPositiveIntegerNumber(length))
+      {
+        return new String(source).toString();
+      }//END if
+
+      _fillString = fillChar;
+      while (_fillString.length < length)
+      {
+        _fillString += _fillString;
+      }//END while
+      _fillString = _fillString.substr(0, length);
+
+      if (TS.Utils.TypeInfo.isNullUndefOrEmpty(source))
+      {
+        return _fillString;
+      }//END if
+      else
+      {
+        _fillString = _fillString.substr(0, length - source.length);
+        _fillString += source;
+        return _fillString;
+      }//END else
+    }
+
 
 
   }//END module

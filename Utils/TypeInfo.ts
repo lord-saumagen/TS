@@ -207,9 +207,32 @@
 
 
       /**
-      *  @description  
+      *  @description
       *    Returns true if the type of
-      *    the argument 'source' is a boolean 
+      *    the argument 'source' is a none
+      *    empty binary string, otherwise false.
+      *
+      *  @param  source
+      *    The argument to check.
+      *
+      *  @returns  boolean
+      *    The result value true or false.
+      */
+      public static isBinaryString(source: any): boolean
+      {
+        if (!this.isString(source))
+        {
+          return false;
+        }//END if
+
+        return (/^[01]+$/gmi).test(source);
+      }
+
+
+      /**
+      *  @description
+      *    Returns true if the type of
+      *    the argument 'source' is a boolean
       *    type, otherwise false.
       *
       *  @see
@@ -315,6 +338,29 @@
 
 
       /**
+      *  @description
+      *    Returns true if the type of
+      *    the argument 'source' is a none
+      *    empty decimal string, otherwise false.
+      *
+      *  @param  source
+      *    The argument to check.
+      *
+      *  @returns  boolean
+      *    The result value true or false.
+      */
+      public static isDecimalString(source: any): boolean
+      {
+        if (!this.isString(source))
+        {
+          return false;
+        }//END if
+
+        return (/^[0-9]+$/gmi).test(source);
+      }
+
+
+      /**
       *  @description  
       *    Returns true if the type of
       *    the argument 'source' is a function
@@ -334,6 +380,29 @@
         }//END if
 
         return typeof (source) == "function";
+      }
+
+
+      /**
+      *  @description
+      *    Returns true if the type of
+      *    the argument 'source' is a none
+      *    empty hexadecimal string, otherwise false.
+      *
+      *  @param  source
+      *    The argument to check.
+      *
+      *  @returns  boolean
+      *    The result value true or false.
+      */
+      public static isHexString(source: any): boolean
+      {
+        if (!this.isString(source))
+        {
+          return false;
+        }//END if
+
+        return (/^[0-9A-Fa-f]+$/gmi).test(source);
       }
 
 

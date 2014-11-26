@@ -32,6 +32,35 @@ module TS_Utils_test
     });
 
 
+  QUnit.test("checkPositivIntegerNumberParameter", (assert) => 
+  {
+  });
+
+  QUnit.test("checkIntegerNumberParameter", (assert) => 
+  {
+  });
+
+  QUnit.test("checkUInt64NumberParameter", (assert) => 
+  {
+  });
+
+  QUnit.test("checkStringParameter", (assert) => 
+  {
+  });
+
+  QUnit.test("checkFunctionParameter", (assert) => 
+  {
+  });
+
+  QUnit.test("checkParameter", (assert) =>
+  {
+  });
+
+  QUnit.test("checkConstructorParameter", (assert) =>
+  {
+  });
+
+
   QUnit.test("createGUID", (assert) =>
   {
     var _GUIDArray: Array<string>;
@@ -69,6 +98,10 @@ module TS_Utils_test
     _bodyElement = _HTMLEnumearable.where(_ELE => _ELE.tagName.toLowerCase() == "body").single();
 
     assert.ok(_htmlElement != null && _headElement != null && _bodyElement != null, "Schould at least consist of a 'html', 'head' and 'body' element.");
+  });
+
+  QUnit.test("padLeft", (assert) =>
+  {
   });
 
 } 

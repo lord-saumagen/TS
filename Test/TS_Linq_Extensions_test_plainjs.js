@@ -347,6 +347,29 @@ var TS_Linq_Extensions_test;
   });
 
 
+  QUnit.test("forEach", function (assert)
+  {
+    var _emptyEnum = TS.Linq.Extensions.empty();
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.forEach({}, function (item) { });
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for for an invalid 'enumerable' argument.");
+
+    assert.throws(function ()
+    {
+      TS.Linq.Extensions.forEach(_emptyEnum, { });
+    }, function (err)
+    {
+      return (err.name == "TS.InvalidTypeException") ? true : false;
+    }, "Should throw a 'TS.InvalidTypeException' for for an invalid 'enumerable' argument.");
+
+  });
+
+
   QUnit.test("fromArray", function (assert)
   {
     assert.throws(function ()
