@@ -36,6 +36,8 @@
     <Content Include="Test\TS_Linq_Exception_test.html" />
     <Content Include="Test\TS_Linq_Extensions_test_plainjs.js" />
     <Content Include="Test\TS_Encoding_test.html" />
+    <Content Include="Test\TS_Security_SHA1_InitFail_test.html" />
+    <Content Include="Test\TS_Security_test.html" />
     <Content Include="Test\TS_Utils_test.html" />
     <Content Include="Test\TS_Utils_TypeInfo_test.html" />
     <Content Include="Test\TS_Exception_test.html" />
@@ -47,6 +49,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Encoding\Encoding.ts" />
     <TypeScriptCompile Include="Encoding\HTML.ts" />
+    <TypeScriptCompile Include="Encoding\UTF8.ts" />
     <TypeScriptCompile Include="Exception\Exception.ts" />
     <TypeScriptCompile Include="Linq\ArrayEnumerable.ts" />
     <TypeScriptCompile Include="Linq\ArrayEnumerator.ts" />
@@ -64,16 +67,23 @@
     <TypeScriptCompile Include="Linq\OrderedEnumerable.ts" />
     <TypeScriptCompile Include="Scripts\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\qunit.d.ts" />
+    <TypeScriptCompile Include="Security\Security.ts" />
     <TypeScriptCompile Include="Test\TS_Linq_Enumerable_test.ts" />
     <TypeScriptCompile Include="Test\TS_Linq_Exception_test.ts" />
     <TypeScriptCompile Include="Test\TS_Encoding_test.ts" />
     <TypeScriptCompile Include="Test\TS_Linq_test_common.ts" />
+    <TypeScriptCompile Include="Test\TS_Security_test.ts" />
     <TypeScriptCompile Include="Test\TS_Utils_test.ts" />
     <TypeScriptCompile Include="Test\TS_Utils_TypeInfo_test.ts" />
     <TypeScriptCompile Include="Test\TS_Exception_test.ts" />
     <TypeScriptCompile Include="Test\TS_Linq_Extensions_test.ts" />
     <TypeScriptCompile Include="TS.ts" />
     <TypeScriptCompile Include="Encoding\Base64.ts" />
+    <TypeScriptCompile Include="Security\SHA1.ts" />
+    <TypeScriptCompile Include="TypeCode\Set.ts" />
+    <TypeScriptCompile Include="TypeCode\TypeCode.ts" />
+    <TypeScriptCompile Include="TypeCode\UInt64.ts" />
+    <TypeScriptCompile Include="Utils\Observer.ts" />
     <TypeScriptCompile Include="Utils\TypeInfo.ts" />
     <TypeScriptCompile Include="Utils\Utils.ts" />
   </ItemGroup>

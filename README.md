@@ -6,6 +6,8 @@ The first module which I created is a LINQ implementation in TypeScript. I'm a g
 
 [http://lord-saumagen.github.io/TS/](http://lord-saumagen.github.io/TS/)
 
+With version 1.0.2 of this module collection the LINQ implementation is considered complete. I'm currently working on the 'Security' and 'Encoding' modules. At the time of this writing they will only have one or two basic implementations but they will grow over time.
+
 ##Prerequisites
 
 In order to use the modules from that project, you need to install the TypeScript compiler. You will find all you need at the TypeScript project page. 
@@ -22,7 +24,7 @@ Visual Studio in combination with the TypeScript tools for Visual Studio is the 
 
 The whole project was created with "**Visual Studio 2013 for Web**". All releases up to version 1.0 compile against the TypeScript compiler in version 1.0.3.0 The corresponding setting in the project file is:  '**&lt;TypeScriptToolsVersion&gt;1.0&lt;TypeScriptToolsVersion&gt;**'. With this set up you should be able to open the project and start a compiler run. 
 
-Starting with version 1.0.1 of this module collection the TypeScript compiler in version 1.3.0.0 is used. That is the version which came with the "[TypeScript 1.3 for Visual Studio 2013](https://visualstudiogallery.msdn.microsoft.com/955e0262-0858-40c9-ab5a-1acc680e9bfd "TypeScript 1.3 for Visual Studio 2013")" set up. Some genius member of the development team came up with the glorious idea to make the setting in the project file independent form the compiler version. Now the setting in you project file must read:  '**&lt;TypeScriptToolsVersion&gt;1.1&lt;TypeScriptToolsVersion&gt;**' in order to compile against the 1.3.0.0 compiler. 
+Starting with version 1.0.2 of this module collection the TypeScript compiler in version 1.3.0.0 is used. That 1is the version which came with the "[TypeScript 1.3 for Visual Studio 2013](https://visualstudiogallery.msdn.microsoft.com/955e0262-0858-40c9-ab5a-1acc680e9bfd "TypeScript 1.3 for Visual Studio 2013")" set up. Some genius member of the development team came up with the glorious idea to make the setting in the project file independent form the compiler version. Now the setting in you project file must read:  '**&lt;TypeScriptToolsVersion&gt;1.1&lt;TypeScriptToolsVersion&gt;**' in order to compile against the 1.3.0.0 compiler. 
 
 If you  are not sure which compiler you are currently using, you can proof by running the 'tsc.exe' file with the '-v' switch set. 
 
@@ -30,7 +32,7 @@ If you  are not sure which compiler you are currently using, you can proof by ru
 
 ##Version
 
-This is Version 1.0.1 of the TypeScript module collection. This version is productions stable and compiles  against the TypeScript compiler in version 1.3.0.0. 
+This is Version 1.0.2 of the TypeScript module collection. The 'Linq' module is considered production stable. The other modules are considered stable as far as they pass their unit tests. All code in this version compiles  against the TypeScript compiler in version 1.3.0.0. 
 
 ##License
 
