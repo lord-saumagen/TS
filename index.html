@@ -928,7 +928,48 @@ catch (ex)
           All classes, modules and interfaces which belong to the 'TS.Security' namespace can be found in the corresponding subdirectory called 'Security'.
           <br />
           <br />
-          At the time of this writing there is only one class available. It&#39;s the &#39;SHA1&#39; class. The class implements the &#39;SHA1&#39; hash algorithm as described by the <a href="http://www.nist.gov/">NIST</a> in document <a href="http://csrc.nist.gov/publications/fips/fips180-4/fips-180-4.pdf">&#39;fips-180-4.pdf&#39;</a>. The class has one function called &#39;encrypt&#39; which takes an arbitrary string and returns a 40 character hexadecimal hash code of the input string.</div>
+          The class implements the &#39;SHA1&#39; some of the hash algorithm as described by the <a href="http://www.nist.gov/">NIST</a> in document <a href="http://csrc.nist.gov/publications/fips/fips180-4/fips-180-4.pdf">&#39;fips-180-4.pdf&#39;</a>. The table below shows which algorithms are implemented yet.<br />
+&nbsp;
+
+          <table>
+            <thead>
+              <tr>
+                <th colspan="3">Implemented hash algorithms
+                </th>
+              </tr>
+              <tr>
+                <th style="width: 12em;">Name</th>
+                <th style="width: 12em;">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="fullyImplemented">
+                <td>
+                  SHA1
+                </td>
+                <td>
+                  <a href="http://csrc.nist.gov/publications/fips/fips180-4/fips-180-4.pdf">fips-180-4.pdf | 6.1 SHA-1</a>
+                </td>
+              </tr>
+              <tr class="fullyImplemented">
+                <td>
+                  SHA224
+                </td>
+                <td>
+                  <a href="http://csrc.nist.gov/publications/fips/fips180-4/fips-180-4.pdf">fips-180-4.pdf | 6.3 SHA-224 </a>
+                </td>
+              </tr>
+              <tr class="fullyImplemented">
+                <td>
+                  SHA256
+                </td>
+                <td>
+                  <a href="http://csrc.nist.gov/publications/fips/fips180-4/fips-180-4.pdf">fips-180-4.pdf | 6.2 SHA-256</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div id="Utils">
           <h2>Utils</h2>
           All classes, modules and interfaces which belong to the 'TS.Utils' namespace can be found in the corresponding subdirectory called 'Utils&#39;.<br />
@@ -1050,7 +1091,7 @@ catch (ex)
       </div>
       <div id="Version">
         <h2>Version</h2>
-        The current version of this module collection is 1.0.1. Beginning with this version the TypeScript compiler in version 1.3.0.0 is used. That compiler came with the <a href="https://visualstudiogallery.msdn.microsoft.com/955e0262-0858-40c9-ab5a-1acc680e9bfd">"TypeScript 1.3 for Visual Studio 2013"</a> set up. The module collection will not be backward compatible, because it will make use of the new language features. If you are not sure which version you are currently using, you can proof by running the &quot;tsc.exe&quot; file with the &quot;-v&quot; flag as shown below.
+        The current version of this module collection is 1.0.3. Beginning with the version 1.0.1 the TypeScript compiler in version 1.3.0.0 is used. That compiler came with the <a href="https://visualstudiogallery.msdn.microsoft.com/955e0262-0858-40c9-ab5a-1acc680e9bfd">"TypeScript 1.3 for Visual Studio 2013"</a> set up. The module collection will not be backward compatible, because it will make use of the new language features. If you are not sure which version you are currently using, you can proof by running the &quot;tsc.exe&quot; file with the &quot;-v&quot; flag as shown below.
           <br />
         <br />
         <img alt="TSC_Version" class="auto-style1" src="tsc_version.png" />
