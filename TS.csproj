@@ -37,6 +37,7 @@
     <Content Include="Test\TS_Linq_Extensions_test_plainjs.js" />
     <Content Include="Test\TS_Encoding_test.html" />
     <Content Include="Test\TS_Security_SHA1_InitFail_test.html" />
+    <Content Include="Test\TS_TypeCode_test.html" />
     <Content Include="Test\TS_Security_test.html" />
     <Content Include="Test\TS_Utils_test.html" />
     <Content Include="Test\TS_Utils_TypeInfo_test.html" />
@@ -44,7 +45,6 @@
     <Content Include="Test\TS_Linq_Extensions_test.html" />
     <Content Include="Test\TS_Utils_TypeInfo_test_plainjs.js" />
     <Content Include="web.config" />
-    <Content Include="Scripts\jquery-2.1.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Encoding\Encoding.ts" />
@@ -68,11 +68,14 @@
     <TypeScriptCompile Include="Scripts\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\qunit.d.ts" />
     <TypeScriptCompile Include="Security\Security.ts" />
+    <TypeScriptCompile Include="Security\SHA224.ts" />
+    <TypeScriptCompile Include="Security\SHA256.ts" />
     <TypeScriptCompile Include="Test\TS_Linq_Enumerable_test.ts" />
     <TypeScriptCompile Include="Test\TS_Linq_Exception_test.ts" />
     <TypeScriptCompile Include="Test\TS_Encoding_test.ts" />
     <TypeScriptCompile Include="Test\TS_Linq_test_common.ts" />
     <TypeScriptCompile Include="Test\TS_Security_test.ts" />
+    <TypeScriptCompile Include="Test\TS_TypeCode_test.ts" />
     <TypeScriptCompile Include="Test\TS_Utils_test.ts" />
     <TypeScriptCompile Include="Test\TS_Utils_TypeInfo_test.ts" />
     <TypeScriptCompile Include="Test\TS_Exception_test.ts" />
@@ -80,6 +83,8 @@
     <TypeScriptCompile Include="TS.ts" />
     <TypeScriptCompile Include="Encoding\Base64.ts" />
     <TypeScriptCompile Include="Security\SHA1.ts" />
+    <TypeScriptCompile Include="TypeCode\IList.ts" />
+    <TypeScriptCompile Include="TypeCode\List.ts" />
     <TypeScriptCompile Include="TypeCode\Set.ts" />
     <TypeScriptCompile Include="TypeCode\TypeCode.ts" />
     <TypeScriptCompile Include="TypeCode\UInt64.ts" />

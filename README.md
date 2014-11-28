@@ -32,7 +32,7 @@ If you  are not sure which compiler you are currently using, you can proof by ru
 
 ##Version
 
-This is Version 1.0.2 of the TypeScript module collection. The 'Linq' module is considered production stable. The other modules are considered stable as far as they pass their unit tests. All code in this version compiles  against the TypeScript compiler in version 1.3.0.0. 
+This is Version 1.0.3 of the TypeScript module collection. The 'Linq' module is considered production stable. The other modules are considered stable as far as they pass their unit tests. All code in this version compiles  against the TypeScript compiler in version 1.3.0.0. 
 
 ##License
 

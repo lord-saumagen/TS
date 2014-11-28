@@ -40,16 +40,13 @@
 
       if (_missingArray.length > 0)
       {
-        throw new Error("TS.Security.SHA1 requires additional references to the following module(s) or class(es): " + _missingArray.join(", ") + ".");
+        throw new Error("TS.Security.SHA224 requires additional references to the following module(s) or class(es): " + _missingArray.join(", ") + ".");
       }//END if
 
     })();
 
-
-    export class SHA1 extends Cryptography
+    export class SHA224 extends Cryptography
     {
-      //(message: string): string
-
       //
       // Define the hash values
       //
@@ -58,46 +55,46 @@
       private _h2: number;
       private _h3: number;
       private _h4: number;
+      private _h5: number;
+      private _h6: number;
+      private _h7: number;
 
       //
-      // Define the for constants as
-      // defined in
-      // http://csrc.nist.gov/publications/fips/fips180-4/fips-180-4.pdf | 4.2.1 SHA-1 Constants
+      // Define the for constants as described in 
+      // http://csrc.nist.gov/publications/fips/fips180-4/fips-180-4.pdf | SHA-224 and SHA-256 Constants
       //
-      private _k0: number;
-      private _k1: number;
-      private _k2: number;
-      private _k3: number;
+      private _kArray: Array<number>
 
       constructor()
       {
         super();
       }
 
+
       private initialize()
       {
         //
         // Initialize the hash values
         //
-        this._h0 = 0x67452301;
-        this._h1 = 0xEFCDAB89;
-        this._h2 = 0x98BADCFE;
-        this._h3 = 0x10325476;
-        this._h4 = 0xC3D2E1F0;
+        this._h0 = 0xc1059ed8;
+        this._h1 = 0x367cd507;
+        this._h2 = 0x3070dd17;
+        this._h3 = 0xf70e5939;
+        this._h4 = 0xffc00b31;
+        this._h5 = 0x68581511;
+        this._h6 = 0x64f98fa7;
+        this._h7 = 0xbefa4fa4;
 
         //
         // Initialize the round constants
         //
-        this._k0 = 0x5a827999;
-        this._k1 = 0x6ed9eba1;
-        this._k2 = 0x8f1bbcdc;
-        this._k3 = 0xca62c1d6;
+        this._kArray = TS.Security.getSHA224_225RoundConstants();
       }
 
       /**
       * @description
       *    Encrypts the plain text given in argument 'message' and returns the 
-      *    digest / SHA1 hash as a hexadecimal string.
+      *    digest / SHA224 hash as a hexadecimal string.
       *
       * @throws
       *    TS.ArgumentNullOrUndefinedException
@@ -113,7 +110,8 @@
         var _blockIndex: number;
         var _4CharacterWord: number;
         var _UInt64MessageBitLength: TS.TypeCode.UInt64;
-        var _temp: number;
+        var _temp1: number;
+        var _temp2: number;
         var _resultString: string;
 
 
@@ -125,6 +123,9 @@
         var _c: number;
         var _d: number;
         var _e: number;
+        var _f: number;
+        var _g: number;
+        var _h: number;
 
         //
         // Define the array of message schedule variables.
@@ -144,7 +145,7 @@
         //
         // Initialize the array of message schedule variables.
         //
-        _w = new Array<number>(80);
+        _w = new Array<number>(63);
 
         //
         // Initialize constants and hash values.
@@ -216,9 +217,11 @@
             _w[_index] = _wordArray[_blockIndex + _index];
           }//END of
 
-          for (_index = 16; _index <= 79; _index++)
+          for (_index = 16; _index <= 64; _index++)
           {
-            _w[_index] = SHA1.rotateLeft32((_w[_index - 3] ^ _w[_index - 8] ^ _w[_index - 14] ^ _w[_index - 16]), 1);
+            _temp1 = TS.Security.Cryptography.gamma1_32(_w[_index - 2]) + _w[_index - 7];
+            _temp2 = TS.Security.Cryptography.gamma0_32(_w[_index - 15]) + _w[_index - 16];
+            _w[_index] = (_temp1 + _temp2) % 0x100000000; 
           }//END for
 
           //
@@ -229,51 +232,45 @@
           _c = this._h2;
           _d = this._h3;
           _e = this._h4;
+          _f = this._h5;
+          _g = this._h6;
+          _h = this._h7;
 
-          //ch
-          for (_index = 0; _index <= 19; _index++)
+          for (_index = 0; _index < 64; _index++)
           {
-            _temp = SHA1.CorrectNeg(SHA1.rotateLeft32(_a, 5) + SHA1.ch32(_b, _c, _d) + _e + this._k0 + _w[_index]);
+            if (_index == 17)
+            {
+              var X = 10;
+            }//END if
+
+            _temp1 = _h + TS.Security.Cryptography.sigma1_32(_e) + TS.Security.Cryptography.ch32(_e, _f, _g) + this._kArray[_index] + _w[_index];
+            _temp2 = TS.Security.Cryptography.sigma0_32(_a) + TS.Security.Cryptography.maj32(_a, _b, _c);
             restOperation();
+
           }//END for
-
-          //parity
-          for (_index = 20; _index <= 39; _index++)
-          {
-            _temp = SHA1.CorrectNeg(SHA1.rotateLeft32(_a, 5) + SHA1.parity(_b, _c, _d) + _e + this._k1 + _w[_index]);
-            restOperation();
-          }
-
-          //maj
-          for (_index = 40; _index <= 59; _index++)
-          {
-            _temp = SHA1.CorrectNeg(SHA1.rotateLeft32(_a, 5) + SHA1.maj32(_b, _c, _d) + _e + this._k2 + _w[_index]);
-            restOperation();
-          }
-
-          //parity
-          for (_index = 60; _index <= 79; _index++)
-          {
-            _temp = SHA1.CorrectNeg(SHA1.rotateLeft32(_a, 5) + SHA1.parity(_b, _c, _d) + _e + this._k3 + _w[_index]);
-            restOperation();
-          }
 
           function restOperation()
           {
-            _e = _d;
+            _h = _g;
+            _g = _f;
+            _f = _e;
+            _e = (_d + _temp1) % 0x100000000;
             _d = _c;
-            _c = SHA1.rotateLeft32(_b, 30);
+            _c = _b;
             _b = _a;
-            _a = _temp;
+            _a = (_temp1 + _temp2) % 0x100000000;
           }
 
-          this._h0 = (this._h0 + _a);
-          this._h1 = (this._h1 + _b);
-          this._h2 = (this._h2 + _c);
-          this._h3 = (this._h3 + _d);
-          this._h4 = (this._h4 + _e);
+          this._h0 = (this._h0 + _a) % 0x100000000;
+          this._h1 = (this._h1 + _b) % 0x100000000;
+          this._h2 = (this._h2 + _c) % 0x100000000;
+          this._h3 = (this._h3 + _d) % 0x100000000;
+          this._h4 = (this._h4 + _e) % 0x100000000;
+          this._h5 = (this._h5 + _f) % 0x100000000;
+          this._h6 = (this._h6 + _g) % 0x100000000;
+          this._h7 = (this._h7 + _h) % 0x100000000;
 
-          [this._h0, this._h1, this._h2, this._h3, this._h4].forEach((value: number, index: number, array: number[]) =>
+          [this._h0, this._h1, this._h2, this._h3, this._h4, this._h5, this._h6, this._h7].forEach((value: number, index: number, array: number[]) =>
           {
             if (value < 0)
             {
@@ -283,11 +280,10 @@
 
         }//END for
 
-        _resultString = SHA1.convertHex(this._h0) + SHA1.convertHex(this._h1) + SHA1.convertHex(this._h2) + SHA1.convertHex(this._h3) + SHA1.convertHex(this._h4);
+        _resultString = SHA1.convertHex(this._h0) + SHA1.convertHex(this._h1) + SHA1.convertHex(this._h2) + SHA1.convertHex(this._h3) + SHA1.convertHex(this._h4) + SHA1.convertHex(this._h5) + SHA1.convertHex(this._h6);
         return _resultString;
       }
 
     }//END class
-
   }//END module
 }//END module 

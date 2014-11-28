@@ -40,12 +40,7 @@
       */
       public set MSInteger(value) 
       {
-        if (value < 0)
-        {
-          value = this._corNeg(value);
-        }//END if
-
-        if (value > 0xFFFFFFFF)
+        if ((value < 0) || (value > 0xFFFFFFFF))
         {
           throw new TS.ArgumentOutOfRangeException("MSInteger", value, "The argument excceeded the valid number range. Valid numbers must fall into the range of [" + 0xFFFFFFFF.toString() + " ... 0]");
         }//END if
@@ -66,12 +61,7 @@
       */
       public set LSInteger(value)
       {
-        if (value < 0)
-        {
-          value = this._corNeg(value);
-        }//END if
-
-        if (value > 0xFFFFFFFF)
+        if ((value < 0) || (value > 0xFFFFFFFF))
         {
           throw new TS.ArgumentOutOfRangeException("LSInteger", value, "The argument excceeded the valid number range. Valid numbers must fall into the range of [" + 0xFFFFFFFF.toString() + " ... 0]");
         }//END if
