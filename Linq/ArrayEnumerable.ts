@@ -5,6 +5,46 @@
   export module Linq
   {
 
+    //
+    // Reference check
+    //
+    (function ()
+    {
+      var _missingArray: Array<string>;
+      _missingArray = new Array<string>();
+
+      if (TS.Utils == undefined)
+      {
+        _missingArray.push("TS.Utils");
+      }
+
+      if (TS.Utils.TypeInfo == undefined)
+      {
+        _missingArray.push("TS.Utils.TypeInfo");
+      }
+
+      if (TS.Exception == undefined)
+      {
+        _missingArray.push("TS.Exception");
+      }
+
+      if (TS.Linq.ArrayEnumerator == undefined)
+      {
+        _missingArray.push("TS.Linq.ArrayEnumerator");
+      }
+
+      if (TS.Linq.Enumerable == undefined)
+      {
+        _missingArray.push("TS.Linq.Enumerable");
+      }
+
+      if (_missingArray.length > 0)
+      {
+        throw new Error("TS.Linq.ArrayEnumerable requires additional references to the following module(s) or class(es): " + _missingArray.join(", ") + ".");
+      }//END if
+
+    })();
+
     /**
     * @class
     * @classdesc 
@@ -22,16 +62,7 @@
           throw new ArgumentNullOrUndefinedException("dataArray", "Argument 'dataArray' must not be null or undefined in the constructor of 'TArrayEnumerable'.");
         }//END if
 
-        super(() => { return new ArrayEnumerator<TSource>(dataArray); });
-      }
-
-      /**
-      * @description
-      *    Implements interface IEnumerable<TSource>
-      */
-      public getEnumerator(): IEnumerator<TSource>
-      {
-        return super.getEnumerator();
+        super(() => { return new TS.Linq.ArrayEnumerator<TSource>(dataArray); });
       }
 
     }//END class

@@ -5,37 +5,65 @@
   export module Encoding
   {
 
+
+    //
+    // Reference check
+    //
+    (function ()
+    {
+      var _missingArray: Array<string>;
+      _missingArray = new Array<string>();
+
+
+      if (typeof (TS.Exception) == "undefined")
+      {
+        _missingArray.push("TS.Exception");
+      }
+
+      if (typeof (TS.Utils) == "undefined")
+      {
+        _missingArray.push("TS.Utils");
+      }//END if
+      else
+      {
+        if (typeof (TS.Utils.TypeInfo) == "undefined")
+        {
+          _missingArray.push("TS.Utils.TypeInfo");
+        }
+      }//END else
+
+      if (_missingArray.length > 0)
+      {
+        throw new Error("TS.Encoding.Base64 requires additional references to the following module(s) or class(es): " + _missingArray.join(", ") + ".");
+      }//END if
+    })();
+
+
     /**
     *  @class
     *        
-    *  @classdesc 
-    *    This class implements a base64 encoding and
-    *    decoding function.
+    *  @classdesc This class implements a base64 encoding and
+    *             decoding function.
     * 
-    *  @see
-    *    {@link https://www.ietf.org/rfc/rfc3548.txt }
+    *  @see {@link https://www.ietf.org/rfc/rfc3548.txt }
     */
     export class Base64
     {
       private static BASE64_CHARACTER_SET: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 
       /**
-      *  @description
-      *    Decodes a base64 encoded string and returns the decoded
-      *    string.
-      *    Should give the same result as the following C# code.
+      *  @description  Decodes a base64 encoded string and returns the decoded
+      *                string.
+      *                Should give the same result as the following C# code.
+      *                
+      *                var _byteArray = System.Convert.FromBase64String(data));
+      *                var _resultString = System.Text.Encoding.UTF8.GetString(_byteArray);
       *
-      *    var _byteArray = System.Convert.FromBase64String(data));
-      *    var _resultString = System.Text.Encoding.UTF8.GetString(_byteArray);
+      *  @param  data: The base64 encoded data as string.
       *
-      *  @param  data
-      *    The base64 encoded data as string.
+      *  @returns string: The decoded plain text as string.
       *
-      *  @returns  string
-      *    The decoded plain text as string.
-      *
-      *  @Throws
-      *    TS.InvalidTypeException
+      *  @Throws TS.InvalidTypeException
       */
       public static decode(data : string) : string
       {       
@@ -95,22 +123,18 @@
 
 
       /**
-      *  @description
-      *    Encodes a string and returns the base64 encoded result string.
+      *  @description Encodes a string and returns the base64 encoded result string.
       *
-      *    Should give the same result as the following C# code.
+      *               Should give the same result as the following C# code.
+      *               
+      *               _byteArray = System.Text.Encoding.UTF8.GetBytes(data);
+      *               _resultString = System.Convert.ToBase64String(_byteArray);
       *
-      *    _byteArray = System.Text.Encoding.UTF8.GetBytes(data);
-      *     _resultString = System.Convert.ToBase64String(_byteArray);
+      *  @param  data: The plain text to encode as string.
       *
-      *  @param  data
-      *    The plain text to encode as string.
+      *  @returns string: The base64 encoded data as string.
       *
-      *  @returns  string
-      *    The base64 encoded data as string.
-      *
-      *  @Throws
-      *    TS.InvalidTypeException
+      *  @Throws TS.InvalidTypeException
       */
       public static encode(data: string): string
        {

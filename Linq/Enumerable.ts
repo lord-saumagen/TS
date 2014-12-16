@@ -1,17 +1,75 @@
-﻿//
-//Requires:
-// TS.Exception,
-// TS.Linq.Exception
-// TS.Linq.Extensions
-// TS.Utils.TypeInfo
-//
-
-module TS
+﻿module TS
 {
   "use strict";
 
   export module Linq
   {
+
+    //
+    // Reference check
+    //
+    function referenceCheck() : void
+    {
+      var _missingArray: Array<string>;
+      _missingArray = new Array<string>();
+
+
+      if (TS.Exception == undefined)
+      {
+        _missingArray.push("TS.Exception");
+      }
+
+      if (TS.Linq.CycleGenerator == undefined)
+      {
+        _missingArray.push("TS.Linq.CycleGenerator");
+      }
+
+      if (TS.Linq.EmptyEnumerableException == undefined)
+      {
+        _missingArray.push("TS.Linq.Exception");
+      }
+
+      if (TS.Linq.Enumerator == undefined)
+      {
+        _missingArray.push("TS.Linq.Enumerator");
+      }
+
+      if (TS.Linq.Extensions == undefined)
+      {
+        _missingArray.push("TS.Linq.Extensions");
+      }
+
+      if (TS.Linq.Grouping == undefined)
+      {
+        _missingArray.push("TS.Linq.Grouping");
+      }
+
+      if (TS.Linq.OrderedEnumerable == undefined)
+      {
+        _missingArray.push("TS.Linq.OrderedEnumerable");
+      }
+
+      if (TS.Linq.RandomGenerator == undefined)
+      {
+        _missingArray.push("TS.Linq.RandomGenerator");
+      }
+
+      if (TS.Utils == undefined)
+      {
+        _missingArray.push("TS.Utils");
+      }
+
+      if (TS.Utils.TypeInfo == undefined)
+      {
+        _missingArray.push("TS.Utils.TypeInfo");
+      }
+
+      if (_missingArray.length > 0)
+      {
+        throw new Error("TS.Linq.Enumerable requires additional references to the following module(s) or class(es): " + _missingArray.join(", ") + ".");
+      }//END if
+
+    };
 
     /**
     * @class
@@ -47,12 +105,19 @@ module TS
       *    an instance of 'IEnumerator<T>' as it's only parameter.
       *    That callback is used to get the iterator for the underlying
       *    data source. 
+      *
+      * @throws TS.ArgumentNullOrUndefinedException
+      *  
       */
       constructor(callback: () => IEnumerator<T>)
       {
+        var _referenceCheck: () => void;
+        _referenceCheck = referenceCheck;
+        _referenceCheck();
+
         if (TS.Utils.TypeInfo.isNullOrUndefined(callback))
         {
-          throw new ArgumentNullOrUndefinedException("callback", "Argument 'callback' must not be null or undefined in the constructor of 'Enumerable'.");
+          throw new TS.ArgumentNullOrUndefinedException("callback", "Argument 'callback' must not be null or undefined in the constructor of 'Enumerable'.");
         }//END if
 
         this._callback = callback;
@@ -67,17 +132,13 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.aggregate.aspx | MSDN}
       *
-      *  @returns
-      *    TSource, the aggregation result.
+      *  @returns TSource, the aggregation result.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.Linq.EmptyEnumerableException
+      *  @throws TS.Linq.EmptyEnumerableException
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       */
       public aggregate(accumulator: (first: T, second: T) => T): T
       /**
@@ -88,17 +149,13 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.aggregate.aspx | MSDN}
       *
-      *  @returns
-      *    TSource, the aggregation result.
+      *  @returns TSource, the aggregation result.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.Linq.EmptyEnumerableException
+      *  @throws TS.Linq.EmptyEnumerableException
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       */
       public aggregate<TSource, TAccumulate>(accumulator: (first: TAccumulate, second: TSource) => TAccumulate, seed: TAccumulate): TAccumulate
       public aggregate<TSource, TAccumulate>(accumulator: (first: TAccumulate, second: TSource) => TAccumulate, seed?: any): TAccumulate
@@ -115,14 +172,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/bb548541.aspx | MSDN}
       *
-      *  @returns
-      *    Boolean
+      *  @returns Boolean
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.InvalidTypeException
       */
       public all(predicate: (item: T) => boolean): boolean
       {
@@ -138,14 +192,11 @@ module TS
       *
       *  @see {@link  http://msdn.microsoft.com/en-us/library/system.linq.enumerable.any.aspx | MSDN}
       *
-      *  @returns
-      *    Boolean
+      *  @returns Boolean
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.InvalidTypeException
       */
       public any(predicate: (item: T) => boolean): boolean
       /**
@@ -156,14 +207,11 @@ module TS
       *
       *  @see {@link  http://msdn.microsoft.com/en-us/library/system.linq.enumerable.any.aspx | MSDN}
       *
-      *  @returns
-      *    Boolean
+      *  @returns Boolean
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.InvalidTypeException
       */
       public any(): boolean
       public any(predicate?: (item: T) => boolean): boolean
@@ -181,17 +229,13 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/bb354760.aspx | MSDN}
       *
-      *  @number
-      *    number: the average of all items in the enumerable.
+      *  @number number: the average of all items in the enumerable.
       *
-      *  @throws
-      *    TS.Linq.EmptyEnumerableException
+      *  @throws TS.Linq.EmptyEnumerableException
       *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.InvalidTypeException
       *
-      *  @throws
-      *    TS.OverflowException
+      *  @throws TS.OverflowException
       */
       public average(): number
       {
@@ -230,11 +274,9 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/bb302894.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<T>, the concatenated sequences.
+      *  @returns Enumerable<T>, the concatenated sequences.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
       */
       public concat(enumerable: Enumerable<T>): Enumerable<T>
@@ -258,12 +300,10 @@ module TS
       *    
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.contains.aspx | MSDN}
       *
-      *  @returns
-      *    boolen, true if the 'enumerable' contains the given 'element',
-      *    otherwise false.
+      *  @returns boolen, true if the 'enumerable' contains the given 'element',
+      *           otherwise false.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
       */
       public contains(element: T): boolean
@@ -276,12 +316,10 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.contains.aspx | MSDN}
       *
-      *  @returns
-      *    boolen, true if the 'enumerable' contains the given 'element',
-      *    otherwise false.
+      *  @returns boolen, true if the 'enumerable' contains the given 'element',
+      *           otherwise false.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
       */
       public contains(element: T, equalityComparer: (first: T, second: T) => boolean): boolean
@@ -310,8 +348,7 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.count.aspx | MSDN}
       *
-      *  @returns
-      *    number, the number of elements in the enumerable.
+      *  @returns number, the number of elements in the enumerable.
       *
       */
       public count(predicate?: (item: T) => boolean): number
@@ -340,14 +377,11 @@ module TS
       *
       *    Deferred execution.
       *
-      *  @returns
-      *    Enumerable<TSource>, the result enumerable.
+      *  @returns Enumerable<TSource>, the result enumerable.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       */
       public cycle()
       {
@@ -368,11 +402,9 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.defaultifempty.aspx | MSDN}
       *
-      *  @retuns
-      *   Enumerable<T>, the result enumerable.
+      *  @retuns Enumerable<T>, the result enumerable.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       */
       public defaultIfEmpty(defaultConstructor: { new (): T; }): Enumerable<T>
       {
@@ -394,8 +426,7 @@ module TS
       *    
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.distinct.aspx | MSDN}
       *
-      *  @retuns
-      *   Enumerable<T>, the result enumerable.
+      *  @retuns Enumerable<T>, the result enumerable.
       *
       */
       public distinct(): Enumerable<T>
@@ -409,8 +440,7 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.distinct.aspx | MSDN}
       *
-      *  @retuns
-      *   Enumerable<T>, the result enumerable.
+      *  @retuns Enumerable<T>, the result enumerable.
       *
       */
       public distinct(equalityComparer: (first: T, second: T) => boolean): Enumerable<T>
@@ -432,14 +462,11 @@ module TS
       *
       *  @see {@link http://referencesource.microsoft.com/#System.Core/System/Linq/Enumerable.cs | MSDN}
       *
-      *  @retuns
-      *   T, the result elemement.
+      *  @retuns T, the result elemement.
       *
-      *  @throws
-      *    TS.ArgumentOutOfRangeException
+      *  @throws TS.ArgumentOutOfRangeException
       *
-      *  @throws
-      *    TS.IndexOutOfRangeException
+      *  @throws TS.IndexOutOfRangeException
       */
       public elementAt(index: number): T
       {
@@ -461,14 +488,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/bb494386.aspx | MSDN}
       *
-      *  @retuns
-      *   T, the result elemement.
+      *  @retuns T, the result elemement.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.ArgumentOutOfRangeException
+      *  @throws TS.ArgumentOutOfRangeException
       *
       */
       public elemementAtOrDefault(index: number, defaultConstructor: { new (): T }): T
@@ -485,8 +509,7 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/bb341042.aspx | MSDN}
       *
-      *  @retuns
-      *    Enumerable<TResult>, an empty enumerable.
+      *  @retuns Enumerable<TResult>, an empty enumerable.
       */
       public static empty<T>(): Enumerable<T>
       {
@@ -507,11 +530,9 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.except.aspx | MSDN}
       *
-      *  @retuns
-      *    Enumerable<T>, the resulting enumerable.
+      *  @retuns Enumerable<T>, the resulting enumerable.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
       */
       public except(otherEnumerable: Enumerable<T>): Enumerable<T>
@@ -524,11 +545,9 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.except.aspx | MSDN}
       *
-      *  @retuns
-      *    Enumerable<T>, the resulting enumerable.
+      *  @retuns Enumerable<T>, the resulting enumerable.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
       */
       public except(otherEnumerable: Enumerable<T>, equalityComparer: <T>(first: T, second: T) => boolean): Enumerable<T>
@@ -550,14 +569,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.first.aspx | MSDN}
       *
-      *  @returns
-      *     T, the result element.
+      *  @returns T, the result element.
       *
-      *  @throws
-      *     TS.Linq.EmptyEnumerableException
+      *  @throws TS.Linq.EmptyEnumerableException
       *
-      *  @throws
-      *     TS.InvalidOperationException
+      *  @throws TS.InvalidOperationException
       *
       */
       public first(predicate?: (item: T) => boolean): T
@@ -589,11 +605,9 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.first.aspx | MSDN}
       *
-      *  @returns
-      *     T, the result element.
+      *  @returns T, the result element.
       *
-      *  @throws
-      *     TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
       */
       public firstOrDefault(defaultConstructor: { new (): T; }, predicate?: (item: T) => boolean): T
@@ -611,7 +625,7 @@ module TS
       *  @description
       *    Performs the specified action on each element of the enumerable
       *
-      *    Deffered execution.
+      *    Immediate execution.
       *
       *    That function is not a linq extension because it is a command and not
       *    a query at all. 
@@ -623,14 +637,11 @@ module TS
       *
       *  @see {@link http://blogs.msdn.com/b/ericlippert/archive/2009/05/18/foreach-vs-foreach.aspx | MSDN}
       *
-      *  @retuns
-      *    Enumerable<TSource>, the resulting enumerable.
+      *  @retuns Enumerable<TSource>, the current enumerable.
       *
-      *  @throws
-      *     TS.ArgumentNullOrUndefinedException.
+      *  @throws TS.ArgumentNullOrUndefinedException.
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       */
       public forEach(action: (item: T) => void): Enumerable<T>
       {
@@ -643,14 +654,11 @@ module TS
       *    Creates and returns a new 'Enumerable' form the array
       *    given in argument 'sourceArray'.
       *
-      *  @returns
-      *    Enumerable<TSource>, the result enumerable.
+      *  @returns Enumerable<TSource>, the result enumerable.
       *
-      *  @throws
-      *     TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.InvalidTypeException
       *
       */
       public static fromArray<T>(sourceArray: Array<T>): TS.Linq.ArrayEnumerable<T>
@@ -677,14 +685,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.groupby.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<Grouping<TKey, TSource>>, the result enumerable.
+      *  @returns Enumerable<Grouping<TKey, TSource>>, the result enumerable.
       *
-      *  @throws
-      *     TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.InvalidTypeException
       */
       public groupBy<T, TKey>(keySelector: (item: T) => TKey): Enumerable<Grouping<TKey, T>>
       /**
@@ -696,14 +701,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.groupby.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<Grouping<TKey, TSource>>, the result enumerable.
+      *  @returns Enumerable<Grouping<TKey, TSource>>, the result enumerable.
       *
-      *  @throws
-      *     TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.InvalidTypeException
       */
       public groupBy<T, TKey>(keySelector: (item: T) => TKey, equalityComparer: (first: TKey, second: TKey) => boolean): Enumerable<Grouping<TKey, T>>
       /**
@@ -716,14 +718,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.groupby.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<Grouping<TKey, TElement>>, the result enumerable.
+      *  @returns Enumerable<Grouping<TKey, TElement>>, the result enumerable.
       *
-      *  @throws
-      *     TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.InvalidTypeException
       */
       public groupBy<TKey, TElement>(keySelector: (item: T) => TKey, equalityComparer?: (first: TKey, second: TKey) => boolean, elementSelector?: (item: T) => TElement): Enumerable<Grouping<TKey, TElement>>
 
@@ -743,14 +742,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.groupjoin.aspx | MSDN} 
       *
-      *  @returns
-      *    Enumerable<TResult>, the result enumerable.
+      *  @returns Enumerable<TResult>, the result enumerable.
       *
-      *  @throws
-      *     TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       */
       public groupJoin<T, TInner, TKey, TResult>(innerEnumerable: Enumerable<TInner>, outerKeySelector: (outerItem: T) => TKey, innerKeySelector: (innerItem: TInner) => TKey, resultSelector: (outerItem: T, group: IEnumerable<TInner>) => TResult, equalityComparer?: <TKey>(first: TKey, second: TKey) => boolean): Enumerable<TResult>
       {
@@ -770,14 +766,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.intersect.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<TResult>, the result enumerable.
+      *  @returns Enumerable<TResult>, the result enumerable.
       *
-      *  @throws
-      *     TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       */
       public intersect(otherEnumerable: Enumerable<T>, equalityComparer?: (first: T, second: T) => boolean): Enumerable<T>
       {
@@ -793,14 +786,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.join.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<TResult>, the result enumerable.
+      *  @returns Enumerable<TResult>, the result enumerable.
       *
-      *  @throws
-      *     TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       */
       public join<TOuter, TInner, TKey, TResult>(innerEnumerable: Enumerable<TInner>, outerKeySelector: (outerItem: TOuter) => TKey, innerKeySelector: (innerItem: TInner) => TKey, resultSelector: (outerItem: TOuter, innerItem: TInner) => TResult): Enumerable<TResult>
       {
@@ -817,14 +807,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.last.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<TResult>, the result enumerable.
+      *  @returns Enumerable<TResult>, the result enumerable.
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       *
-      *  @throws
-      *    TS.Linq.EmptyEnumerableException
+      *  @throws TS.Linq.EmptyEnumerableException
       */
       public last(predicate?: (item: T) => boolean): T
       {
@@ -852,14 +839,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.lastordefault.aspx | MSDN}
       *
-      *  @returns
-      *     TSource, the result element.
+      *  @returns TSource, the result element.
       *
-      *  @throws
-      *     TS.ArgumentNullOrUndefinedException.
+      *  @throws TS.ArgumentNullOrUndefinedException.
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       */
       public lastOrDefault(defaultConstructor: { new (): T; }, predicate?: (item: T) => boolean): T
       {
@@ -875,14 +859,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.max.aspx | MSDN}
       *
-      *  @returns
-      *    number, the maximum number.
+      *  @returns number, the maximum number.
       *
-      *  @throws
-      *    TS.Linq.EmptyEnumerableException.
+      *  @throws TS.Linq.EmptyEnumerableException.
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       */
       public max<Number>(): number
       {
@@ -921,14 +902,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.min.aspx | MSDN}
       *
-      *  @returns
-      *    number, the minimum number.
+      *  @returns number, the minimum number.
       *
-      *  @throws
-      *    TS.Linq.EmptyEnumerableException.
+      *  @throws TS.Linq.EmptyEnumerableException.
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       */
       public min<Number>(): number
       {
@@ -971,14 +949,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.orderby.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<TSource>, the resulting enumerable.
+      *  @returns Enumerable<TSource>, the resulting enumerable.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       */
       public orderBy<TKey>(keySelector: (item: T) => TKey, comparer?: (first: TKey, second: TKey) => number): OrderedEnumerable<T>
       {
@@ -998,14 +973,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.orderby.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<TSource>, the resulting enumerable.
+      *  @returns Enumerable<TSource>, the resulting enumerable.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       */
       public orderByDescending<TKey>(keySelector: (item: T) => TKey, comparer?: (first: TKey, second: TKey) => number): OrderedEnumerable<T>
       {
@@ -1033,17 +1005,13 @@ module TS
       *
       *    Deferred execution.
       *
-      *  @requires
-      *    TS.Linq.RandomGenerator
+      *  @requires TS.Linq.RandomGenerator
       *
-      *  @returns
-      *    TEnumerable<TSource>, the resulting enumerable.
+      *  @returns TEnumerable<TSource>, the resulting enumerable.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       */
       public random(): Enumerable<T>
       {
@@ -1059,17 +1027,13 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.range.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<Number>, the resulting enumerable.
+      *  @returns Enumerable<Number>, the resulting enumerable.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.InvalidTypeException
       *
-      *  @throws
-      *    TS.ArgumentOutOfRangeException
+      *  @throws TS.ArgumentOutOfRangeException
       */
       public static range(start: number, count: number): Enumerable<Number>
       {
@@ -1086,14 +1050,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/bb348899.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<TSource>, the resulting enumerable.
+      *  @returns Enumerable<TSource>, the resulting enumerable.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.ArgumentOutOfRangeException
+      *  @throws TS.ArgumentOutOfRangeException
       */
       public static repeat<U>(item: U, count: number): Enumerable<U>
       {
@@ -1109,14 +1070,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/bb358497.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<TSource>, the resulting enumerable.
+      *  @returns Enumerable<TSource>, the resulting enumerable.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       */
       public reverse(): Enumerable<T>
       {
@@ -1132,17 +1090,13 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.select.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<TSource>, the resulting enumerable.
+      *  @returns Enumerable<TSource>, the resulting enumerable.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException.
+      *  @throws TS.ArgumentNullOrUndefinedException.
       *
-      *  @throws
-      *    TS.Linq.SelectorException. Thrown if the selector doesn't match with the source.
+      *  @throws TS.Linq.SelectorException. Thrown if the selector doesn't match with the source.
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       */
       public select<U>(selector: (item: T) => U): Enumerable<U>
       {
@@ -1159,17 +1113,13 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.selectmany.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<TSource>, the resulting enumerable.
+      *  @returns Enumerable<TSource>, the resulting enumerable.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.Linq.SelectorException. Thrown if the selector doesn't match with the source.
+      *  @throws TS.Linq.SelectorException. Thrown if the selector doesn't match with the source.
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       */
       public selectMany<U>(selector: (item: T) => U[]): Enumerable<U>
       {
@@ -1191,14 +1141,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.sequenceequal.aspx | MSDN}
       *
-      *  @returns
-      *    Boolean
+      *  @returns Boolean
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       */
       public sequenceEqual(enumerable: Enumerable<T>, equalityComparer?: (first: T, second: T) => boolean): boolean
       {
@@ -1216,11 +1163,9 @@ module TS
       *
       *  @see {@link http://www.dotnetperls.com/fisher-yates-shuffle}
       *
-      *  @returns
-      *    Enumerable<T>, the resulting enumerable.
+      *  @returns Enumerable<T>, the resulting enumerable.
       *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.InvalidTypeException
       */
       public shuffle(): Enumerable<T>
       {
@@ -1242,20 +1187,15 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.single.aspx : MSDN }
       *
-      *  @returns
-      *    T, the result element.
+      *  @returns T, the result element.
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       *
-      *  @throws
-      *    TS.InvalidOperationException
+      *  @throws TS.InvalidOperationException
       *
-      *  @throws
-      *    TS.Linq.EmptyEnumerableException
+      *  @throws TS.Linq.EmptyEnumerableException
       *
-      *  @throws
-      *    TS.Linq.MoreThanOneElementException
+      *  @throws TS.Linq.MoreThanOneElementException
       */
       public single(predicate?: (item: T) => boolean): T
       {
@@ -1275,17 +1215,13 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.singleordefault.aspx : MSDN }
       *
-      *  @returns
-      *    TSource, the result element.
+      *  @returns TSource, the result element.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       *
-      *  @throws
-      *    TS.Linq.MoreThanOneElementException
+      *  @throws TS.Linq.MoreThanOneElementException
       */
       public singleOrDefault(defaultConstructor: { new (): T; }, predicate?: (item: T) => boolean): T
       {
@@ -1302,18 +1238,14 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/bb358985.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<TSource>, the resulting enumerable.
+      *  @returns Enumerable<TSource>, the resulting enumerable.
       *
-      *  @throws
-      *    TS.ArgumentOutOfRangeException. Thrown in case where the
-      *    argument 'count' is invalid.
+      *  @throws TS.ArgumentOutOfRangeException. Thrown in case where the
+      *          argument 'count' is invalid.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.InvalidTypeException
       */
       public skip(count: number): Enumerable<T>
       {
@@ -1330,14 +1262,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.skipwhile.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<TSource>, the resulting enumerable.
+      *  @returns Enumerable<TSource>, the resulting enumerable.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.InvalidTypeException
       */
       public skipWhile(predicate: (item: T) => boolean): Enumerable<T>
       {
@@ -1357,17 +1286,13 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.sum.aspx | MSDN}
       *
-      *  @returns
-      *    number, the result value.
+      *  @returns number, the result value.
       *
-      *  @throws
-      *    TS.Linq.EmptyEnumerableException.
+      *  @throws TS.Linq.EmptyEnumerableException.
       *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws TS.InvalidTypeException.
       *
-      *  @throws
-      *    TS.OverflowException
+      *  @throws TS.OverflowException
       */
       public sum(): number
       {
@@ -1407,18 +1332,14 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/bb503062.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<TSource>, the resulting enumerable.
+      *  @returns Enumerable<TSource>, the resulting enumerable.
       *
-      *  @throws
-      *    TS.ArgumentOutOfRangeException. Thrown in case where the
-      *    argument 'count' is invalid.
+      *  @throws TS.ArgumentOutOfRangeException. Thrown in case where the
+      *          argument 'count' is invalid.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.InvalidTypeException
       */
       public take(count: number): Enumerable<T>
       {
@@ -1434,14 +1355,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.takewhile.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<TSource>, the resulting enumerable.
+      *  @returns Enumerable<TSource>, the resulting enumerable.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.InvalidTypeException
       */
       public takeWhile(predicate: (item: T) => boolean): Enumerable<T>
       {
@@ -1457,14 +1375,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/bb298736 | MSDN}
       *
-      *  @returns
-      *    Array<TSource>, the resulting array.
+      *  @returns Array<TSource>, the resulting array.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.InvalidTypeException
       */
       public toArray(): Array<T>
       {
@@ -1484,14 +1399,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.union.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<TSource>, the resulting enumerable.
+      *  @returns Enumerable<TSource>, the resulting enumerable.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.InvalidTypeException
       */
       public union(secondEnumerable: Enumerable<T>): Enumerable<T>
       {
@@ -1507,14 +1419,11 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.where.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<TSource>, the resulting enumerable.
+      *  @returns Enumerable<TSource>, the resulting enumerable.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
+      *  @throws TS.ArgumentNullOrUndefinedException
       *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.InvalidTypeException
       */
       public where(predicate: (item: T) => boolean): Enumerable<T>
       {

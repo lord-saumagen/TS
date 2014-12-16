@@ -203,6 +203,27 @@
 
   }//END class
 
+
+  export class ArgumentUndefinedException extends ArgumentException
+  {
+    /**
+    *  @overwrite
+    */
+    public get type(): string
+    {
+      return "TS.ArgumentUndefinedException";
+    }
+
+    /**
+    *  @constructs
+    */
+    constructor(argumentName: string,  message?: string, innerException?: Exception)
+    {
+      super(argumentName, undefined, message, innerException);
+    }
+
+  }//END class
+
   //********************************************************************************
   // Index exceptions
   //********************************************************************************

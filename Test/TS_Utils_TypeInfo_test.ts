@@ -121,15 +121,16 @@ module TS_Utils_TypeInfo_test
 
   QUnit.test("isBinaryString", (assert) =>
   {
+    var _undefined;
+
+    assert.ok(TS.Utils.TypeInfo.isBinaryString("01001010110"), "Should return true on a valid binary string.");
+    assert.ok(!TS.Utils.TypeInfo.isBinaryString("   0110101110101"), "Should return false on an invalid binary string.");
+    assert.ok(!TS.Utils.TypeInfo.isBinaryString("hallo"), "Should return false on a text string.");
+    assert.ok(!TS.Utils.TypeInfo.isBinaryString({}), "Should return false on a value which isn't a string at all.");
+    assert.ok(!TS.Utils.TypeInfo.isBinaryString(null), "Should return false on a null value.");
+    assert.ok(!TS.Utils.TypeInfo.isBinaryString(_undefined), "Should return false on an undefined value.");
   });
 
-  QUnit.test("isDecimalString", (assert) =>
-  {
-  });
-
-  QUnit.test("isHexString", (assert) =>
-  {
-  });
 
   QUnit.test("isBooleanObject", (assert) =>
   {
@@ -181,6 +182,19 @@ module TS_Utils_TypeInfo_test
   });
 
 
+  QUnit.test("isDecimalString", (assert) =>
+  {
+    var _undefined;
+
+    assert.ok(TS.Utils.TypeInfo.isDecimalString("0123456789"), "Should return true on a valid decimal string.");
+    assert.ok(!TS.Utils.TypeInfo.isDecimalString("   0123456789"), "Should return false on an invalid decimal string.");
+    assert.ok(!TS.Utils.TypeInfo.isDecimalString("hallo"), "Should return false on a text string.");
+    assert.ok(!TS.Utils.TypeInfo.isDecimalString({}), "Should return false on a value which isn't a string at all.");
+    assert.ok(!TS.Utils.TypeInfo.isDecimalString(null), "Should return false on a null value.");
+    assert.ok(!TS.Utils.TypeInfo.isDecimalString(_undefined), "Should return false on an undefined value.");
+  });
+
+
   QUnit.test("isFunction", (assert) =>
   {
     var _undefined;
@@ -203,6 +217,19 @@ module TS_Utils_TypeInfo_test
     assert.ok(TS.Utils.TypeInfo.isFunction(RegExp), "Should return true on the javascript 'RegExp' constructor function value as argument.");
     assert.ok(TS.Utils.TypeInfo.isFunction(String), "Should return true on the javascript 'String' constructor function value as argument.");
   });
+
+  QUnit.test("isHexString", (assert) =>
+  {
+    var _undefined;
+
+    assert.ok(TS.Utils.TypeInfo.isHexString("0123456789abCDeF"), "Should return true on a valid hexadecimal string.");
+    assert.ok(!TS.Utils.TypeInfo.isHexString("   0123456789abCDeF"), "Should return false on an invalid hexadecimal string.");
+    assert.ok(!TS.Utils.TypeInfo.isHexString("hallo"), "Should return false on a text string.");
+    assert.ok(!TS.Utils.TypeInfo.isHexString({}), "Should return false on a value which isn't a string at all.");
+    assert.ok(!TS.Utils.TypeInfo.isHexString(null), "Should return false on a null value.");
+    assert.ok(!TS.Utils.TypeInfo.isHexString(_undefined), "Should return false on an undefined value.");
+  });
+
 
   QUnit.test("isInfiniteNumber", (assert) =>
   {
@@ -433,6 +460,21 @@ module TS_Utils_TypeInfo_test
     assert.ok(!TS.Utils.TypeInfo.isPositiveIntegerNumber(NaN), "Should return false on a NaN value as argument.");
     assert.ok(!TS.Utils.TypeInfo.isPositiveIntegerNumber("3"), "Should return false on a string value as argument.");
 
+  });
+
+
+  QUnit.test("isPrimitiveType", (assert) =>
+  {
+    assert.ok(TS.Utils.TypeInfo.isPrimitiveType(true), "Should return true for the boolean value 'true'.");
+    assert.ok(TS.Utils.TypeInfo.isPrimitiveType(false), "Should return true for the boolean value 'true'.");
+    assert.ok(TS.Utils.TypeInfo.isPrimitiveType(""), "Should return true for the string value ''.");
+    assert.ok(TS.Utils.TypeInfo.isPrimitiveType(0), "Should return true for the number value '0'.");
+
+    assert.ok(!TS.Utils.TypeInfo.isPrimitiveType(new Boolean(true)), "Should return false for a boolean object value.");
+    assert.ok(!TS.Utils.TypeInfo.isPrimitiveType(new String("")), "Should return false for a string object value ''.");
+    assert.ok(!TS.Utils.TypeInfo.isPrimitiveType(new Number()), "Should return false for a number object value '0'.");
+
+    assert.ok(!TS.Utils.TypeInfo.isPrimitiveType({}), "Should return false for an arbitrary object.");
   });
 
 

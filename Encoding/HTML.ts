@@ -7,20 +7,17 @@
     /**
     *  @class
     *        
-    *  @classdesc 
-    *    This class implements a simple HTML encoding and
-    *    decoding function for short text fragments.
+    *  @classdesc This class implements a simple HTML encoding and
+    *             decoding function for short text fragments.
     */
     export class HTML
     {
 
       /**
-      *  @description
-      *    Replaces every character in the input string by its 
-      *    numeric character reference.
+      *  @description Replaces every character in the input string by its 
+      *               numeric character reference.
       *
-      *  @return
-      *    String, the encoded string.
+      *  @return string: The encoded string.
       */
       public static encode(stringValue: string): string
       {
@@ -38,12 +35,10 @@
 
       
       /**
-      *  @description
-      *    Replaces every numeric character reference in 
-      *    the input string by its character representation.
+      *  @description Replaces every numeric character reference in 
+      *               the input string by its character representation.
       *
-      *  @return
-      *    String, the decoded string.
+      *  @return string: The decoded string.
       */
       public static decode(stringValue) : string
       {

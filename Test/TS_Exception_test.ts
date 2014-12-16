@@ -1,8 +1,4 @@
-﻿/// <reference path="../scripts/qunit.d.ts" />
-/// <reference path="../scripts/jquery.d.ts" />
-/// <reference path="../exception/exception.ts" />
-
-"use strict";
+﻿"use strict";
 
 module TS_Exception_test
 {
@@ -28,7 +24,7 @@ module TS_Exception_test
       }
     });
 
-  QUnit.test("ArgumentException", function (assert)
+  QUnit.test("TS.ArgumentException", function (assert)
   {
     var ExceptionMessage = "Argument exception message";
 
@@ -54,7 +50,7 @@ module TS_Exception_test
       }, "Should raise an exception instance of the expected type with an inner exception.");
   });
 
-  QUnit.test("ArgumentNullException", function (assert)
+  QUnit.test("TS.ArgumentNullException", function (assert)
   {
     var ExceptionMessage = "ArgumentNull exception message";
 
@@ -81,7 +77,7 @@ module TS_Exception_test
   });
 
 
-  QUnit.test("ArgumentNullOrUndefinedException", function (assert)
+  QUnit.test("TS.ArgumentNullOrUndefinedException", function (assert)
   {
     var ExceptionMessage = "ArgumentNullOrUndefined exception message";
 
@@ -108,7 +104,7 @@ module TS_Exception_test
   });
 
 
-  QUnit.test("ArgumentNullUndefOrWhiteSpaceException", function (assert)
+  QUnit.test("TS.ArgumentNullUndefOrWhiteSpaceException", function (assert)
   {
     var ExceptionMessage = "ArgumentNullUndefOrWhiteSpaceException exception message";
 
@@ -135,7 +131,7 @@ module TS_Exception_test
   });
 
 
-  QUnit.test("ArgumentOutOfRangeException", function (assert)
+  QUnit.test("TS.ArgumentOutOfRangeException", function (assert)
   {
     var ExceptionMessage = "ArgumentOutOfRange exception message";
 
@@ -161,7 +157,35 @@ module TS_Exception_test
       }, "Should raise an exception instance of the expected type with an inner exception.");
   });
 
-  QUnit.test("ArithmeticException", (assert) => 
+
+  QUnit.test("TS.ArgumentUndefinedException", function (assert)
+  {
+    var ExceptionMessage = "ArgumentUndefinedException exception message";
+
+    assert.throws(function ()
+    {
+      throw new TS.ArgumentUndefinedException("ArgName", ExceptionMessage);
+    }, new TS.ArgumentUndefinedException("ArgName",  ExceptionMessage), "Should raise an exception instance that matched with the expected instance.");
+
+    assert.throws(function ()
+    {
+      throw new TS.ArgumentUndefinedException("ArgName", ExceptionMessage, GetInnerException());
+    },
+      function (err)
+      {
+        if (err.message == ExceptionMessage)
+        {
+          if (CheckInnerException(err))
+          {
+            return true;
+          }//END if
+        }//END if
+        return false;
+      }, "Should raise an exception instance of the expected type with an inner exception.");
+  });
+
+
+  QUnit.test("TS.ArithmeticException", (assert) => 
   {
     var ExceptionMessage = "Arithmetic exception message";
 
@@ -187,7 +211,8 @@ module TS_Exception_test
       }, "Should raise an exception instance of the expected type with an inner exception.");
   });
 
-  QUnit.test("DivideByZeroException", (assert) => 
+
+  QUnit.test("TS.DivideByZeroException", (assert) => 
   {
     var ExceptionMessage = "Divide by zero exception message";
 
@@ -213,7 +238,8 @@ module TS_Exception_test
       }, "Should raise an exception instance of the expected type with an inner exception.");
   });
 
-  QUnit.test("Exception", function (assert)
+
+  QUnit.test("TS.Exception", function (assert)
   {
     var ExceptionMessage = "Exception message";
 
@@ -240,7 +266,7 @@ module TS_Exception_test
   });
 
 
-  QUnit.test("IndexOutOfRangeException", function (assert)
+  QUnit.test("TS.IndexOutOfRangeException", function (assert)
   {
     var ExceptionMessage = "IndexOutOfRange exception message";
 
@@ -267,7 +293,7 @@ module TS_Exception_test
   });
 
 
-  QUnit.test("InvalidCastException", function (assert)
+  QUnit.test("TS.InvalidCastException", function (assert)
   {
     var ExceptionMessage = "InvalidCast exception message";
 
@@ -294,34 +320,7 @@ module TS_Exception_test
   });
 
 
-  QUnit.test("InvalidCastException", function (assert)
-  {
-    var ExceptionMessage = "InvalidCast exception message";
-
-    assert.throws(function ()
-    {
-      throw new TS.InvalidCastException(ExceptionMessage);
-    }, new TS.InvalidCastException(ExceptionMessage), "Should raise an exception instance that matched with the expected instance.");
-
-    assert.throws(function ()
-    {
-      throw new TS.InvalidCastException(ExceptionMessage, GetInnerException());
-    },
-      function (err)
-      {
-        if (err.message == ExceptionMessage)
-        {
-          if (CheckInnerException(err))
-          {
-            return true;
-          }//END if
-        }//END if
-        return false;
-      }, "Should raise an exception instance of the expected type with an inner exception.");
-  });
-
-
-  QUnit.test("InvalidOperationException", function (assert)
+  QUnit.test("TS.InvalidOperationException", function (assert)
   {
     var ExceptionMessage = "Invalid operation exception message";
 
@@ -347,7 +346,8 @@ module TS_Exception_test
       }, "Should raise an exception instance of the expected type with an inner exception.");
   });
 
-  QUnit.test("InvalidTypeException", function (assert)
+
+  QUnit.test("TS.InvalidTypeException", function (assert)
   {
     var ExceptionMessage = "Invalid type exception message";
 
@@ -373,7 +373,8 @@ module TS_Exception_test
       }, "Should raise an exception instance of the expected type with an inner exception.");
   });
 
-  QUnit.test("NotFiniteNumberException", (assert) => 
+
+  QUnit.test("TS.NotFiniteNumberException", (assert) => 
   {
     var ExceptionMessage = "Not finite number exception message";
 
@@ -400,7 +401,7 @@ module TS_Exception_test
   });
 
 
-  QUnit.test("OverflowException", (assert) => 
+  QUnit.test("TS.OverflowException", (assert) => 
   {
     var ExceptionMessage = "Overflow exception message";
 

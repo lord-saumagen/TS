@@ -31,12 +31,8 @@
     {
 
       /**
-      *  @description  
-      *    Determines and returns the type of 
-      *    the value of argument 'obj'. 
-      *
-      *  @param  obj
-      *    The obj whose type should be determined.
+      *  @description Determines and returns the type of 
+      *               the value of argument 'obj'. 
       *
       *  @returns  TS.Utils.TypeEnum
       *    The value of the enumeration which represents
@@ -162,16 +158,9 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the type of
-      *    the argument 'source' is a arguments
-      *    type, otherwise false.
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @description Returns true if the type of
+      *               the argument 'source' is a arguments
+      *               type, otherwise false.
       */
       public static isArguments(source: any): boolean
       {
@@ -184,16 +173,9 @@
       }
 
       /**
-      *  @description  
-      *    Returns true if the type of
-      *    the argument 'source' is an array
-      *    type, otherwise false.
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @description  Returns true if the type of
+      *                the argument 'source' is an array
+      *                type, otherwise false.
       */
       public static isArray(source: any): boolean
       {
@@ -207,16 +189,12 @@
 
 
       /**
-      *  @description
-      *    Returns true if the type of
-      *    the argument 'source' is a none
-      *    empty binary string, otherwise false.
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @description Returns true if the type of
+      *               the argument 'source' is a none
+      *               empty binary string. If the string
+      *               contains other characters than '0' 
+      *               and '1', even white space, the 
+      *               return value will be false.
       */
       public static isBinaryString(source: any): boolean
       {
@@ -230,22 +208,13 @@
 
 
       /**
-      *  @description
-      *    Returns true if the type of
-      *    the argument 'source' is a boolean
-      *    type, otherwise false.
+      *  @description Returns true if the type of
+      *               the argument 'source' is a boolean
+      *               type, otherwise false.
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isBooleanValue
+      *  @see TS.Utils.TypeInfo.isBooleanValue
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isBooleanObject
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @see TS.Utils.TypeInfo.isBooleanObject
       */
       public static isBoolean(source: any): boolean
       {
@@ -254,23 +223,14 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the type of
-      *    the argument 'source' is a boolean 
-      *    object type created with 'new Boolean()',
-      *    otherwise false.
+      *  @description  Returns true if the type of
+      *                the argument 'source' is a boolean 
+      *                object type created with 'new Boolean()',
+      *                otherwise false.
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isBooleanValue
+      *  @see TS.Utils.TypeInfo.isBooleanValue
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isBoolean
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @see TS.Utils.TypeInfo.isBoolean
       */
       public static isBooleanObject(source: any): boolean
       {
@@ -284,23 +244,14 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the type of
-      *    the argument 'source' is a boolean 
-      *    value type (true or false),
-      *    otherwise false.
+      *  @description Returns true if the type of
+      *               the argument 'source' is a boolean 
+      *               value type (true or false),
+      *               otherwise false.
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isBoolean
+      *  @see TS.Utils.TypeInfo.isBoolean
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isBooleanObject
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @see TS.Utils.TypeInfo.isBooleanObject
       */
       public static isBooleanValue(source: any): boolean
       {
@@ -314,17 +265,10 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the type of
-      *    the argument 'source' is a date
-      *    object type created with 'new Date()',
-      *    otherwise false.
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @description Returns true if the type of
+      *               the argument 'source' is a date
+      *               object type created with 'new Date()',
+      *               otherwise false.
       */
       public static isDate(source: any): boolean
       {
@@ -338,17 +282,13 @@
 
 
       /**
-      *  @description
-      *    Returns true if the type of
-      *    the argument 'source' is a none
-      *    empty decimal string, otherwise false.
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
-      */
+      *  @description Returns true if the type of
+      *               the argument 'source' is a none
+      *               empty decimal string.
+      *               If the string contains other characters than
+      *               [0-9], even white space, the 
+      *               return value will be false.     
+       */
       public static isDecimalString(source: any): boolean
       {
         if (!this.isString(source))
@@ -361,16 +301,9 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the type of
-      *    the argument 'source' is a function
-      *    type, otherwise false.
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @description Returns true if the type of
+      *               the argument 'source' is a function
+      *               type, otherwise false.
       */
       public static isFunction(source: any): boolean
       {
@@ -384,16 +317,12 @@
 
 
       /**
-      *  @description
-      *    Returns true if the type of
-      *    the argument 'source' is a none
-      *    empty hexadecimal string, otherwise false.
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @description Returns true if the type of
+      *               the argument 'source' is a none
+      *               empty hexadecimal string.
+      *               If the string contains other characters than
+      *               [0-9, A-F, a-f], even white space, the 
+      *               return value will be false.
       */
       public static isHexString(source: any): boolean
       {
@@ -407,25 +336,15 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the type of
-      *    the argument 'source' is a
-      *    infinite number value type, otherwise false.
+      *  @description Returns true if the type of
+      *               the argument 'source' is a
+      *               infinite number value type, otherwise false.
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isNumber
+      *  @see TS.Utils.TypeInfo.isNumber
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isNumberValue
+      *  @see TS.Utils.TypeInfo.isNumberValue
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isNumberObject
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @see TS.Utils.TypeInfo.isNumberObject
       */
       public static isInfiniteNumber(source: any): boolean
       {
@@ -434,27 +353,19 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the value of
-      *    the argument 'source' is a integer number,
-      *    otherwise false. 
+      *  @description Returns true if the value of
+      *               the argument 'source' is an integer number
+      *               in the range of [-Number.MAX_VALUE .. Number.MAX_VALUE],
+      *               otherwise false.
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isNumber
+      *  @see TS.Utils.TypeInfo.isNumber
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isPositiveIntegerNumber
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    Returns true if the argument is a valid
-      *    integer number.
+      *  @see TS.Utils.TypeInfo.isPositiveIntegerNumber
       */
       public static isIntegerNumber(source: any): boolean
       {
-        if (this.isNumber(source) && (Math.floor(source) == source))
+        
+        if (this.isNumber(source) && (-Number.MAX_VALUE <= source) && (source <= Number.MAX_VALUE) && (Math.floor(source) == source))
         {
           return true;
         }//END if
@@ -464,30 +375,23 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the value of
-      *    the argument 'source' is NaN,
-      *    otherwise false.
+      *  @description Returns true if the value of
+      *               the argument 'source' is NaN,
+      *               otherwise false.
       *
-      *    The function differs from the javascript
-      *    implementation in that way, that  
-      *    it only returns true if the value of
-      *    the argument source is 'NaN'. No other
-      *    value will create a result of true.
-      *
-      *    That means, you can't use this function
-      *    to determine whether a value is a number
-      *    or not. You can only use it to determin
-      *    wether a value is 'NaN' or not. 
-      *    Use the 'TS.Utils.TypeInfo.isNumber' or
-      *    a similar function to determine whether
-      *    a value is a number type or not.
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *               The function differs from the javascript
+      *               implementation in that way, that  
+      *               it only returns true if the value of
+      *               the argument source is 'NaN'. No other
+      *               value will create a result of true.
+      *               
+      *               That means, you can't use this function
+      *               to determine whether a value is a number
+      *               or not. You can only use it to determin
+      *               wether a value is 'NaN' or not. 
+      *               Use the 'TS.Utils.TypeInfo.isNumber' or
+      *               a similar function to determine whether
+      *               a value is a number type or not.
       */
       public static isNaN(source: any): boolean
       {
@@ -501,25 +405,15 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the type of
-      *    the argument 'source' is a negative
-      *    infinite number value type, otherwise false.
+      *  @description Returns true if the type of
+      *               the argument 'source' is a negative
+      *               infinite number value type, otherwise false.
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isNumber
+      *  @see TS.Utils.TypeInfo.isNumber
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isNumberValue
+      *  @see TS.Utils.TypeInfo.isNumberValue
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isNumberObject
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @see TS.Utils.TypeInfo.isNumberObject
       */
       public static isNegativInfiniteNumber(source: any): boolean
       {
@@ -528,16 +422,9 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the value of
-      *    the argument 'source' is null, 
-      *    otherwise false.
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @description Returns true if the value of
+      *               the argument 'source' is null, 
+      *               otherwise false.
       */
       public static isNull(source: any): boolean
       {
@@ -546,16 +433,9 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the value of
-      *    the argument 'source' is null or undefined, 
-      *    otherwise false.
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @description Returns true if the value of
+      *               the argument 'source' is null or undefined, 
+      *               otherwise false.
       */
       public static isNullOrUndefined(source: any): boolean
       {
@@ -564,21 +444,14 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the value of the argument
-      *    'source' is either null or undefined or
-      *    an empty string or array.
-      *
-      *    All argument values which are
-      *    neither null or undefined nor an empty 
-      *    array or empty string lets the function 
-      *    return false. 
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @description Returns true if the value of the argument
+      *               'source' is either null or undefined or
+      *               an empty string or array.
+      *               
+      *               All argument values which are
+      *               neither null or undefined nor an empty 
+      *               array or empty string lets the function 
+      *               return false. 
       */
       public static isNullUndefOrEmpty(source: Array<any>): boolean;
       public static isNullUndefOrEmpty(source: string): boolean;
@@ -610,21 +483,13 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the argument value is
-      *    either null or undefined or is a string wich is either
-      *    empty or contains only white space characters.
+      *  @description Returns true if the argument value is
+      *               either null or undefined or is a string wich is either
+      *               empty or contains only white space characters.
       *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
-      *
-      *  @throws
-      *    TS.InvalidTypeException. Thrown if the argument
-      *    value is neither a null or undefined value nor
-      *    a string.
+      *  @throws TS.InvalidTypeException. 
+      *          Thrown if the argument value is neither a null or 
+      *          undefined value nor a string.
       */
       public static isNullUndefOrWhiteSpace(source: string): boolean
       {
@@ -648,28 +513,17 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the type of
-      *    the argument 'source' is a number
-      *    type, otherwise false.
+      *  @description  Returns true if the type of
+      *                the argument 'source' is a number
+      *                type, otherwise false.
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isIntegerNumber
+      *  @see TS.Utils.TypeInfo.isIntegerNumber
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isNumberObject
+      *  @see TS.Utils.TypeInfo.isNumberObject
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isNumberValue
+      *  @see TS.Utils.TypeInfo.isNumberValue
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isPositiveIntegerNumber
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @see TS.Utils.TypeInfo.isPositiveIntegerNumber
       */
       public static isNumber(source: any): boolean
       {
@@ -678,23 +532,14 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the type of
-      *    the argument 'source' is a number
-      *    object type created with 'new Number()',
-      *    otherwise false.
+      *  @description Returns true if the type of
+      *               the argument 'source' is a number
+      *               object type created with 'new Number()',
+      *               otherwise false.
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isNumber
+      *  @see TS.Utils.TypeInfo.isNumber
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isNumberValue
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @see TS.Utils.TypeInfo.isNumberValue
       */
       public static isNumberObject(source: any): boolean
       {
@@ -709,22 +554,13 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the type of
-      *    the argument 'source' is a number
-      *    value type, otherwise false.
+      *  @description Returns true if the type of
+      *               the argument 'source' is a number
+      *               value type, otherwise false.
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isNumber
+      *  @see TS.Utils.TypeInfo.isNumber
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isNumberObject
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @see TS.Utils.TypeInfo.isNumberObject
       */
       public static isNumberValue(source: any): boolean
       {
@@ -750,25 +586,13 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the type of
-      *    the argument 'source' is a positive
-      *    infinite number value type, otherwise false.
+      *  @description Returns true if the type of
+      *               the argument 'source' is a positive
+      *               infinite number value type, otherwise false.
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isNumber
-      *
-      *  @see
-      *    TS.Utils.TypeInfo.isNumberValue
-      *
-      *  @see
-      *    TS.Utils.TypeInfo.isNumberObject
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @see TS.Utils.TypeInfo.isNumber
+      *  @see TS.Utils.TypeInfo.isNumberValue
+      *  @see TS.Utils.TypeInfo.isNumberObject
       */
       public static isPositiveInfiniteNumber(source: any): boolean
       {
@@ -777,16 +601,40 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the type of
-      *    the argument 'source' is an object
-      *    type, otherwise false.
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      * @description Returns true if the type of argument 'source'
+      *              is either a boolean value, a number value or
+      *              a string value. Otherwise the result value 
+      *              will be false.
+      */
+      public static isPrimitiveType(source: any): boolean
+      {
+        if (this.isNullOrUndefined(source))
+        {
+          return false;
+        }//END if
+
+        if (this.isBooleanValue(source))
+        {
+          return true;
+        }//END if
+
+        if (this.isNumberValue(source))
+        {
+          return true;
+        }//END if
+
+        if (this.isStringValue(source))
+        {
+          return true;
+        }//END if
+
+        return false;
+      }
+
+      /**
+      *  @description Returns true if the type of
+      *               the argument 'source' is an object
+      *               type, otherwise false.
       */
       public static isObject(source: any): boolean
       {
@@ -800,23 +648,13 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the value of 
-      *    the argument 'source' is a valid integer 
-      *    number greater or equal 0, otherwise false. 
+      *  @description Returns true if the value of 
+      *               the argument 'source' is a valid integer 
+      *               number greater or equal 0, otherwise false. 
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isNumber
+      *  @see TS.Utils.TypeInfo.isNumber
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isIntegerNumber
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    Returns true if the argument is a valid
-      *    integer number greater or equal 0.
+      *  @see TS.Utils.TypeInfo.isIntegerNumber
       */
       public static isPositiveIntegerNumber(source: any): boolean
       {
@@ -830,16 +668,9 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the type of
-      *    the argument 'source' is a regular 
-      *    expression type, otherwise false.
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @description  Returns true if the type of
+      *                the argument 'source' is a regular 
+      *                expression type, otherwise false.
       */
       public static isRegEx(source: any): boolean
       {
@@ -853,22 +684,13 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the type of
-      *    the argument 'source' is a string,
-      *    type, otherwise false.
+      *  @description Returns true if the type of
+      *               the argument 'source' is a string,
+      *               type, otherwise false.
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isStringLiteral
+      *  @see TS.Utils.TypeInfo.isStringLiteral
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isStringObject
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @see TS.Utils.TypeInfo.isStringObject
       */
       public static isString(source: any): boolean
       {
@@ -877,23 +699,14 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the type of
-      *    the argument 'source' is a string 
-      *    object type created with 'new String()',
-      *    otherwise false.
+      *  @description Returns true if the type of
+      *               the argument 'source' is a string 
+      *               object type created with 'new String()',
+      *               otherwise false.
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isString
+      *  @see TS.Utils.TypeInfo.isString
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isStringLiteral
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @see TS.Utils.TypeInfo.isStringLiteral
       */
       public static isStringObject(source: any): boolean
       {
@@ -907,22 +720,13 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the type of
-      *    the argument 'source' is a string 
-      *    value type, otherwise false.
+      *  @description Returns true if the type of
+      *               the argument 'source' is a string 
+      *               value type, otherwise false.
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isString
+      *  @see TS.Utils.TypeInfo.isString
       *
-      *  @see
-      *    TS.Utils.TypeInfo.isStringObject
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean
-      *    The result value true or false.
+      *  @see TS.Utils.TypeInfo.isStringObject
       */
       public static isStringValue(source: any): boolean
       {
@@ -936,16 +740,9 @@
 
 
       /**
-      *  @description  
-      *    Returns true if the value of
-      *    the argument 'source' is undefined, 
-      *    otherwise false.
-      *
-      *  @param  source
-      *    The argument to check.
-      *
-      *  @returns  boolean 
-      *    The result value true or false.
+      *  @description Returns true if the value of
+      *               the argument 'source' is undefined, 
+      *               otherwise false.
       */
       public static isUndefined(source: any): boolean
       {

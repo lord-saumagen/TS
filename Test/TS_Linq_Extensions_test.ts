@@ -614,17 +614,17 @@ module TS_Linq_Extensions_test
     assert.throws(() =>
     {
       TS.Linq.Extensions.first(TS.Linq.Extensions.empty<number>());
-    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should trow a TS.InvalidOperationException on an empty enumerable.");
+    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should throw a TS.InvalidOperationException on an empty enumerable.");
 
     assert.throws(() =>
     {
       TS.Linq.Extensions.first(personEnumerable, (item: any) => item.NoAttribute == "NOP");
-    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should trow a TS.InvalidOperationException when called with an invalid predicate.");
+    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should throw a TS.InvalidOperationException when called with an invalid predicate.");
 
     assert.throws(() =>
     {
       TS.Linq.Extensions.first(TS.Linq.Extensions.empty<number>(), (item: number) => item.toString() == "5");
-    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should trow a TS.InvalidOperationException on an empty enumerable when called with a predicate.");
+    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should throw a TS.InvalidOperationException on an empty enumerable when called with a predicate.");
 
     assert.throws(() => 
     {
@@ -1006,17 +1006,17 @@ module TS_Linq_Extensions_test
     assert.throws(() =>
     {
       TS.Linq.Extensions.last(TS.Linq.Extensions.empty<number>());
-    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should trow a TS.InvalidOperationException on an empty enumerable.");
+    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should throw a TS.InvalidOperationException on an empty enumerable.");
 
     assert.throws(() =>
     {
       TS.Linq.Extensions.last(personEnumerable, (item: any) => item.NoAttribute == "NOP");
-    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should trow a TS.InvalidOperationException when called with a predicate that doesn't match.");
+    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should throw a TS.InvalidOperationException when called with a predicate that doesn't match.");
 
     assert.throws(() =>
     {
       TS.Linq.Extensions.last(TS.Linq.Extensions.empty<number>(), (item: number) => item.toString() == "5");
-    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should trow a TS.InvalidOperationException on an empty enumerable when called with a predicate.");
+    }, (err) => ((err.name == "TS.InvalidOperationException") ? true : false), "Should throw a TS.InvalidOperationException on an empty enumerable when called with a predicate.");
 
     assert.throws(() => 
     {
@@ -1360,27 +1360,27 @@ module TS_Linq_Extensions_test
     assert.throws(() =>
     {
       TS.Linq.Extensions.range(1, -3);
-    }, (err) => ((err.name == "TS.ArgumentOutOfRangeException") ? true : false), "Should trow a TS.ArgumentOutOfRangeException for a negative 'count' argument.");
+    }, (err) => ((err.name == "TS.ArgumentOutOfRangeException") ? true : false), "Should throw a TS.ArgumentOutOfRangeException for a negative 'count' argument.");
 
     assert.throws(() =>
     {
       TS.Linq.Extensions.range(null, 33);
-    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should trow a TS.ArgumentNullOrUndefinedException for a null 'start' argument.");
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a TS.ArgumentNullOrUndefinedException for a null 'start' argument.");
 
     assert.throws(() =>
     {
       TS.Linq.Extensions.range(_undefined, 33);
-    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should trow a TS.ArgumentNullOrUndefinedException for an undefined 'start' argument.");
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a TS.ArgumentNullOrUndefinedException for an undefined 'start' argument.");
 
     assert.throws(() =>
     {
       TS.Linq.Extensions.range(12, null);
-    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should trow a TS.ArgumentNullOrUndefinedException for a null 'count' argument.");
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a TS.ArgumentNullOrUndefinedException for a null 'count' argument.");
 
     assert.throws(() =>
     {
       TS.Linq.Extensions.range(12, _undefined);
-    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should trow a TS.ArgumentNullOrUndefinedException for an undefined 'count' argument.");
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a TS.ArgumentNullOrUndefinedException for an undefined 'count' argument.");
   });
 
 
@@ -1398,17 +1398,17 @@ module TS_Linq_Extensions_test
     assert.throws(() =>
     {
       TS.Linq.Extensions.repeat(null, 33);
-    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should trow a TS.ArgumentNullOrUndefinedException for a null 'item' argument.");
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a TS.ArgumentNullOrUndefinedException for a null 'item' argument.");
 
     assert.throws(() =>
     {
       TS.Linq.Extensions.repeat(_undefined, 33);
-    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should trow a TS.ArgumentNullOrUndefinedException for an undefined 'item' argument.");
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a TS.ArgumentNullOrUndefinedException for an undefined 'item' argument.");
 
     assert.throws(() =>
     {
       TS.Linq.Extensions.repeat(_sourceElement, -33);
-    }, (err) => ((err.name == "TS.ArgumentOutOfRangeException") ? true : false), "Should trow a TS.TS.ArgumentOutOfRangeException on a negative 'count' argument.");
+    }, (err) => ((err.name == "TS.ArgumentOutOfRangeException") ? true : false), "Should throw a TS.TS.ArgumentOutOfRangeException on a negative 'count' argument.");
   });
 
 
@@ -1453,7 +1453,7 @@ module TS_Linq_Extensions_test
     assert.throws(() =>
     {
       TS.Linq.Extensions.reverse(_undefined);
-    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should trow a TS.ArgumentNullOrUndefinedException for an undefined 'enumerable' argument.");
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a TS.ArgumentNullOrUndefinedException for an undefined 'enumerable' argument.");
 
   });
 
@@ -1917,6 +1917,29 @@ module TS_Linq_Extensions_test
     assert.throws(() =>
     {
       TS.Linq.Extensions.toArray(_undefined);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'enumerable' argument.");
+  });
+
+
+  QUnit.test("toList", (assert) =>
+  {
+    var _numberList: TS.Collections.List<number>;
+    var _numberEnumerable: TS.Linq.Enumerable<number>;
+    var _undefined;
+
+    _numberEnumerable = TS.Linq.Extensions.fromArray(TS_Linq_test_common.CreateNumberArray());
+    _numberList = TS.Linq.Extensions.toList(_numberEnumerable);
+
+    assert.equal(_numberList.count, _numberEnumerable.count, "Should return a list which has the same length as the original enumerable.");
+
+    assert.throws(() => 
+    {
+      TS.Linq.Extensions.toList(null);
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a null 'enumerable' argument.");
+
+    assert.throws(() => 
+    {
+      TS.Linq.Extensions.toList(_undefined);
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for an undefined 'enumerable' argument.");
   });
 

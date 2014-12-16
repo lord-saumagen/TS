@@ -1,8 +1,4 @@
-﻿/// <reference path="../Linq/Extensions.js" />
-/// <reference path="../Linq/Enumerable.js" />
-/// <reference path="../Linq/Enumerator.js" />
-/// <reference path="TS_Linq_Extensions_test.js" />
-
+﻿
 "use strict";
 var TS_Linq_Extensions_test;
 (function (TS_Linq_Extensions_test)

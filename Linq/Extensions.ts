@@ -15,6 +15,90 @@ module TS
       // http://referencesource.microsoft.com/#System.Core/System/Linq/Enumerable.cs (Reference Source)
       // -------------------------------------
 
+      //
+      // Reference check
+      //
+      (function ()
+      {
+        var _missingArray: Array<string>;
+        _missingArray = new Array<string>();
+
+
+        if (typeof (TS.Exception) == "undefined")
+        {
+          _missingArray.push("TS.Exception");
+        }
+
+        if (typeof (TS.Linq.ArrayEnumerable) == "undefined")
+        {
+          _missingArray.push("TS.Linq.ArrayEnumerable");
+        }
+
+        if (typeof (TS.Linq.ArrayEnumerator) == "undefined")
+        {
+          _missingArray.push("TS.Linq.ArrayEnumerator");
+        }
+
+        if (typeof (TS.Linq.CycleGenerator) == "undefined")
+        {
+          _missingArray.push("TS.Linq.CycleGenerator");
+        }
+
+        if (typeof (TS.Linq.EmptyEnumerableException) == "undefined")
+        {
+          _missingArray.push("TS.Linq.Exceptions");
+        }
+
+        if (typeof (TS.Linq.Enumerator) == "undefined")
+        {
+          _missingArray.push("TS.Linq.Enumerator");
+        }
+
+        if (typeof (TS.Linq.Grouping) == "undefined")
+        {
+          _missingArray.push("TS.Linq.Grouping");
+        }
+
+        if (typeof (TS.Linq.OrderedEnumerable) == "undefined")
+        {
+          _missingArray.push("TS.Linq.OrderedEnumerable");
+        }
+
+        if (typeof (TS.Linq.RandomGenerator) == "undefined")
+        {
+          _missingArray.push("TS.Linq.RandomGenerator");
+        }
+
+        if (typeof (TS.Utils) == "undefined")
+        {
+          _missingArray.push("TS.Utils");
+        }//END if
+        else
+        {
+          if (typeof (TS.Utils.TypeInfo) == "undefined")
+          {
+            _missingArray.push("TS.Utils.TypeInfo");
+          }
+        }//END else
+
+        if (typeof (TS.Collections) == "undefined")
+        {
+          _missingArray.push("TS.Collections");
+        }//END if
+        else
+        {
+          if (typeof (TS.Collections.List) == "undefined")
+          {
+            _missingArray.push("TS.Collections.List");
+          }
+        }//END else
+
+        if (_missingArray.length > 0)
+        {
+          throw new Error("TS.Linq.Extensions requires additional references to the following module(s) or class(es): " + _missingArray.join(", ") + ".");
+        }//END if
+      })();
+
       export interface IPair<TFirst, TSecond> 
       {
         first: TFirst;
@@ -1255,7 +1339,7 @@ module TS
       *  @description
       *    Performs the specified action on each element of the enumerable
       *
-      *    Deffered execution.
+      *    Immediate execution.
       *
       *    That function is not a linq extension because it is a command and not
       *    a query at all. 
@@ -1287,23 +1371,15 @@ module TS
 
         var _enumerator: IEnumerator<TSource>;
         var _callback: () => IEnumerator<TSource>;
-        var _resultArray: Array<TSource>;
 
-        _callback = () => 
+        _enumerator = enumerable.getEnumerator();
+
+        while (_enumerator.moveNext())
         {
-          _enumerator = enumerable.getEnumerator();
-          _resultArray = new Array<TSource>();
+          action(_enumerator.current);
+        }//END while
 
-          while (_enumerator.moveNext())
-          {
-            action(_enumerator.current);
-            _resultArray.push(_enumerator.current);
-          }//END while
-
-          return new ArrayEnumerator(_resultArray);
-        }
-
-        return new Enumerable<TSource>(_callback);
+        return enumerable;
       }
 
 
@@ -1328,7 +1404,7 @@ module TS
 
         TS.Utils.checkParameter(sourceArray, "sourceArray", "TS.Linq.Extensions.fromArray");
 
-        if (!Utils.TypeInfo.isArray(sourceArray))
+        if (!TS.Utils.TypeInfo.isArray(sourceArray))
         {
           throw new TS.InvalidTypeException("sourceArray", sourceArray, "Argument '" + sourceArray + "' must be a valid array in function '" + fromArray + "'.");
         }//END if
@@ -1570,7 +1646,7 @@ module TS
       *
       *  @throws
       *    TS.InvalidTypeException.
-      */     
+      */
       export function intersect<TSource>(firstEnumerable: Enumerable<TSource>, secondEnumerable: Enumerable<TSource>): Enumerable<TSource>
       /**
       *  @description
@@ -2463,7 +2539,7 @@ module TS
       *  @throws
       *    TS.InvalidTypeException.
       */
-       export function sequenceEqual<TSource>(firstEnumerable: Enumerable<TSource>, secondEnumerable: Enumerable<TSource>): boolean
+      export function sequenceEqual<TSource>(firstEnumerable: Enumerable<TSource>, secondEnumerable: Enumerable<TSource>): boolean
       /**
       *  @description
       *    Determines whether two sequences are equal by comparing their 
@@ -3122,21 +3198,49 @@ module TS
 
 
       /**
-      *  @description
-      *    Performs a subsequent ordering of the elements in a sequence in ascending order.
+      *  @description Casts the 'enumerable' to a TS.Collections.List<T>.
+      *
+      *    Immediate execution.
+      *
+      *  @returns TS.Collections.List<TSource>, the resulting List.
+      *
+      *  @throws TS.ArgumentNullOrUndefinedException
+      *  @throws TS.InvalidTypeException
+      */
+      export function toList<TSource>(enumerable: Enumerable<TSource>): TS.Collections.List<TSource>
+      {
+        var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
+
+        var _resultArray: Array<TSource>;
+        var _enumerator: IEnumerator<TSource>
+
+        _checkEnumerable(enumerable, "TS.Linq.Extensions.toList");
+
+        _resultArray = new Array<TSource>();
+        _enumerator = enumerable.getEnumerator();
+
+        while (_enumerator.moveNext())
+        {
+          _resultArray.push(_enumerator.current);
+        }//END while
+
+        _enumerator.dispose();
+
+        return new TS.Collections.List(_resultArray);
+      }
+
+
+      /**
+      *  @description Performs a subsequent ordering of the elements in a sequence in ascending order.
       *
       *    Deferred execution.
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.thenby.aspx | MSDN}
       *
-      *  @returns
-      *    OrderedEnumerable<TSource>, the resulting ordered enumerable.
+      *  @returns OrderedEnumerable<TSource>, the resulting ordered enumerable.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.ArgumentNullOrUndefinedException
+      *  @throws TS.InvalidTypeException
       */
       export function thenBy<TSource, TKey>(enumerable: OrderedEnumerable<TSource>, selector: (item: TSource) => TKey, comparer?: (first: TKey, second: TKey) => number): OrderedEnumerable<TSource>
       {

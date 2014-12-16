@@ -42,7 +42,7 @@
       {
         if ((value < 0) || (value > 0xFFFFFFFF))
         {
-          throw new TS.ArgumentOutOfRangeException("MSInteger", value, "The argument excceeded the valid number range. Valid numbers must fall into the range of [" + 0xFFFFFFFF.toString() + " ... 0]");
+          throw new TS.ArgumentOutOfRangeException("MSInteger", value, "The argument excceeded the valid number range. Valid numbers must fall into the range of [0 ..." + 0xFFFFFFFF.toString() + "]");
         }//END if
 
         this._MSInteger = value;
@@ -63,7 +63,7 @@
       {
         if ((value < 0) || (value > 0xFFFFFFFF))
         {
-          throw new TS.ArgumentOutOfRangeException("LSInteger", value, "The argument excceeded the valid number range. Valid numbers must fall into the range of [" + 0xFFFFFFFF.toString() + " ... 0]");
+          throw new TS.ArgumentOutOfRangeException("LSInteger", value, "The argument excceeded the valid number range. Valid numbers must fall into the range of [0 ..." + 0xFFFFFFFF.toString() + "]");
         }//END if
 
         this._LSInteger = value;
@@ -71,22 +71,38 @@
 
 
       /**
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException
-      *
-      *  @throws
-      *    TS.ArgumentOutOfRangeException
+      *  @throws TS.ArgumentNullOrUndefinedException
+      *  @throws TS.InvalidTypeException
+      *  @throws TS.ArgumentOutOfRangeException
+      *  @throws TS.InvalidOperationException
       */
       constructor(MSInteger: number, LSInteger: number)
+      /**
+      *  @throws TS.ArgumentNullOrUndefinedException
+      *  @throws TS.InvalidOperationException
+      */
+      constructor()
+      constructor()
       {
-        TS.Utils.checkIntegerNumberParameter(MSInteger, "MSInteger", "constructor of TS.Utils.UInt64");
-        TS.Utils.checkIntegerNumberParameter(LSInteger, "LSInteger", "constructor of TS.Utils.UInt64");
+        if (arguments.length == 2)
+        {
+          TS.Utils.checkIntegerNumberParameter(arguments[0], "MSInteger", "constructor of TS.Utils.UInt64");
+          TS.Utils.checkIntegerNumberParameter(arguments[1], "LSInteger", "constructor of TS.Utils.UInt64");
+        }//END if
 
-        this.LSInteger = LSInteger;
-        this.MSInteger = MSInteger;
+        
+        TS.Utils.checkConstructorCall(this, TS.TypeCode.UInt64);
+
+        if (arguments.length == 2)
+        {
+          this.MSInteger = arguments[0];
+          this.LSInteger = arguments[1];
+        }//END if
+        else
+        {
+          this.MSInteger = 0;
+          this.LSInteger = 0;
+        }//END else
       }
 
 
@@ -134,7 +150,7 @@
         if (_tempLSInteger > 0xFFFFFFFF)
         {
           _tempOverflow = 1;
-          _tempLSInteger = _tempLSInteger & 0xFFFFFFFF;
+          _tempLSInteger = _tempLSInteger % 0x100000000;
         }//END if
         else
         {
@@ -190,7 +206,7 @@
         if (_tempLSInteger > 0xFFFFFFFF)
         {
           _tempOverflow = 1;
-          _tempLSInteger = _tempLSInteger & 0xFFFFFFFF;
+          _tempLSInteger = _tempLSInteger % 0x100000000;
         }//END if
         else
         {
@@ -201,15 +217,10 @@
 
         if (_tempMSInteger > 0xFFFFFFFF)
         {
-          _tempOverflow = 1;
-          _tempMSInteger = _tempMSInteger & 0xFFFFFFFF;
+          _tempMSInteger = _tempMSInteger % 0x100000000;
         }//END if
-        else
-        {
-          _tempOverflow = 0;
-        }//END else
 
-        return new UInt64(_tempMSInteger, _tempLSInteger + _tempOverflow);
+        return new UInt64(_tempMSInteger, _tempLSInteger);
       }
 
 
@@ -329,9 +340,10 @@
       public static number2UInt64(numberParam: number)
       {
         TS.Utils.checkPositivIntegerNumberParameter(numberParam, "numberParam", "TS.Utils.UInt64.number2UInt64");
+
         if (numberParam > 0xFFFFFFFF)
         {
-          return new UInt64((numberParam % 0x100000000), (numberParam & 0xFFFFFFFF));
+          return new UInt64(Math.ceil(numberParam / 0x100000000), (numberParam % 0x100000000));
         }//END if
 
         return new UInt64(0, numberParam);

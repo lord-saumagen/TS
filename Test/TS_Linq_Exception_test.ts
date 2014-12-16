@@ -1,8 +1,4 @@
-﻿/// <reference path="../scripts/qunit.d.ts" />
-/// <reference path="../scripts/jquery.d.ts" />
-/// <reference path="../exception/exception.ts" />
-
-"use strict";
+﻿"use strict";
 
 module TS_Linq_Exception_test
 {

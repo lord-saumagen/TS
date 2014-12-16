@@ -5,6 +5,36 @@
   export module Linq
   {
 
+    //
+    // Reference check
+    //
+    (function ()
+    {
+      var _missingArray: Array<string>;
+      _missingArray = new Array<string>();
+
+      if (TS.Utils == undefined)
+      {
+        _missingArray.push("TS.Utils");
+      }
+
+      if (TS.Utils.TypeInfo == undefined)
+      {
+        _missingArray.push("TS.Utils.TypeInfo");
+      }
+
+      if (TS.Exception == undefined)
+      {
+        _missingArray.push("TS.Exception");
+      }
+
+      if (_missingArray.length > 0)
+      {
+        throw new Error("TS.Linq.CycleGenerator requires additional references to the following module(s) or class(es): " + _missingArray.join(", ") + ".");
+      }//END if
+
+    })();
+
     /**
     * @class
     * @classdesc 
@@ -37,7 +67,7 @@
       {
         if (Utils.TypeInfo.isNullOrUndefined(dataArray))
         {
-          throw new ArgumentNullOrUndefinedException("dataArray", "Argument 'dataArray' must not be null or undefined in the constructor of 'CycleGenerator'.");
+          throw new TS.ArgumentNullOrUndefinedException("dataArray", "Argument 'dataArray' must not be null or undefined in the constructor of 'CycleGenerator'.");
         }//END if
         this._dataArray = dataArray.slice(0, dataArray.length);
         this._index = -1;
