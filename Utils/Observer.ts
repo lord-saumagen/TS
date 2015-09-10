@@ -68,22 +68,22 @@
       */
       private isSubscription(subscription: Subscription)
       {
-        if (TS.Utils.TypeInfo.isNullOrUndefined(subscription))
+        if (TS.Utils.Assert.isNullOrUndefined(subscription))
         {
           return false;
         }//END if
 
-        if (TS.Utils.TypeInfo.isNullOrUndefined(subscription.callback))
+        if (TS.Utils.Assert.isNullOrUndefined(subscription.callback))
         {
           return false;
         }//END if
 
-        if (TS.Utils.TypeInfo.isNullOrUndefined(subscription.context))
+        if (TS.Utils.Assert.isNullOrUndefined(subscription.context))
         {
           return false;
         }//END if
 
-        if (TS.Utils.TypeInfo.isNullOrUndefined(subscription.event))
+        if (TS.Utils.Assert.isNullOrUndefined(subscription.event))
         {
           return false;
         }//END if
@@ -99,11 +99,11 @@
       // each event name subscribed to will be a member name on
       // this object, w/ the value as an array of objects containing
       // the subscriber callback and optional function context
-      private subscriptionArray: Array<Subscription>;
+      private _subscriptionArray: Array<Subscription>;
 
       public constructor()
       {
-        this.subscriptionArray = new Array<Subscription>();
+        this._subscriptionArray = new Array<Subscription>();
       }
 
 
@@ -111,11 +111,11 @@
       *  @throws
       *    TS.Exception
       */
-      public addListener(event: string, callback: (context: any) => void, context?: any): void
+      public addListener(event: string, callback: (eventArgs: any) => void, context?: any): void
       {
         try
         {
-          this.subscriptionArray.push(new Subscription(event, callback, context));
+          this._subscriptionArray.push(new Subscription(event, callback, context));
         }//END try
         catch (ex)
         {
@@ -131,25 +131,16 @@
       *  @throws
       *    TS.ArgumentNullUndefOrWhiteSpaceException
       */
-      public removeListner(event: string, callback: (context: any) => void, context?: any): void
+      public removeListner(event: string, callback: (eventArgs: any) => void, context?: any): void
       {
         TS.Utils.checkStringParameter(event, "even", "TS.Utils.Observer.removeListner");
 
-        TS.Linq.Enumerable.fromArray(this.subscriptionArray).where(item => item.event == event && item.callback == callback && item.context == context).forEach((item) =>
+        TS.Linq.Enumerable.fromArray(this._subscriptionArray).where(item => item.event == event && item.callback == callback && item.context == context).forEach((item) =>
         {
           item = undefined;
         });
 
-        //var _seekSubscription: Subscription = new Subscription(event, callback, context)
-        //this.subscriptionArray.forEach((value: Subscription, index: number, array: Subscription[]) =>
-        //{
-        //  if (value.equal(_seekSubscription))
-        //  {
-        //    delete (this.subscriptionArray[index]);
-        //  };
-        //});
-
-        this.subscriptionArray = TS.Utils.compactArray(this.subscriptionArray);
+        this._subscriptionArray = TS.Utils.compactArray(this._subscriptionArray);
       }
 
 
@@ -162,12 +153,19 @@
       */
       public emit(event: string, eventArgs?: any): void
       {
-        TS.Utils.checkStringParameter(event, "even", "TS.Utils.Observer.emit");
+        TS.Utils.checkStringParameter(event, "event", "TS.Utils.Observer.emit");
 
 
-        TS.Linq.Enumerable.fromArray(this.subscriptionArray).where(item => item.event == event).forEach((item) => 
+        TS.Linq.Enumerable.fromArray(this._subscriptionArray).where(item => item.event == event).forEach((item) => 
         {
-          item.callback.call(((item.context.context != null) ? item.context : this), eventArgs);
+          try
+          {
+            item.callback.call(((item.context.context != null) ? item.context : this), eventArgs);
+          }//END try
+          catch (Exception)
+          {
+            console.log(Exception.toString());
+          }//END catch
         });
       }
 

@@ -88,9 +88,9 @@
       }//END if
       else
       {
-        if (typeof (TS.Utils.TypeInfo) == "undefined")
+        if (typeof (TS.Utils.Assert) == "undefined")
         {
-          _missingArray.push("TS.Utils.TypeInfo");
+          _missingArray.push("TS.Utils.Assert");
         }
       }//END else
 
@@ -170,7 +170,7 @@
       *             and uses the default equality comparer for the key type or the one specified 
       *             in argument 'equalityComparer'.
       *
-      * @throws TS.InvalidTypeException
+      * @throws TS.ArgumentNullOrUndefinedException
       * @throws TS.InvalidOperationException
       */
       constructor(equalityComparer?: (first: TKey, second: TKey) => boolean)
@@ -180,9 +180,8 @@
         _referenceCheck();
 
         TS.Utils.checkConstructorCall(this, TS.Collections.Dictionary);
-        
 
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer))
+        if (!TS.Utils.Assert.isNullOrUndefined(equalityComparer))
         {
           TS.Utils.checkFunctionParameter(equalityComparer, "equalityComparer", "constructor of TS.Collections.Dictionary");
           this._equalityComparer = equalityComparer;
@@ -205,7 +204,7 @@
       * @throws TS.ArgumentNullException;
       * @throws TS.Collections.DuplicateKeyException
       */
-      public add(item: KeyValuePair<TKey, TValue>): TS.Collections.ICollection<TS.Collections.KeyValuePair<TKey, TValue>>
+      public add(item: KeyValuePair<TKey, TValue>): TS.Collections.ICollection<TS.Collections.KeyValuePair<TKey, TValue>>;
       /**
       * @description Adds the specified key and value to the dictionary.
       *
@@ -214,19 +213,19 @@
       * @throws TS.ArgumentNullException;
       * @throws TS.Collections.DuplicateKeyException
       */
-      public add(key: TKey, value: TValue): Dictionary<TKey, TValue>
+      public add(key: TKey, value: TValue): Dictionary<TKey, TValue>;
       public add(): any
       {
         var _pair: KeyValuePair<TKey, TValue>;
 
         if (arguments.length == 2)
         {
-          if (TS.Utils.TypeInfo.isNullOrUndefined(arguments[0]))
+          if (TS.Utils.Assert.isNullOrUndefined(arguments[0]))
           {
             throw new TS.ArgumentNullOrUndefinedException("key", "The argument key must not be null or undefined in function 'TS.Collections.Dictionary.add'.");
           }//END if
 
-          if (TS.Utils.TypeInfo.isUndefined(arguments[1]))
+          if (TS.Utils.Assert.isUndefined(arguments[1]))
           {
             throw new TS.ArgumentUndefinedException("value", "The argument value must not be undefined in function 'TS.Collections.Dictionary.add'.");
           }//END if
@@ -236,12 +235,12 @@
 
         if (arguments.length == 1)
         {
-          if (TS.Utils.TypeInfo.isUndefined(arguments[0]) || TS.Utils.TypeInfo.isUndefined(arguments[0].key) || TS.Utils.TypeInfo.isUndefined(arguments[0].value))
+          if (TS.Utils.Assert.isUndefined(arguments[0]) || TS.Utils.Assert.isUndefined(arguments[0].key) || TS.Utils.Assert.isUndefined(arguments[0].value))
           {
             throw new TS.InvalidTypeException("item", arguments[0], "The value of parameter 'item' must be of type 'TS.Collections.KeyValuePair' in function 'TS.Collections.Dictionary.add'.");
           }//END if
 
-          if (TS.Utils.TypeInfo.isNull(arguments[0].key))
+          if (TS.Utils.Assert.isNull(arguments[0].key))
           {
             throw new TS.ArgumentNullException("item.key", "The argument item.key must not be null in function 'TS.Collections.Dictionary.add'.");
           }//END if
@@ -281,7 +280,7 @@
       */
       public containsKey(key: TKey): boolean
       {
-        if (TS.Utils.TypeInfo.isNullOrUndefined(key))
+        if (TS.Utils.Assert.isNullOrUndefined(key))
         {
           return false;
         }//END if
@@ -296,7 +295,7 @@
       */
       public containsValue(value: TValue): boolean
       {
-        if (TS.Utils.TypeInfo.isUndefined(value))
+        if (TS.Utils.Assert.isUndefined(value))
         {
           return false;
         }//END if
@@ -319,12 +318,12 @@
         var _index: number;
 
         TS.Utils.checkParameter(targetArray, "targetArray", "TS.Collections.Dictionary.copyTo");
-        if (!TS.Utils.TypeInfo.isArray(targetArray))
+        if (!TS.Utils.Assert.isArray(targetArray))
         {
           throw new TS.InvalidTypeException("targetArray", targetArray, "Argument 'targetArray' must be a valid array in function 'TS.Collections.Dictionary.copyTo'.");
         }//END if
 
-        TS.Utils.checkPositivIntegerNumberParameter(destIndex, "destIndex", "TS.Collections.Dictionary.copyTo");
+        TS.Utils.checkUnsignedIntegerNumberParameter(destIndex, "destIndex", "TS.Collections.Dictionary.copyTo");
         if (targetArray.length < destIndex)
         {
           throw new TS.ArgumentOutOfRangeException("targetArray.length", targetArray.length, "Target array was not long enough for the given 'destIndex' in function 'TS.Collections.Dictionary.copyTo'.");
@@ -428,7 +427,7 @@
       * @see {http://msdn.microsoft.com/en-us/library/kabs04ac(v=vs.110).aspx | MSDN}
       * @throws TS.ArgumentNullOrUndefinedException
       */
-      public remove(item: TS.Collections.KeyValuePair<TKey, TValue>): TS.Collections.ICollection<TS.Collections.KeyValuePair<TKey, TValue>>
+      public remove(item: TS.Collections.KeyValuePair<TKey, TValue>): TS.Collections.ICollection<TS.Collections.KeyValuePair<TKey, TValue>>;
       /**
       * @description Removes the value with the specified key from the Dictionary<TKey, TValue>.
       *              The function fails silent if the dictionary doesn't contain an item with the
@@ -438,7 +437,7 @@
       * @see {http://msdn.microsoft.com/en-us/library/kabs04ac(v=vs.110).aspx | MSDN}
       * @throws TS.ArgumentNullOrUndefinedException
       */
-      public remove(key: TKey): Dictionary<TKey, TValue>
+      public remove(key: TKey): Dictionary<TKey, TValue>;
       public remove(): any
       {
         var _keyIndex: number;
@@ -447,12 +446,12 @@
 
         _arg = arguments[0];
 
-        if (TS.Utils.TypeInfo.isNullOrUndefined(_arg))
+        if (TS.Utils.Assert.isNullOrUndefined(_arg))
         {
           throw new TS.ArgumentNullOrUndefinedException("key or item", "Argument 'key or item' must not be null or undefined in function 'TS.Collections.Dictionary.remove'.");
         }//END if
 
-        if (TS.Utils.TypeInfo.isUndefined(_arg.key))
+        if (TS.Utils.Assert.isUndefined(_arg.key))
         {
           TS.Utils.checkParameter(_arg, "key", "TS.Collections.Dictionary.remove");
           _key = _arg;

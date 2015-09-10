@@ -1,12 +1,27 @@
-﻿/// <reference path="TS_Utils_test.js" />
-/// <reference path="../Utils/utils.js" />
-
-"use strict"
+﻿"use strict";
 var TS_Utils_test;
 (function (TS_Utils_test)
 {
+  QUnit.module("TS.Utils (plain js)", {
+    setupOnce: function ()
+    {
+      // runs once before anything else in the module
+    },
+    setup: function ()
+    {
+      // prepare something for all following tests
+    },
+    teardown: function ()
+    {
+      // clean up after each test
+    },
+    teardownOnce: function ()
+    {
+      // runs once after all unit tests finished (including teardown)
+    }
+  });
 
-  QUnit.test("checkConstructorCall", function (assert)
+  QUnit.test("checkConstructorCall (plain js)", function (assert)
   {
     assert.throws(function ()
     {
@@ -18,7 +33,7 @@ var TS_Utils_test;
 
   });
 
-  QUnit.test("checkFunctionParameter", function (assert)
+  QUnit.test("checkFunctionParameter (plain js)", function (assert)
   {
     assert.throws(function ()
     {
@@ -30,7 +45,7 @@ var TS_Utils_test;
 
   });
 
-  QUnit.test("checkIntegerNumberParameter", function (assert)
+  QUnit.test("checkIntegerNumberParameter (plain js)", function (assert)
   {
     assert.throws(function ()
     {
@@ -42,11 +57,11 @@ var TS_Utils_test;
 
   });
 
-  QUnit.test("checkPositivIntegerNumberParameter", function (assert)
+  QUnit.test("checkUnsignedIntegerNumberParameter (plain js)", function (assert)
   {
     assert.throws(function ()
     {
-      TS.Utils.checkPositivIntegerNumberParameter({}, "object", "checkPositivIntegerNumberParameter");
+      TS.Utils.checkUnsignedIntegerNumberParameter({}, "object", "checkUnsignedIntegerNumberParameter");
     }, function (err)
     {
       return (err.name == "TS.InvalidTypeException") ? true : false;
@@ -54,7 +69,7 @@ var TS_Utils_test;
 
   });
 
-  QUnit.test("checkStringParameter", function (assert)
+  QUnit.test("checkStringParameter (plain js)", function (assert)
   {
     assert.throws(function ()
     {
@@ -66,7 +81,7 @@ var TS_Utils_test;
 
   });
 
-  QUnit.test("checkUInt64NumberParameter", function (assert)
+  QUnit.test("checkUInt64NumberParameter (plain js)", function (assert)
   {
     assert.throws(function ()
     {
@@ -78,7 +93,7 @@ var TS_Utils_test;
 
   });
 
-  QUnit.test("getFunctionName", function (assert)
+  QUnit.test("getFunctionName (plain js)", function (assert)
   {
     assert.throws(function ()
     {
@@ -90,12 +105,12 @@ var TS_Utils_test;
 
   });
 
-  QUnit.test("normalizePath", function (assert)
+  QUnit.test("normalizePath (plain js)", function (assert)
   {
     var _resultPath;
 
     _resultPath = TS.Utils.normalizePath({});
-    assert.equal(_resultPath.length , 0, "Should return an empty path when calle with an invalid argument.");
+    assert.equal(_resultPath.length, 0, "Should return an empty path when calle with an invalid argument.");
 
   });
 

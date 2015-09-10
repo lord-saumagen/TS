@@ -2,10 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <!-- jQuery, qUnit and qUnit-once setup -->
-    <link href="../Scripts/qunit-1.15.0.css" rel="stylesheet" />
+    <link href="../Scripts/qunit-1.18.0.css" rel="stylesheet" />
     <script src="../Scripts/jquery-2.1.1.js"></script>
-    <script src="../Scripts/qunit-1.15.0.js"></script>
+    <script src="../Scripts/qunit-1.18.0.js"></script>
     <script src="../Scripts/qunit-once.js"></script>
+
 
     <!-- Test data setup  -->
     <script src="./Data/Person400_JSONScript.js"></script>
@@ -18,9 +19,10 @@
     <script src="TS_Linq_test_common.js"></script>
     <script src="../Exception/Exception.js"></script>
     <script src="../Utils/Utils.js"></script>
-    <script src="../Utils/TypeInfo.js"></script>
+    <script src="../Utils/Assert.js"></script>
     <script src="../Encoding/Base64.js"></script>
     <script src="../Encoding/HTML.js"></script>
+    <script src="../Encoding/UTF.js"></script>
     <script src="../Linq/Exception.js"></script>
     <script src="../Linq/Enumerable.js"></script>
     <script src="../Linq/Grouping.js"></script>
@@ -41,10 +43,27 @@
     <script src="../Collections/Dictionary.js"></script>
     <script src="../Collections/List.js"></script>
     <script src="../TypeCode/UInt64.js"></script>
+    <!-- @see: Security_testSuite.html-->
     <script src="../Security/Security.js"></script>
+    <script src="../Security/Cryptography.js"></script>
+    <script src="../Security/State.js"></script>
     <script src="../Security/SHA1.js"></script>
     <script src="../Security/SHA224.js"></script>
     <script src="../Security/SHA256.js"></script>
+    <script src="../Security/SHA_256.js"></script>
+    <script src="../Security/AES.js"></script>
+    <script src="../Security/AbstractStreamCipher.js"></script>
+    <script src="../Security/AES_Stream.js"></script>
+    <script src="../Security/AES_CBC.js"></script>
+    <script src="../Security/AES_CBC_Stream.js"></script>
+    <script src="../Security/AES_CFB.js"></script>
+    <script src="../Security/AES_CFB_Stream.js"></script>
+    <script src="../Security/AES_OFB.js"></script>
+    <script src="../Security/AES_OFB_Stream.js"></script>
+    <script src="../Security/RandomNumberGenertor.js"></script>
+    <script src="../Security/Counter.js"></script>
+    <script src="../Security/AES_CTR.js"></script>
+    <script src="../Security/AES_CTR_Stream.js"></script>
     <title>TestSuite</title>
   </head>
   <body>
@@ -57,15 +76,29 @@
     <script src="TS_Collections_List_test.js"></script>
     <script src="TS_Collections_List_test_plainjs.js"></script>
     <script src="TS_Encoding_test.js"></script>
+    <script src="TS_Encoding_test_plainjs.js"></script>
     <script src="TS_Exception_test.js"></script>
     <script src="TS_Linq_Enumerable_test.js"></script>
     <script src="TS_Linq_Exception_test.js"></script>
     <script src="TS_Linq_Extensions_test.js"></script>
     <script src="TS_Linq_Extensions_test_plainjs.js"></script>
-    <script src="TS_Security_test.js"></script>
     <script src="TS_Utils_test.js"></script>
     <script src="TS_Utils_test_plainjs.js"></script>
-    <script src="TS_Utils_TypeInfo_test.js"></script>
-    <script src="TS_Utils_TypeInfo_test_plainjs.js"></script>
+    <script src="TS_Utils_Assert_test.js"></script>
+    <script src="TS_Utils_Assert_test_plainjs.js"></script>
+    <!-- @see: Security_testSuite.html-->
+    <script src="TS_Security_Hash_test.js"></script>
+    <script src="TS_Security_RandomNumberGenerator_test.js"></script>
+    <script src="TS_Security_AES_test.js"></script>
+    <script src="TS_Security_AES_test_plainjs.js"></script>
+    <script src="TS_Security_AES_CBC_test.js"></script>
+    <script src="TS_Security_AES_CBC_test_plainjs.js"></script>
+    <script src="TS_Security_AES_CFB_test.js"></script>
+    <script src="TS_Security_AES_CFB_test_plainjs.js"></script>
+    <script src="TS_Security_AES_CTR_test.js"></script>
+    <script src="TS_Security_AES_CTR_test_plainjs.js"></script>
+    <script src="TS_Security_AES_OFB_test.js"></script>
+    <script src="TS_Security_AES_OFB_test_plainjs.js"></script>
+
   </body>
 </html>

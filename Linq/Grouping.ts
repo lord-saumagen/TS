@@ -8,7 +8,7 @@
     export interface IGrouping<TKey, TSource> 
     {
       key: TKey;
-    }
+    }//END interface
 
     export class Grouping<TKey, TSource> extends TS.Linq.Enumerable<TSource> implements IGrouping<TKey, TSource>
     {
@@ -42,14 +42,14 @@
         //
         // Use the element selector if available.
         //
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(this._elementSelector) && (this._elementSelector.length == 1))
+        if (!TS.Utils.Assert.isNullOrUndefined(this._elementSelector) && (this._elementSelector.length == 1))
         {
           return TS.Linq.Extensions.select(TS.Linq.Extensions.where(this._enumerable, item => this._equalityComparer(this._keySelector(item), this._key)), item => this._elementSelector(item)).getEnumerator();
         }//END if
 
         return TS.Linq.Extensions.where(this._enumerable, item => this._equalityComparer(this._keySelector(item), this._key)).getEnumerator();
       }
-    }
+    }//END class
 
     /**
     *  @description
@@ -65,7 +65,7 @@
     */
     function checkFunctionParameter(paramToCheck: any, paramName: string, functionName: string)
     {
-      if (!TS.Utils.TypeInfo.isFunction(paramToCheck))
+      if (!TS.Utils.Assert.isFunction(paramToCheck))
       {
         throw new TS.InvalidTypeException(paramName, paramToCheck, "Argument '" + paramName + "' must be a function parameter in function '" + functionName + "'.");
       }//END if
@@ -86,11 +86,11 @@
     */
     function checkParameter(paramToCheck: any, paramName: string, functionName: string)
     {
-      if (TS.Utils.TypeInfo.isNullOrUndefined(paramToCheck))
+      if (TS.Utils.Assert.isNullOrUndefined(paramToCheck))
       {
         throw new TS.ArgumentNullOrUndefinedException(paramName, "Argument '" + paramName + "' must not be null or undefinde in function '" + functionName + "'.");
       }//END if
     }
 
-  }
-}
+  }//END module
+}//END module

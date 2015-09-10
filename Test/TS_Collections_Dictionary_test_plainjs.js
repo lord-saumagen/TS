@@ -14,18 +14,18 @@ var TS_Collections_Dictionary_test;
     var _dict;
 
     _dict = new TS.Collections.Dictionary();
-    assert.ok(!TS.Utils.TypeInfo.isNullOrUndefined(_dict), "Should return a new 'Dictionary' object after a call to the default constructor.");
+    assert.ok(!TS.Utils.Assert.isNullOrUndefined(_dict), "Should return a new 'Dictionary' object after a call to the default constructor.");
 
     _dict = new TS.Collections.Dictionary(function (first, second) { return first.toLower() == second.toLower(); });
-    assert.ok(!TS.Utils.TypeInfo.isNullOrUndefined(_dict), "Should return a new 'Dictionary' object after a call to the overloaded constructor with an equality comparer.");
+    assert.ok(!TS.Utils.Assert.isNullOrUndefined(_dict), "Should return a new 'Dictionary' object after a call to the overloaded constructor with an equality comparer.");
 
     assert.throws(function ()
     {
-      _dict = TS.Collections.Dictionary()
+      _dict = TS.Collections.Dictionary();
     }, function (err)
     {
       return (err.name == "TS.InvalidOperationException") ? true : false;
-    }, "Should throw a 'TS.InvalidOperationException' for an attempt to call the construcktor without the 'new' operator.");
+    }, "Should throw a 'TS.InvalidOperationException' for an attempt to call the constructor without the 'new' operator.");
   });
 
   QUnit.test("copyTo", function (assert)

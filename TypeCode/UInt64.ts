@@ -5,18 +5,18 @@
   export module TypeCode
   {
 
-    function correctNegative(value: number): number
-    {
-      if (value < 0)
-      {
-        value = 0x100000000 + value;
-      };
-      return value;
-    }
+    //function correctNegative(value: number): number
+    //{
+    //  if (value < 0)
+    //  {
+    //    value = 0x100000000 + value;
+    //  };
+    //  return value;
+    //}
 
     export class UInt64
     {
-      private _corNeg: (value: number) => number = correctNegative;
+      //private _corNeg: (value: number) => number = correctNegative;
 
       private _MSInteger: number;
       private _LSInteger: number;
@@ -35,8 +35,7 @@
 
 
       /**
-      *  @throws
-      *    TS.ArgumentOutOfRangeException
+      *  @throws TS.ArgumentOutOfRangeException
       */
       public set MSInteger(value) 
       {
@@ -56,8 +55,7 @@
 
 
       /**
-      *  @throws
-      *    TS.ArgumentOutOfRangeException
+      *  @throws TS.ArgumentOutOfRangeException
       */
       public set LSInteger(value)
       {
@@ -86,11 +84,10 @@
       {
         if (arguments.length == 2)
         {
-          TS.Utils.checkIntegerNumberParameter(arguments[0], "MSInteger", "constructor of TS.Utils.UInt64");
-          TS.Utils.checkIntegerNumberParameter(arguments[1], "LSInteger", "constructor of TS.Utils.UInt64");
+          TS.Utils.checkIntegerNumberParameter(arguments[0], "MSInteger", "constructor of TS.TypeCode.UInt64");
+          TS.Utils.checkIntegerNumberParameter(arguments[1], "LSInteger", "constructor of TS.TypeCode.UInt64");
         }//END if
 
-        
         TS.Utils.checkConstructorCall(this, TS.TypeCode.UInt64);
 
         if (arguments.length == 2)
@@ -107,18 +104,13 @@
 
 
       /**
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException
-      *
-      *  @throws
-      *    TS.OverflowException
+      *  @throws TS.ArgumentNullOrUndefinedException
+      *  @throws TS.InvalidTypeException
+      *  @throws TS.OverflowException
       */
       public add(second: UInt64) 
       {
-        TS.Utils.checkUInt64NumberParameter(second, "second", "TS.Utils.UInt64.add");
+        TS.Utils.checkUInt64NumberParameter(second, "second", "TS.TypeCode.UInt64.add");
 
         var _result = UInt64.add(this, second);
         this.MSInteger = _result.MSInteger;
@@ -127,19 +119,14 @@
 
 
       /**
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException
-      *
-      *  @throws
-      *    TS.OverflowException
+      *  @throws TS.ArgumentNullOrUndefinedException
+      *  @throws TS.InvalidTypeException
+      *  @throws TS.OverflowException
       */
       public static add(first: UInt64, second: UInt64): UInt64
       {
-        TS.Utils.checkUInt64NumberParameter(first, "first", "TS.Utils.UInt64.equal");
-        TS.Utils.checkUInt64NumberParameter(second, "second", "TS.Utils.UInt64.equal");
+        TS.Utils.checkUInt64NumberParameter(first, "first", "TS.TypeCode.UInt64.equal");
+        TS.Utils.checkUInt64NumberParameter(second, "second", "TS.TypeCode.UInt64.equal");
 
         var _tempOverflow: number;
         var _tempLSInteger: number;
@@ -161,7 +148,7 @@
 
         if (_tempMSInteger > 0xFFFFFFFF)
         {
-          throw new TS.OverflowException("An arithmetic operation resulted in an overflow. The error occured in 'TS.Utils.UInt64.add'.")
+          throw new TS.OverflowException("An arithmetic operation resulted in an overflow. The error occured in 'TS.TypeCode.UInt64.add'.")
         }//END if
 
         return new UInt64(_tempMSInteger, _tempLSInteger);
@@ -169,15 +156,12 @@
 
 
       /**
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.ArgumentNullOrUndefinedException
+      *  @throws TS.InvalidTypeException
       */
       public addModulo(second: UInt64) 
       {
-        TS.Utils.checkUInt64NumberParameter(second, "second", "TS.Utils.UInt64.add");
+        TS.Utils.checkUInt64NumberParameter(second, "second", "TS.TypeCode.UInt64.add");
 
         var _result = UInt64.addModulo(this, second);
         this.MSInteger = _result.MSInteger;
@@ -186,16 +170,13 @@
 
 
       /**
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.ArgumentNullOrUndefinedException
+      *  @throws TS.InvalidTypeException
       */
       public static addModulo(first: UInt64, second: UInt64): UInt64
       {
-        TS.Utils.checkUInt64NumberParameter(first, "first", "TS.Utils.UInt64.equal");
-        TS.Utils.checkUInt64NumberParameter(second, "second", "TS.Utils.UInt64.equal");
+        TS.Utils.checkUInt64NumberParameter(first, "first", "TS.TypeCode.UInt64.equal");
+        TS.Utils.checkUInt64NumberParameter(second, "second", "TS.TypeCode.UInt64.equal");
 
         var _tempOverflow: number;
         var _tempLSInteger: number;
@@ -225,61 +206,49 @@
 
 
       /**
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.ArgumentNullOrUndefinedException
+      *  @throws TS.InvalidTypeException
       */
       public equal(second: UInt64): boolean
       {
-        TS.Utils.checkUInt64NumberParameter(second, "second", "TS.Utils.UInt64.equal");
+        TS.Utils.checkUInt64NumberParameter(second, "second", "TS.TypeCode.UInt64.equal");
         return UInt64.equal(this, second);
       }
 
 
       /**
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.ArgumentNullOrUndefinedException
+      *  @throws TS.InvalidTypeException
       */
       public static equal(first: UInt64, second: UInt64): boolean
       {
-        TS.Utils.checkUInt64NumberParameter(first, "first", "TS.Utils.UInt64.equal");
-        TS.Utils.checkUInt64NumberParameter(second, "second", "TS.Utils.UInt64.equal");
+        TS.Utils.checkUInt64NumberParameter(first, "first", "TS.TypeCode.UInt64.equal");
+        TS.Utils.checkUInt64NumberParameter(second, "second", "TS.TypeCode.UInt64.equal");
 
         return ((first.MSInteger === second.MSInteger) && (first.LSInteger === second.LSInteger));
       }
 
 
       /**
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.ArgumentNullOrUndefinedException
+      *  @throws TS.InvalidTypeException
       */
       public greater(second: UInt64): boolean
       {
-        TS.Utils.checkUInt64NumberParameter(second, "second", "TS.Utils.UInt64.greater");
+        TS.Utils.checkUInt64NumberParameter(second, "second", "TS.TypeCode.UInt64.greater");
 
         return UInt64.greater(this, second);
       }
 
 
       /**
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.ArgumentNullOrUndefinedException
+      *  @throws TS.InvalidTypeException
       */
       public static greater(first: UInt64, second: UInt64): boolean
       {
-        TS.Utils.checkUInt64NumberParameter(first, "second", "TS.Utils.UInt64.greater");
-        TS.Utils.checkUInt64NumberParameter(second, "second", "TS.Utils.UInt64.greater");
+        TS.Utils.checkUInt64NumberParameter(first, "second", "TS.TypeCode.UInt64.greater");
+        TS.Utils.checkUInt64NumberParameter(second, "second", "TS.TypeCode.UInt64.greater");
 
         if (first.MSInteger > second.MSInteger)
         {
@@ -305,41 +274,34 @@
 
       public less(first: UInt64, second: UInt64): boolean
       {
-        TS.Utils.checkUInt64NumberParameter(second, "second", "TS.Utils.UInt64.less");
+        TS.Utils.checkUInt64NumberParameter(second, "second", "TS.TypeCode.UInt64.less");
 
         return UInt64.less(this, second);
       }
 
 
       /**
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.ArgumentNullOrUndefinedException
+      *  @throws TS.InvalidTypeException
       */
       public static less(first: UInt64, second: UInt64): boolean
       {
-        TS.Utils.checkUInt64NumberParameter(first, "second", "TS.Utils.UInt64.less");
-        TS.Utils.checkUInt64NumberParameter(second, "second", "TS.Utils.UInt64.less");
+        TS.Utils.checkUInt64NumberParameter(first, "second", "TS.TypeCode.UInt64.less");
+        TS.Utils.checkUInt64NumberParameter(second, "second", "TS.TypeCode.UInt64.less");
 
         return UInt64.greater(second, first);
       }
 
 
       /**
-      *  @description
-      *    Casts a number into a UInt64
+      *  @description  Casts a number into a UInt64
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws TS.ArgumentNullOrUndefinedException
+      *  @throws TS.InvalidTypeException
       */
       public static number2UInt64(numberParam: number)
       {
-        TS.Utils.checkPositivIntegerNumberParameter(numberParam, "numberParam", "TS.Utils.UInt64.number2UInt64");
+        TS.Utils.checkUnsignedIntegerNumberParameter(numberParam, "numberParam", "TS.TypeCode.UInt64.number2UInt64");
 
         if (numberParam > 0xFFFFFFFF)
         {

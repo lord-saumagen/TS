@@ -4,7 +4,8 @@
 
   export module TypeCode
   {
-    class Set<TSource>
+
+    export class Set<TSource>
     {
       private _setArray: Array<TSource>;
       private _equalityComparer: (first: TSource, second: TSource) => boolean;
@@ -12,7 +13,7 @@
       constructor(equalityComparer: (first: TSource, second: TSource) => boolean)
       {
 
-        if (!TS.Utils.TypeInfo.isFunction(equalityComparer))
+        if (!TS.Utils.Assert.isFunction(equalityComparer))
         {
           throw new TS.InvalidTypeException("equalityComparer", equalityComparer, "Argument '" + equalityComparer + "' must be a function parameter in the constructor of 'TS.Linq.Extensions.Set'.");
         }//END if
@@ -21,20 +22,18 @@
         this._equalityComparer = equalityComparer;
       }
 
-      public add(element: TSource): Boolean
+      public add(element: TSource)
       {
         if (!this.contains(element))
         {
           this._setArray.push(element);
-          return true;
         }//END if
 
-        return false;
       }
 
       public remove(element)
       {
-        if (TS.Utils.TypeInfo.isNullOrUndefined(element))
+        if (TS.Utils.Assert.isNullOrUndefined(element))
         {
           throw new TS.ArgumentNullOrUndefinedException("element", "Argument 'element' must not be null or undefined in function 'TS.Linq.Extensions.Set.remove'.");
         }//END if
@@ -48,7 +47,7 @@
       public contains(element)
       {
 
-        if (TS.Utils.TypeInfo.isNullOrUndefined(element))
+        if (TS.Utils.Assert.isNullOrUndefined(element))
         {
           throw new TS.ArgumentNullOrUndefinedException("element", "Argument 'element' must not be null or undefined in function 'TS.Linq.Extensions.Set.contains'.");
         }//END if

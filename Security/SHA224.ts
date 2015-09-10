@@ -18,9 +18,9 @@
         _missingArray.push("TS.Utils");
       }
 
-      if (TS.Utils.TypeInfo == undefined)
+      if (TS.Utils.Assert == undefined)
       {
-        _missingArray.push("TS.Utils.TypeInfo");
+        _missingArray.push("TS.Utils.Assert");
       }
 
       if ((TS.TypeCode == undefined) || (TS.TypeCode.UInt64 == undefined))
@@ -35,7 +35,7 @@
 
       if (TS.Security.Cryptography == undefined)
       {
-        _missingArray.push("TS.Security");
+        _missingArray.push("TS.Security.Cryptography");
       }
 
       if (_missingArray.length > 0)
@@ -45,7 +45,15 @@
 
     })();
 
-    export class SHA224 extends Cryptography
+
+    /**
+    *  @class
+    *        
+    *  @classdesc This class implements the SAH114
+    *             hash algorithm as described in:
+    *             http://csrc.nist.gov/publications/fips/fips180-4/fips-180-4.pdf
+    */
+    export class SHA224 extends TS.Security.Cryptography
     {
       //
       // Define the hash values
@@ -67,6 +75,7 @@
 
       constructor()
       {
+        TS.Utils.checkConstructorCall(this, TS.Security.SHA224);
         super();
       }
 
@@ -88,19 +97,17 @@
         //
         // Initialize the round constants
         //
-        this._kArray = TS.Security.getSHA224_225RoundConstants();
+        this._kArray = TS.Security.getSHA224_256RoundConstants();
       }
+
 
       /**
       * @description
       *    Encrypts the plain text given in argument 'message' and returns the 
       *    digest / SHA224 hash as a hexadecimal string.
       *
-      * @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      * @throws
-      *    TS.InvalidTypeException
+      * @throws {TS.ArgumentNullOrUndefinedException}
+      * @throws {TS.InvalidTypeException}
       */
       public encrypt(message: string): string
       {
@@ -132,12 +139,12 @@
         //
         var _w: Array<number>;
 
-        if (TS.Utils.TypeInfo.isNullOrUndefined(message))
+        if (TS.Utils.Assert.isNullOrUndefined(message))
         {
           throw new TS.ArgumentNullOrUndefinedException("message", "Argument message must be null or undefined in function 'TS.Security.SHA1.encrypt'.");
         }//END if
 
-        if (!TS.Utils.TypeInfo.isString(message))
+        if (!TS.Utils.Assert.isString(message))
         {
           throw new TS.InvalidTypeException("message", message, "Argument message must be a valid string in function 'TS.Security.SHA1.encrypt'.");
         }//END if
@@ -219,8 +226,8 @@
 
           for (_index = 16; _index <= 64; _index++)
           {
-            _temp1 = TS.Security.Cryptography.gamma1_32(_w[_index - 2]) + _w[_index - 7];
-            _temp2 = TS.Security.Cryptography.gamma0_32(_w[_index - 15]) + _w[_index - 16];
+            _temp1 = (TS.Security.Cryptography.gamma1_32(_w[_index - 2]) + _w[_index - 7]) % 0x100000000;
+            _temp2 = (TS.Security.Cryptography.gamma0_32(_w[_index - 15]) + _w[_index - 16]) % 0x100000000;
             _w[_index] = (_temp1 + _temp2) % 0x100000000; 
           }//END for
 
@@ -243,8 +250,8 @@
               var X = 10;
             }//END if
 
-            _temp1 = _h + TS.Security.Cryptography.sigma1_32(_e) + TS.Security.Cryptography.ch32(_e, _f, _g) + this._kArray[_index] + _w[_index];
-            _temp2 = TS.Security.Cryptography.sigma0_32(_a) + TS.Security.Cryptography.maj32(_a, _b, _c);
+            _temp1 = (_h + TS.Security.Cryptography.sigma1_32(_e) + TS.Security.Cryptography.ch32(_e, _f, _g) + this._kArray[_index] + _w[_index]) % 0x100000000;
+            _temp2 = (TS.Security.Cryptography.sigma0_32(_a) + TS.Security.Cryptography.maj32(_a, _b, _c)) % 0x100000000;
             restOperation();
 
           }//END for
@@ -270,17 +277,15 @@
           this._h6 = (this._h6 + _g) % 0x100000000;
           this._h7 = (this._h7 + _h) % 0x100000000;
 
-          [this._h0, this._h1, this._h2, this._h3, this._h4, this._h5, this._h6, this._h7].forEach((value: number, index: number, array: number[]) =>
-          {
-            if (value < 0)
-            {
-              array[index] = SHA1.CorrectNeg(value);
-            };
-          });
-
         }//END for
 
-        _resultString = SHA1.convertHex(this._h0) + SHA1.convertHex(this._h1) + SHA1.convertHex(this._h2) + SHA1.convertHex(this._h3) + SHA1.convertHex(this._h4) + SHA1.convertHex(this._h5) + SHA1.convertHex(this._h6);
+        _resultString = TS.Utils.Unsigned32BitIntegerToHexString(this._h0) +
+        TS.Utils.Unsigned32BitIntegerToHexString(this._h1) +
+        TS.Utils.Unsigned32BitIntegerToHexString(this._h2) +
+        TS.Utils.Unsigned32BitIntegerToHexString(this._h3) +
+        TS.Utils.Unsigned32BitIntegerToHexString(this._h4) +
+        TS.Utils.Unsigned32BitIntegerToHexString(this._h5) +
+        TS.Utils.Unsigned32BitIntegerToHexString(this._h6);
         return _resultString;
       }
 

@@ -26,9 +26,9 @@
       }//END if
       else
       {
-        if (typeof (TS.Utils.TypeInfo) == "undefined")
+        if (typeof (TS.Utils.Assert) == "undefined")
         {
-          _missingArray.push("TS.Utils.TypeInfo");
+          _missingArray.push("TS.Utils.Assert");
         }
       }//END else
 
@@ -41,9 +41,8 @@
 
     /**
     * @class
-    * @classdesc 
-    *    This is the implementation of the key value pair used
-    *    by the dictionary class.
+    * @classdesc This is the implementation of the key value pair used
+    *            by the dictionary class.
     *
     * @see {http://msdn.microsoft.com/en-us/library/5tbh8a42(v=vs.110).aspx | MSDN}
     */
@@ -66,14 +65,12 @@
       * @constructs Initializes a new KeyValuePair with the specified key and value.
       *
       * @throws TS.ArgumentNullOrUndefinedException
-      * @throws TS.ArgumentUndefinedException
       * @throws TS.InvalidOperationException
       */
       constructor(key: TKey, value: TValue)
       {
         
         TS.Utils.checkParameter(key, "key", "constructor of TS.Collections.KeyValuePair");
-        TS.Utils.checkNotUndefinedParameter(value, "value", "constructor of TS.Collections.KeyValuePair");
         TS.Utils.checkConstructorCall(this, TS.Collections.KeyValuePair);
         
 

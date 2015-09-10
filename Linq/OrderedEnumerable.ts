@@ -1,4 +1,5 @@
-﻿module TS
+﻿/// <reference path="iorderedenumerable.ts" />
+module TS
 {
   "use strict";
 
@@ -106,17 +107,17 @@
 
       constructor(callback: () => IEnumerator<TSource>, selector: <TKey>(item: TSource) => TKey, comparer: <TKey>(first: TKey, second: TKey) => number)
       {
-        if (Utils.TypeInfo.isNullOrUndefined(callback))
+        if (Utils.Assert.isNullOrUndefined(callback))
         {
           throw new ArgumentNullOrUndefinedException("callback", "Argument 'callback' must not be null or undefined in the constructor of 'OrderedEnumerable'.");
         }//END if
 
-        if (Utils.TypeInfo.isNullOrUndefined(selector))
+        if (Utils.Assert.isNullOrUndefined(selector))
         {
           throw new ArgumentNullOrUndefinedException("selector", "Argument 'selector' must not be null or undefined in the constructor of 'OrderedEnumerable'.");
         }//END if
 
-        if (Utils.TypeInfo.isNullOrUndefined(comparer))
+        if (Utils.Assert.isNullOrUndefined(comparer))
         {
           throw new ArgumentNullOrUndefinedException("comparer", "Argument 'comparer' must not be null or undefined in the constructor of 'OrderedEnumerable'.");
         }//END if

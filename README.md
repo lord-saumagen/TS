@@ -8,6 +8,12 @@ The first module which I created is a LINQ implementation in TypeScript. I'm a g
 
 With version 1.0.2 of this module collection the LINQ implementation is considered complete. I'm currently working on the 'Security' and 'Encoding' modules. At the time of this writing they will only have one or two basic implementations but they will grow over time.
 
+**2015-09-10**
+
+This is version 1.0.3.5 of this module collection an also the last update to this project. This project is 
+hereby closed and not longer under development. I decided to switch to the TypeScript 1.5.3 compiler which comes with Visual Studio 2015. So I'm planning to create a new project. I will continue to expand the existing modules in that project or create new ones, but they will not be backward compatible. 
+
+You will find further information on this update in the <a href="#Version">Version</a> paragraph below.
 ##Prerequisites
 
 In order to use the modules from that project, you need to install the TypeScript compiler. You will find all you need at the TypeScript project page. 
@@ -30,9 +36,21 @@ If you  are not sure which compiler you are currently using, you can proof by ru
 
 ![](http://lord-saumagen.github.io/TS/tsc_version.png)
 
-##Version
+##<a name="Version"></a>Version
 
-This is Version 1.0.3 of the TypeScript module collection. The 'Linq' module is considered production stable. The other modules are considered stable as far as they pass their unit tests. All code in this version compiles  against the TypeScript compiler in version 1.3.0.0. 
+**2015-09-10**
+
+This is version 1.0.3.5 of the module collection. This version contains some bug-fixes and an implementation of the AES cryptography algorithm as described in the document: 
+
+"[ADVANCED ENCRYPTION STANDARD (AES)](http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf "ADVANCED ENCRYPTION STANDARD (AES)")"  
+
+That document is public available by the National Institute of Standards and Technology (NIST).
+
+I also implemented a basic set of operation modes for the AES implementation. The implementation of the operation modes follows the description in the document: 
+
+"[Recommendation for Block Cipher Modes of Operation](http://csrc.nist.gov/publications/nistpubs/800-38a/addendum-to-nist_sp800-38A.pdf "Recommendation for Block Cipher Modes of Operation")"
+
+That document is also public available by the National Institute of Standards and Technology.
 
 ##License
 

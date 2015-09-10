@@ -17,7 +17,7 @@
       *  @description Replaces every character in the input string by its 
       *               numeric character reference.
       *
-      *  @return string: The encoded string.
+      *  @return {string}: The encoded string.
       */
       public static encode(stringValue: string): string
       {
@@ -38,7 +38,7 @@
       *  @description Replaces every numeric character reference in 
       *               the input string by its character representation.
       *
-      *  @return string: The decoded string.
+      *  @return {string}: The decoded string.
       */
       public static decode(stringValue) : string
       {

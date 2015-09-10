@@ -18,9 +18,9 @@
         _missingArray.push("TS.Utils");
       }
 
-      if (TS.Utils.TypeInfo == undefined)
+      if (TS.Utils.Assert == undefined)
       {
-        _missingArray.push("TS.Utils.TypeInfo");
+        _missingArray.push("TS.Utils.Assert");
       }
 
       if ((TS.TypeCode == undefined) || (TS.TypeCode.UInt64 == undefined))
@@ -33,9 +33,14 @@
         _missingArray.push("TS.Exception");
       }
 
-      if (TS.Security.Cryptography == undefined)
+      if (TS.Security == undefined)
       {
         _missingArray.push("TS.Security");
+      }
+
+      if (TS.Security.Cryptography == undefined)
+      {
+        _missingArray.push("TS.Security.Cryptography");
       }
 
       if (_missingArray.length > 0)
@@ -53,10 +58,15 @@
       //
       // Define the hash values
       //
+      /** @private */
       private _h0: number;
+      /** @private */
       private _h1: number;
+      /** @private */
       private _h2: number;
+      /** @private */
       private _h3: number;
+      /** @private */
       private _h4: number;
 
       //
@@ -64,16 +74,30 @@
       // defined in
       // http://csrc.nist.gov/publications/fips/fips180-4/fips-180-4.pdf | 4.2.1 SHA-1 Constants
       //
+      /** @private */
       private _k0: number;
+      /** @private */
       private _k1: number;
+      /** @private */
       private _k2: number;
+      /** @private */
       private _k3: number;
 
+      //TODO: Create the test functions. Add descripion
+      /**
+       * @constructs
+       * @description
+       * @throws {TS.InvalidOperationException}
+       */
       constructor()
       {
+        TS.Utils.checkConstructorCall(this, TS.Security.SHA1);
         super();
       }
 
+      /**
+       * @private
+       */
       private initialize()
       {
         //
@@ -95,15 +119,12 @@
       }
 
       /**
-      * @description
-      *    Encrypts the plain text given in argument 'message' and returns the 
-      *    digest / SHA1 hash as a hexadecimal string.
+      * @description Encrypts the plain text given in argument 'message' and returns the 
+      *              digest / SHA1 hash as a hexadecimal string.
       *
-      * @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      * @throws
-      *    TS.InvalidTypeException
+      * @throws {TS.ArgumentNullOrUndefinedException}
+      * @throws {TS.InvalidTypeException}
+      * @returns {string} The resulting digest as HEX string.
       */
       public encrypt(message: string): string
       {
@@ -131,12 +152,12 @@
         //
         var _w: Array<number>;
 
-        if (TS.Utils.TypeInfo.isNullOrUndefined(message))
+        if (TS.Utils.Assert.isNullOrUndefined(message))
         {
           throw new TS.ArgumentNullOrUndefinedException("message", "Argument message must be null or undefined in function 'TS.Security.SHA1.encrypt'.");
         }//END if
 
-        if (!TS.Utils.TypeInfo.isString(message))
+        if (!TS.Utils.Assert.isString(message))
         {
           throw new TS.InvalidTypeException("message", message, "Argument message must be a valid string in function 'TS.Security.SHA1.encrypt'.");
         }//END if
@@ -193,8 +214,8 @@
 
         _wordArray.push(_4CharacterWord);
 
-        //Fill the word array with empty entries until
-        //the array has bit a length of : n * 512 + 448.
+        //Fill the word array with empty entries until the 
+        //array has reached a length of: n * 512 + 448 in bit.
         //Each entry in the array has a length of 32 bit.
         //16 * 32 = 512, 14 * 32 = 448
         while ((_wordArray.length % 16) != 14)
@@ -218,7 +239,7 @@
 
           for (_index = 16; _index <= 79; _index++)
           {
-            _w[_index] = SHA1.rotateLeft32((_w[_index - 3] ^ _w[_index - 8] ^ _w[_index - 14] ^ _w[_index - 16]), 1);
+            _w[_index] = SHA1.rotateLeft32(SHA1.CorrectNeg(_w[_index - 3] ^ _w[_index - 8] ^ _w[_index - 14] ^ _w[_index - 16]), 1);
           }//END for
 
           //
@@ -233,28 +254,28 @@
           //ch
           for (_index = 0; _index <= 19; _index++)
           {
-            _temp = SHA1.CorrectNeg(SHA1.rotateLeft32(_a, 5) + SHA1.ch32(_b, _c, _d) + _e + this._k0 + _w[_index]);
+            _temp = (SHA1.rotateLeft32(_a, 5) + SHA1.ch32(_b, _c, _d) + _e + this._k0 + _w[_index]) % 0x100000000;
             restOperation();
           }//END for
 
           //parity
           for (_index = 20; _index <= 39; _index++)
           {
-            _temp = SHA1.CorrectNeg(SHA1.rotateLeft32(_a, 5) + SHA1.parity(_b, _c, _d) + _e + this._k1 + _w[_index]);
+            _temp = (SHA1.rotateLeft32(_a, 5) + SHA1.parity(_b, _c, _d) + _e + this._k1 + _w[_index]) % 0x100000000;
             restOperation();
           }
 
           //maj
           for (_index = 40; _index <= 59; _index++)
           {
-            _temp = SHA1.CorrectNeg(SHA1.rotateLeft32(_a, 5) + SHA1.maj32(_b, _c, _d) + _e + this._k2 + _w[_index]);
+            _temp = (SHA1.rotateLeft32(_a, 5) + SHA1.maj32(_b, _c, _d) + _e + this._k2 + _w[_index]) % 0x100000000;
             restOperation();
           }
 
           //parity
           for (_index = 60; _index <= 79; _index++)
           {
-            _temp = SHA1.CorrectNeg(SHA1.rotateLeft32(_a, 5) + SHA1.parity(_b, _c, _d) + _e + this._k3 + _w[_index]);
+            _temp = (SHA1.rotateLeft32(_a, 5) + SHA1.parity(_b, _c, _d) + _e + this._k3 + _w[_index]) % 0x100000000;
             restOperation();
           }
 
@@ -267,23 +288,19 @@
             _a = _temp;
           }
 
-          this._h0 = (this._h0 + _a);
-          this._h1 = (this._h1 + _b);
-          this._h2 = (this._h2 + _c);
-          this._h3 = (this._h3 + _d);
-          this._h4 = (this._h4 + _e);
-
-          [this._h0, this._h1, this._h2, this._h3, this._h4].forEach((value: number, index: number, array: number[]) =>
-          {
-            if (value < 0)
-            {
-              array[index] = SHA1.CorrectNeg(value);
-            };
-          });
+          this._h0 = (this._h0 + _a) % 0x100000000;
+          this._h1 = (this._h1 + _b) % 0x100000000;
+          this._h2 = (this._h2 + _c) % 0x100000000;
+          this._h3 = (this._h3 + _d) % 0x100000000;
+          this._h4 = (this._h4 + _e) % 0x100000000;
 
         }//END for
 
-        _resultString = SHA1.convertHex(this._h0) + SHA1.convertHex(this._h1) + SHA1.convertHex(this._h2) + SHA1.convertHex(this._h3) + SHA1.convertHex(this._h4);
+        _resultString = TS.Utils.Unsigned32BitIntegerToHexString(this._h0) +
+        TS.Utils.Unsigned32BitIntegerToHexString(this._h1) +
+        TS.Utils.Unsigned32BitIntegerToHexString(this._h2) +
+        TS.Utils.Unsigned32BitIntegerToHexString(this._h3) +
+        TS.Utils.Unsigned32BitIntegerToHexString(this._h4);
         return _resultString;
       }
 

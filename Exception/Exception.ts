@@ -155,6 +155,35 @@
   }//END class
 
 
+
+  export class ArgumentNullUndefOrEmptyException extends Exception
+  {
+    private _argumentName: string;
+
+    /**
+    *  @overwrite
+    */
+    public get type(): string
+    {
+      return "TS.ArgumentNullUndefOrEmptyException";
+    }
+
+    get argumentName(): string
+    {
+      return this._argumentName;
+    }
+
+    /**
+    *  @constructs
+    */
+    constructor(argumentName: string, message?: string, innerException?: Exception)
+    {
+      super(message, innerException);
+      this._argumentName = (argumentName) ? argumentName : "";
+    }
+  }//END class
+
+
   export class ArgumentNullUndefOrWhiteSpaceException extends Exception
   {
     private _argumentName: string;
@@ -295,6 +324,44 @@
   }//END class
 
   //********************************************************************************
+  // Invalid format exception
+  //********************************************************************************
+
+  export class InvalidFormatException extends Exception
+  {
+    private _argumentName: string;
+    private _argumentValue: any;
+
+    /**
+    *  @overwrite
+    */
+    public get type(): string
+    {
+      return "TS.InvalidFormatException";
+    }
+
+    get argumentName(): string
+    {
+      return this._argumentName;
+    }
+
+    get argumentValue(): any
+    {
+      return this._argumentValue;
+    }
+
+    /**
+    *  @constructs
+    */
+    constructor(argumentName: string, argumentValue: any, message?: string, innerException?: Exception)
+    {
+      super(message, innerException);
+      (TS.Utils.Assert.isNullOrUndefined(argumentName)) ? this._argumentName = "" : this._argumentName = argumentName;
+      (TS.Utils.Assert.isNullOrUndefined(argumentValue)) ? this._argumentValue = "" : this._argumentValue = argumentValue;
+    }
+  }//END class
+
+  //********************************************************************************
   // Invalid type exception
   //********************************************************************************
 
@@ -327,8 +394,8 @@
     constructor(argumentName: string, argumentValue: any, message?: string, innerException?: Exception)
     {
       super(message, innerException);
-      (TS.Utils.TypeInfo.isNullOrUndefined(argumentName)) ? this._argumentName = "" : this._argumentName = argumentName;
-      (TS.Utils.TypeInfo.isNullOrUndefined(argumentValue)) ? this._argumentValue = "" : this._argumentValue = argumentValue;
+      (TS.Utils.Assert.isNullOrUndefined(argumentName)) ? this._argumentName = "" : this._argumentName = argumentName;
+      (TS.Utils.Assert.isNullOrUndefined(argumentValue)) ? this._argumentValue = "" : this._argumentValue = argumentValue;
     }
   }//END class
 
@@ -421,9 +488,8 @@
 
 
   /**
-  *  @description
-  *    The exception that should be thrown when a number value is positive infinity, 
-  *    negative infinity, or Not-a-Number (NaN).
+  *  @description The exception that should be thrown when a number value is positive infinity, 
+  *               negative infinity, or Not-a-Number (NaN).
   */
   export class NotFiniteNumberException extends ArithmeticException
   {
@@ -445,5 +511,55 @@
     }
 
   }//END class
-  
+
+  //********************************************************************************
+  // Infrastructure Exceptions
+  //********************************************************************************
+
+  /**
+  *  @description Throw this exception to signal that a function of class 
+  *               is not fully implemented.
+  */
+  export class NotImplementedException extends Exception
+  {
+    /**
+    *  @overwrite
+    */
+    public get type(): string
+    {
+      return "TS.NotImplementedException";
+    }
+
+    /**
+    *  @constructs
+    */
+    constructor(message?:string, innerException? : Exception)
+    {
+      super(message, innerException);
+    }
+  }
+
+  /**
+  *  @description Throw this exception to signal that a function of class 
+  *               should not longer be used.
+  */
+  export class DeprecatedException extends Exception
+  {
+    /**
+    *  @overwrite
+    */
+    public get type(): string
+    {
+      return "TS.DeprecatedException";
+    }
+
+    /**
+    *  @constructs
+    */
+    constructor(message?: string, innerException?: Exception)
+    {
+      super(message, innerException);
+    }
+  }
+
 }//END module 

@@ -234,47 +234,47 @@ module TS_Utils_test
   });
 
 
-  QUnit.test("checkPositivIntegerNumberParameter", (assert) => 
+  QUnit.test("checkUnsignedIntegerNumberParameter", (assert) => 
   {
     var _undefined;
 
-    TS.Utils.checkPositivIntegerNumberParameter(1, "one", "checkPositivIntegerNumberParameter");
+    TS.Utils.checkUnsignedIntegerNumberParameter(1, "one", "checkUnsignedIntegerNumberParameter");
     assert.ok(true, "Should pass without an exception for a parameter value which is a postitive integer number.");
 
-    TS.Utils.checkPositivIntegerNumberParameter(Number.MAX_VALUE, "MAX_VALUE", "checkPositivIntegerNumberParameter");
+    TS.Utils.checkUnsignedIntegerNumberParameter(Number.MAX_VALUE, "MAX_VALUE", "checkUnsignedIntegerNumberParameter");
     assert.ok(true, "Should pass without an exception for MAX_VALUE of number.");
 
-    TS.Utils.checkPositivIntegerNumberParameter(0, "zero", "checkPositivIntegerNumberParameter");
+    TS.Utils.checkUnsignedIntegerNumberParameter(0, "zero", "checkUnsignedIntegerNumberParameter");
     assert.ok(true, "Should pass without an exception for a parameter value which is a number with the value '0'.");
 
     assert.throws(() => 
     {
-      TS.Utils.checkPositivIntegerNumberParameter(Number.POSITIVE_INFINITY, "POSITIVE_INFINITY", "checkPositivIntegerNumberParameter");
+      TS.Utils.checkUnsignedIntegerNumberParameter(Number.POSITIVE_INFINITY, "POSITIVE_INFINITY", "checkUnsignedIntegerNumberParameter");
     }, (err) => ((err.name == "TS.InvalidTypeException") ? true : false), "Should throw a 'TS.InvalidTypeException' for a parameter value which is a  POSITIVE_INFINITY number.");
 
     assert.throws(() => 
     {
-      TS.Utils.checkPositivIntegerNumberParameter(0.5, "zeroPointFive", "checkPositivIntegerNumberParameter");
+      TS.Utils.checkUnsignedIntegerNumberParameter(0.5, "zeroPointFive", "checkUnsignedIntegerNumberParameter");
     }, (err) => ((err.name == "TS.InvalidTypeException") ? true : false), "Should throw a 'TS.InvalidTypeException' for a parameter value which is a  floating point number.");
 
     assert.throws(() => 
     {
-      TS.Utils.checkPositivIntegerNumberParameter(-1, "minusOne", "checkPositivIntegerNumberParameter");
+      TS.Utils.checkUnsignedIntegerNumberParameter(-1, "minusOne", "checkUnsignedIntegerNumberParameter");
     }, (err) => ((err.name == "TS.InvalidTypeException") ? true : false), "Should throw a 'TS.InvalidTypeException' for a parameter value which is a negative integer number.");
 
     assert.throws(() => 
     {
-      TS.Utils.checkPositivIntegerNumberParameter(Number.NaN, "NaN", "checkPositivIntegerNumberParameter");
+      TS.Utils.checkUnsignedIntegerNumberParameter(Number.NaN, "NaN", "checkUnsignedIntegerNumberParameter");
     }, (err) => ((err.name == "TS.InvalidTypeException") ? true : false), "Should throw a 'TS.InvalidTypeException' for a parameter value which is NaN.");
 
     assert.throws(() => 
     {
-      TS.Utils.checkPositivIntegerNumberParameter(null, "null", "checkPositivIntegerNumberParameter");
+      TS.Utils.checkUnsignedIntegerNumberParameter(null, "null", "checkUnsignedIntegerNumberParameter");
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for parameter value which is a null value.");
 
     assert.throws(() => 
     {
-      TS.Utils.checkPositivIntegerNumberParameter(_undefined, "undefined", "checkPositivIntegerNumberParameter");
+      TS.Utils.checkUnsignedIntegerNumberParameter(_undefined, "undefined", "checkUnsignedIntegerNumberParameter");
     }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a 'TS.ArgumentNullOrUndefinedException' for a parameter value which is undefined.");
 
   });
@@ -388,7 +388,7 @@ module TS_Utils_test
   });
 
 
-  QUnit.test("HTMLCollectionToArray", (assert) =>
+  QUnit.test("DOMCollectionToArray", (assert) =>
   {
     var _HTMLArray: Array<HTMLElement>;
     var _HTMLEnumearable: TS.Linq.Enumerable<HTMLElement>;
@@ -396,7 +396,7 @@ module TS_Utils_test
     var _headElement: HTMLElement;
     var _bodyElement: HTMLElement;
 
-    _HTMLArray = TS.Utils.HTMLCollectionToArray((<HTMLDocument> document).all);
+    _HTMLArray = TS.Utils.DOMCollectionToArray((<HTMLDocument> document).all);
 
     assert.ok(_HTMLArray.length > 1, "Should return an array with more than one element.");
 

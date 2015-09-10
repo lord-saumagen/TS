@@ -26,9 +26,9 @@
       }//END if
       else
       {
-        if (typeof (TS.Utils.TypeInfo) == "undefined")
+        if (typeof (TS.Utils.Assert) == "undefined")
         {
-          _missingArray.push("TS.Utils.TypeInfo");
+          _missingArray.push("TS.Utils.Assert");
         }
       }//END else
 

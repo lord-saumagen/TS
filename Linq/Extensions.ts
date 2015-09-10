@@ -1,10 +1,33 @@
-﻿/// <reference path="enumerable.ts" />
+﻿/// <reference path="grouping.ts" />
+/// <reference path="enumerable.ts" />
+/// <reference path="arrayenumerable.ts" />
+/// <reference path="randomgenerator.ts" />
+/// <reference path="../collections/list.ts" />
+/// <reference path="ienumerable.ts" />
+/// <reference path="orderedenumerable.ts" />
 module TS
 {
   "use strict";
 
   export module Linq
   {
+
+    /**
+    *  @requires TS.Exception
+    *  @requires TS.Linq.ArrayEnumerable
+    *  @requires TS.Linq.ArrayEnumerator
+    *  @requires TS.Linq.CycleGenerator
+    *  @requires TS.Linq.Exceptions
+    *  @requires TS.Linq.Enumerator
+    *  @requires TS.Linq.Grouping
+    *  @requires TS.Linq.OrderedEnumerable
+    *  @requires TS.Linq.RandomGenerator
+    *  @requires TS.Utils
+    *  @requires TS.Utils.Assert
+    *  @requires TS.Collections
+    *  @requires TS.Collections.List
+    *
+    */
     export module Extensions
     {
 
@@ -75,9 +98,9 @@ module TS
         }//END if
         else
         {
-          if (typeof (TS.Utils.TypeInfo) == "undefined")
+          if (typeof (TS.Utils.Assert) == "undefined")
           {
-            _missingArray.push("TS.Utils.TypeInfo");
+            _missingArray.push("TS.Utils.Assert");
           }
         }//END else
 
@@ -137,7 +160,7 @@ module TS
         constructor(equalityComparer: (first: TSource, second: TSource) => boolean)
         {
 
-          if (!TS.Utils.TypeInfo.isFunction(equalityComparer))
+          if (!TS.Utils.Assert.isFunction(equalityComparer))
           {
             throw new TS.InvalidTypeException("equalityComparer", equalityComparer, "Argument '" + equalityComparer + "' must be a function parameter in the constructor of 'TS.Linq.Extensions.Set'.");
           }//END if
@@ -159,7 +182,7 @@ module TS
 
         public remove(element)
         {
-          if (TS.Utils.TypeInfo.isNullOrUndefined(element))
+          if (TS.Utils.Assert.isNullOrUndefined(element))
           {
             throw new TS.ArgumentNullOrUndefinedException("element", "Argument 'element' must not be null or undefined in function 'TS.Linq.Extensions.Set.remove'.");
           }//END if
@@ -173,7 +196,7 @@ module TS
         public contains(element)
         {
 
-          if (TS.Utils.TypeInfo.isNullOrUndefined(element))
+          if (TS.Utils.Assert.isNullOrUndefined(element))
           {
             throw new TS.ArgumentNullOrUndefinedException("element", "Argument 'element' must not be null or undefined in function 'TS.Linq.Extensions.Set.contains'.");
           }//END if
@@ -195,37 +218,33 @@ module TS
 
 
       /**
-      *  @description
-      *    This function checks the argument 'enumerable' against null and 
-      *    undefined and throws a 'TS.ArgumentNullOrUndefinedException' if
-      *    the argument is either null or undefined.
-      *    The exceptions message uses the 'functionName' to signal
-      *    which function received the invalid enumerable.
+      *  @description This function checks the argument 'enumerable' against null and 
+      *               undefined and throws a 'TS.ArgumentNullOrUndefinedException' if
+      *               the argument is either null or undefined.
+      *               The function checks also whether the argument has a 'getEnumerator'
+      *               property and whether that property is a function.
+      *               The function throws an exceptions if the arguments fails any
+      *               of that tests. 
+      *               The exception message uses the 'functionName' to signal
+      *               which function received the invalid enumerable.
       *
-      *  @requires
-      *    TS.Utils.TypeInfo
-      *    TS.Linq.RandomGenerator
-      *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws {TS.ArgumentNullOrUndefinedException}
+      *  @throws {TS.InvalidTypeException}
       */
       function checkEnumerable(enumerable: Enumerable<any>, functionName: string)
       {
 
-        if (TS.Utils.TypeInfo.isNullOrUndefined(enumerable))
+        if (TS.Utils.Assert.isNullOrUndefined(enumerable))
         {
           throw new TS.ArgumentNullOrUndefinedException("enumerable", "Argument 'enumerable' must not be null or undefined in function '" + functionName + "'.");
         }//END if
 
-        if (TS.Utils.TypeInfo.isUndefined(enumerable.getEnumerator))
+        if (TS.Utils.Assert.isUndefined(enumerable.getEnumerator))
         {
           throw new TS.InvalidTypeException("enumerable", enumerable, "Argument 'enumerable' has the wrong type in function '" + functionName + "'.");
         }//END if
 
-        if (!TS.Utils.TypeInfo.isFunction(enumerable.getEnumerator))
+        if (!TS.Utils.Assert.isFunction(enumerable.getEnumerator))
         {
           throw new TS.InvalidTypeException("enumerable", enumerable, "Argument 'enumerable' has the wrong type in function '" + functionName + "'.");
         }//END if
@@ -234,24 +253,17 @@ module TS
 
 
       /**
-      *  @description
-      *    Applies an accumulator function over a sequence.
+      *  @description Applies an accumulator function over a sequence.
       *
       *    Immediate execution.
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.aggregate.aspx | MSDN}
       *
-      *  @returns
-      *    TSource, the aggregation result.
+      *  @returns {TSource,} The aggregation result.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.Linq.EmptyEnumerableException
-      *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws {TS.ArgumentNullOrUndefinedException}
+      *  @throws {TS.Linq.EmptyEnumerableException}
+      *  @throws {TS.InvalidTypeException}
       */
       export function aggregate<TSource>(enumerable: Enumerable<TSource>, accumulator: (first: TSource, second: TSource) => TSource): TSource
       /**
@@ -262,14 +274,10 @@ module TS
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.aggregate.aspx | MSDN}
       *
-      *  @returns
-      *    TSource, the aggregation result.
+      *  @returns {TSource} The aggregation result.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws {TS.ArgumentNullOrUndefinedException}
+      *  @throws {TS.InvalidTypeException}
       */
       export function aggregate<TSource, TAccumulate>(enumerable: Enumerable<TSource>, accumulator: (first: TAccumulate, second: TSource) => TAccumulate, seed: TAccumulate): TAccumulate
       export function aggregate<TSource>(enumerable: Enumerable<TSource>, accumulator: (first: any, second: TSource) => any, seed?: any): any
@@ -287,7 +295,7 @@ module TS
 
         if (!_enumerator.moveNext())
         {
-          if (TS.Utils.TypeInfo.isNullOrUndefined(seed))
+          if (TS.Utils.Assert.isNullOrUndefined(seed))
           {
             throw new TS.Linq.EmptyEnumerableException(enumerable, "The argument 'enumerable' must not be an empty enumerable in function 'TS.Linq.Extensions.aggregate'.");
           }//END if
@@ -298,7 +306,7 @@ module TS
         }//END if
         else
         {
-          if (TS.Utils.TypeInfo.isNullOrUndefined(seed))
+          if (TS.Utils.Assert.isNullOrUndefined(seed))
           {
             _resultValue = _enumerator.current;
           }//END if
@@ -320,21 +328,16 @@ module TS
 
 
       /**
-      *  @description
-      *    Determines whether all elements of a sequence satisfy a condition.
+      *  @description Determines whether all elements of a sequence satisfy a condition.
       *
       *    Immediate execution.
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/bb548541.aspx | MSDN}
       *
-      *  @returns
-      *    Boolean
+      *  @returns {Boolean}
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws {TS.ArgumentNullOrUndefinedException}
+      *  @throws {TS.InvalidTypeException}
       */
       export function all<TSource>(enumerable: Enumerable<TSource>, predicate: (item: TSource) => boolean): boolean
       {
@@ -364,39 +367,29 @@ module TS
 
 
       /**
-      *  @description
-      *    Determines whether any element of a sequence satisfies a condition.
+      *  @description Determines whether any element of a sequence satisfies a condition.
       *
       *    Immediate execution.
       *
       *  @see {@link  http://msdn.microsoft.com/en-us/library/system.linq.enumerable.any.aspx | MSDN}
       *
-      *  @returns
-      *    Boolean
+      *  @returns {Boolean}
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws {TS.ArgumentNullOrUndefinedException}
+      *  @throws {TS.InvalidTypeException}
       */
       export function any<TSource>(enumerable: Enumerable<TSource>, predicate: (item: TSource) => boolean): boolean
       /**
-      *  @description
-      *    Determines whether a sequence contains any element(s).
+      *  @description Determines whether a sequence contains any element(s).
       *
       *    Immediate execution.
       *
       *  @see {@link  http://msdn.microsoft.com/en-us/library/system.linq.enumerable.any.aspx | MSDN}
       *
-      *  @returns
-      *    Boolean
+      *  @returns {Boolean}
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException
+      *  @throws {TS.ArgumentNullOrUndefinedException}
+      *  @throws {TS.InvalidTypeException}
       */
       export function any<TSource>(enumerable: Enumerable<TSource>): boolean
       export function any<TSource>(enumerable: Enumerable<TSource>, predicate?: (item: TSource) => boolean): boolean
@@ -409,7 +402,7 @@ module TS
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.any");
 
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(predicate))
+        if (!TS.Utils.Assert.isNullOrUndefined(predicate))
         {
           TS.Utils.checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.any");
         }//END if
@@ -436,28 +429,19 @@ module TS
 
 
       /**
-      *  @description
-      *    Calculates and returns the average of all elements of the 
-      *    current enumerable.
+      *  @description Calculates and returns the average of all elements of the 
+      *               current enumerable.
       *
       *    Immediate execution.
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/bb354760.aspx | MSDN}
       *
-      *  @number
-      *    number: the average of all items in the enumerable.
+      *  @returns {number} The average of all items in the enumerable.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.ArgumentException
-      *
-      *  @throws
-      *    TS.InvalidTypeException
-      * 
-      *  @throws
-      *    TS.Linq.EmptyEnumerableException
+      *  @throws {TS.ArgumentNullOrUndefinedException}
+      *  @throws {TS.ArgumentException}
+      *  @throws {TS.InvalidTypeException}
+      *  @throws {TS.Linq.EmptyEnumerableException}
       */
       export function average(enumerable: Enumerable<number>): number
       {
@@ -474,7 +458,7 @@ module TS
 
         while (_enumerator.moveNext())
         {
-          if (!TS.Utils.TypeInfo.isNumber(_enumerator.current))
+          if (!TS.Utils.Assert.isNumber(_enumerator.current))
           {
             _tempCurrent = _enumerator.current;
             _enumerator.dispose();
@@ -502,22 +486,16 @@ module TS
 
 
       /**
-      *  @description
-      *    Concatenates two sequences.
+      *  @description Concatenates two sequences.
       *
       *    Deferred execution.
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/bb302894.aspx | MSDN}
       *
-      *  @returns
-      *    Enumerable<TSource>, the concatenation of the two
-      *    enumerables.
+      *  @returns {Enumerable<TSource>} The concatenation of the two  enumerables.
       *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws {TS.ArgumentNullOrUndefinedException}
+      *  @throws {TS.InvalidTypeException}.
       */
       export function concat<TSource>(firstEnumerable: Enumerable<TSource>, secondEnumerable: Enumerable<TSource>): Enumerable<TSource>
       {
@@ -555,11 +533,10 @@ module TS
 
 
       /**
-      *  @description
-      *    Determines whether a sequence contains a specified element.
-      *    Uses javascript strict comparsion operator
-      *    'strict equality (===)' to determine whether two elements are
-      *    equal.
+      *  @description Determines whether a sequence contains a specified element.
+      *               Uses javascript strict comparsion operator
+      *               'strict equality (===)' to determine whether two elements are
+      *               equal.
       *
       *    Immediate execution.
       *
@@ -569,21 +546,14 @@ module TS
       *    
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.contains.aspx | MSDN}
       *
-      *  @param
-      *    enumerable, the source enumerable.
+      *  @param {TS.Linq.Enumerable<TSource>} enumerable, the source enumerable.
+      *  @param {TSource] element, the element to locate in the enumerable.
       *
-      *  @param
-      *    element, the element to locate in the enumerable.
+      *  @returns {boolen} true if the 'enumerable' contains the given 'element',
+      *           otherwise false.
       *
-      *  @returns
-      *    boolen, true if the 'enumerable' contains the given 'element',
-      *    otherwise false.
-      *
-      *  @throws
-      *    TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws
-      *    TS.InvalidTypeException.
+      *  @throws {TS.ArgumentNullOrUndefinedException}
+      *  @throws {TS.InvalidTypeException]
       */
       export function contains<TSource>(enumerable: Enumerable<TSource>, element: TSource): boolean
       /**
@@ -624,7 +594,7 @@ module TS
         _checkEnumerable(enumerable, "TS.Linq.Extensions.contains");
         TS.Utils.checkParameter(element, "element", "TS.Linq.Extensions.contains");
 
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer))
+        if (!TS.Utils.Assert.isNullOrUndefined(equalityComparer))
         {
           TS.Utils.checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.contains");
         }//END if
@@ -704,7 +674,7 @@ module TS
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.count");
 
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(predicate))
+        if (!TS.Utils.Assert.isNullOrUndefined(predicate))
         {
           TS.Utils.checkFunctionParameter(predicate, "equalityComparer", "TS.Linq.Extensions.count");
         }//END if
@@ -885,7 +855,7 @@ module TS
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.distinct");
 
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer))
+        if (!TS.Utils.Assert.isNullOrUndefined(equalityComparer))
         {
           TS.Utils.checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.distinct");
         }//END if
@@ -972,7 +942,7 @@ module TS
         _checkEnumerable(enumerable, "TS.Linq.Extensions.elementAt");
         TS.Utils.checkParameter(index, "index", "TS.Linq.Extensions.elementAt");
 
-        if (!TS.Utils.TypeInfo.isPositiveIntegerNumber(index))
+        if (!TS.Utils.Assert.isUnsignedIntegerNumber(index))
         {
           throw new TS.ArgumentOutOfRangeException("index", index, "Argument 'index'  must be an integer greater or equal zero in function 'TS.Linq.Extensions.elementAt'.");
         }//END if
@@ -1031,7 +1001,7 @@ module TS
         TS.Utils.checkParameter(index, "index", "TS.Linq.Extensions.elementAtOrDefault");
         TS.Utils.checkConstructorParameter(defaultConstructor, "defaultConstructor", "TS.Linq.Extensions.elementAtOrDefault");
 
-        if (!TS.Utils.TypeInfo.isIntegerNumber(index))
+        if (!TS.Utils.Assert.isIntegerNumber(index))
         {
           throw new TS.InvalidTypeException("index", index, "Argument 'index' must be an integer number in function 'TS.Linq.Extensions.elementAtOrDefault'.");
         }//END if
@@ -1130,7 +1100,7 @@ module TS
         _checkEnumerable(firstEnumerable, "TS.Linq.Extensions.except");
         _checkEnumerable(secondEnumerable, "TS.Linq.Extensions.except");
 
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer))
+        if (!TS.Utils.Assert.isNullOrUndefined(equalityComparer))
         {
           TS.Utils.checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.except");
         }//END if
@@ -1224,7 +1194,7 @@ module TS
 
         _checkEnumerable(enumerable, "TS.Linq.Extensions.first");
 
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(predicate))
+        if (!TS.Utils.Assert.isNullOrUndefined(predicate))
         {
           TS.Utils.checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.first");
         }//END if
@@ -1309,7 +1279,7 @@ module TS
         _checkEnumerable(enumerable, "TS.Linq.Extensions.firstOrDefault");
         TS.Utils.checkConstructorParameter(defaultConstructor, "defaultConstructor", "TS.Linq.Extensions.firstOrDefault");
 
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(predicate))
+        if (!TS.Utils.Assert.isNullOrUndefined(predicate))
         {
           TS.Utils.checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.firstOrDefault");
         }//END if
@@ -1404,7 +1374,7 @@ module TS
 
         TS.Utils.checkParameter(sourceArray, "sourceArray", "TS.Linq.Extensions.fromArray");
 
-        if (!TS.Utils.TypeInfo.isArray(sourceArray))
+        if (!TS.Utils.Assert.isArray(sourceArray))
         {
           throw new TS.InvalidTypeException("sourceArray", sourceArray, "Argument '" + sourceArray + "' must be a valid array in function '" + fromArray + "'.");
         }//END if
@@ -1483,7 +1453,7 @@ module TS
         var _callback: () => IEnumerator<Grouping<TKey, TSource>>;
         var _keyEnumerator: IEnumerator<TKey>
 
-        if (TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer))
+        if (TS.Utils.Assert.isNullOrUndefined(equalityComparer))
         {
           equalityComparer = (first, second) => first === second;
         }//END if
@@ -1492,7 +1462,7 @@ module TS
           TS.Utils.checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.groupBy");
         }//END else
 
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(elementSelector))
+        if (!TS.Utils.Assert.isNullOrUndefined(elementSelector))
         {
           TS.Utils.checkFunctionParameter(elementSelector, "elementSelector", "TS.Linq.Extensions.groupBy");
         }//END if
@@ -1579,7 +1549,7 @@ module TS
         TS.Utils.checkParameter(resultSelector, "resultSelector", "TS.Linq.Extensions.groupJoin");
         TS.Utils.checkFunctionParameter(resultSelector, "resultSelector", "TS.Linq.Extensions.groupJoin");
 
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer))
+        if (!TS.Utils.Assert.isNullOrUndefined(equalityComparer))
         {
           TS.Utils.checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.contains");
         }//END if
@@ -1680,7 +1650,7 @@ module TS
         _checkEnumerable(firstEnumerable, "TS.Linq.Extensions.intersect");
         _checkEnumerable(secondEnumerable, "TS.Linq.Extensions.intersect");
 
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer))
+        if (!TS.Utils.Assert.isNullOrUndefined(equalityComparer))
         {
           TS.Utils.checkFunctionParameter(equalityComparer, "predicate", "TS.Linq.Extensions.intersect");
         }//END if
@@ -1836,7 +1806,7 @@ module TS
         _result = null;
         _checkEnumerable(enumerable, "last");
 
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(predicate))
+        if (!TS.Utils.Assert.isNullOrUndefined(predicate))
         {
           TS.Utils.checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.last");
         }//END if
@@ -1933,7 +1903,7 @@ module TS
           return new defaultConstructor();
         }//END if
 
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(predicate))
+        if (!TS.Utils.Assert.isNullOrUndefined(predicate))
         {
           TS.Utils.checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.lastOrDefault");
         }//END if
@@ -2007,7 +1977,7 @@ module TS
 
         while (_enumerator.moveNext())
         {
-          if (!TS.Utils.TypeInfo.isNumber(_enumerator.current))
+          if (!TS.Utils.Assert.isNumber(_enumerator.current))
           {
             _tempCurrent = _enumerator.current;
             _enumerator.dispose();
@@ -2064,7 +2034,7 @@ module TS
 
         while (_enumerator.moveNext())
         {
-          if (!TS.Utils.TypeInfo.isNumber(_enumerator.current))
+          if (!TS.Utils.Assert.isNumber(_enumerator.current))
           {
             _tempCurrent = _enumerator.current;
             _enumerator.dispose();
@@ -2124,12 +2094,12 @@ module TS
         TS.Utils.checkParameter(keySelector, "keySelector", "TS.Linq.Extensions.orderBy");
         TS.Utils.checkFunctionParameter(keySelector, "keySelector", "TS.Linq.Extensions.orderBy");
 
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(comparer))
+        if (!TS.Utils.Assert.isNullOrUndefined(comparer))
         {
           TS.Utils.checkFunctionParameter(comparer, "comparer", "TS.Linq.Extensions.orderBy");
         }//END if
 
-        if (TS.Utils.TypeInfo.isNullOrUndefined(comparer))
+        if (TS.Utils.Assert.isNullOrUndefined(comparer))
         {
           //
           // Use the  default comparsion operator.
@@ -2190,12 +2160,12 @@ module TS
         TS.Utils.checkParameter(keySelector, "keySelector", "TS.Linq.Extensions.orderBy");
         TS.Utils.checkFunctionParameter(keySelector, "keySelector", "TS.Linq.Extensions.orderBy");
 
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(comparer))
+        if (!TS.Utils.Assert.isNullOrUndefined(comparer))
         {
           TS.Utils.checkFunctionParameter(comparer, "comparer", "TS.Linq.Extensions.orderBy");
         }//END if
 
-        if (TS.Utils.TypeInfo.isNullOrUndefined(comparer))
+        if (TS.Utils.Assert.isNullOrUndefined(comparer))
         {
           //
           // Use the  default comparsion operator.
@@ -2288,17 +2258,17 @@ module TS
         TS.Utils.checkParameter(count, "count", "TS.Linq.Extensions.range");
 
 
-        if (!TS.Utils.TypeInfo.isNumber(start))
+        if (!TS.Utils.Assert.isNumber(start))
         {
           throw new TS.InvalidTypeException("start", count, "Argument 'start' has the wrong type in function 'TS.Linq.Extensions.range'.");
         }//END if
 
-        if (!TS.Utils.TypeInfo.isNumber(count))
+        if (!TS.Utils.Assert.isNumber(count))
         {
           throw new TS.InvalidTypeException("count", count, "Argument 'count' has the wrong type in function 'TS.Linq.Extensions.range'.");
         }//END if
 
-        if (!TS.Utils.TypeInfo.isPositiveIntegerNumber(count))
+        if (!TS.Utils.Assert.isUnsignedIntegerNumber(count))
         {
           throw new TS.ArgumentOutOfRangeException("count", count, "Argument 'count' must be a positive integer number in function 'TS.Linq.Extensions.range'.");
         }//END if
@@ -2344,12 +2314,12 @@ module TS
         TS.Utils.checkParameter(item, "item", "TS.Linq.Extensions.repeat");
         TS.Utils.checkParameter(count, "count", "TS.Linq.Extensions.repeat");
 
-        if (!TS.Utils.TypeInfo.isNumber(count))
+        if (!TS.Utils.Assert.isNumber(count))
         {
           throw new TS.InvalidTypeException("count", count, "Argument 'count' has the wrong type in function 'TS.Linq.Extensions.repeat'.");
         }//END if
 
-        if (!TS.Utils.TypeInfo.isPositiveIntegerNumber(count))
+        if (!TS.Utils.Assert.isUnsignedIntegerNumber(count))
         {
           throw new TS.ArgumentOutOfRangeException("count", count, "Argument 'count' must be a positive integer number in function 'TS.Linq.Extensions.repeat'.");
         }//END if
@@ -2441,7 +2411,7 @@ module TS
           {
             _selectorResult = selector(_enumerator.current);
 
-            if (TS.Utils.TypeInfo.isUndefined(_selectorResult))
+            if (TS.Utils.Assert.isUndefined(_selectorResult))
             {
               _tempCurrent = _enumerator.current;
               _enumerator.dispose();
@@ -2504,7 +2474,7 @@ module TS
           {
             _selectorResult = selector(_enumerator.current);
 
-            if (TS.Utils.TypeInfo.isUndefined(_selectorResult))
+            if (TS.Utils.Assert.isUndefined(_selectorResult))
             {
               _tempCurrent = _enumerator.current;
               _enumerator.dispose();
@@ -2569,7 +2539,7 @@ module TS
         _checkEnumerable(firstEnumerable, "TS.Linq.Extensions.sequenceEqual");
         _checkEnumerable(secondEnumerable, "TS.Linq.Extensions.sequenceEqual");
 
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(equalityComparer))
+        if (!TS.Utils.Assert.isNullOrUndefined(equalityComparer))
         {
           TS.Utils.checkFunctionParameter(equalityComparer, "equalityComparer", "TS.Linq.Extensions.sequenceEqual");
         }//END if
@@ -2656,7 +2626,7 @@ module TS
         var _checkEnumerable: (enumerable: Enumerable<any>, functionName: string) => void = checkEnumerable;
 
 
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(predicate))
+        if (!TS.Utils.Assert.isNullOrUndefined(predicate))
         {
           TS.Utils.checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.single");
         }//END if
@@ -2747,7 +2717,7 @@ module TS
         _checkEnumerable(enumerable, "TS.Linq.Extensions.singleOrDefault");
         TS.Utils.checkConstructorParameter(defaultConstructor, "defaultConstructor", "TS.Linq.Extensions.singleOrDefault");
 
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(predicate))
+        if (!TS.Utils.Assert.isNullOrUndefined(predicate))
         {
           TS.Utils.checkFunctionParameter(predicate, "predicate", "TS.Linq.Extensions.singleOrDefault");
         }//END if
@@ -2825,7 +2795,7 @@ module TS
         while (_enumerator.moveNext())
         {
           _movedOnce = true;
-          if (!TS.Utils.TypeInfo.isNumber(_enumerator.current))
+          if (!TS.Utils.Assert.isNumber(_enumerator.current))
           {
             _tempCurrent = _enumerator.current;
             _enumerator.dispose();
@@ -2940,12 +2910,12 @@ module TS
         _checkEnumerable(enumerable, "TS.Linq.Extensions.skip");
         TS.Utils.checkParameter(count, "count", "TS.Linq.Extensions.skip");
 
-        if (!TS.Utils.TypeInfo.isNumber(count))
+        if (!TS.Utils.Assert.isNumber(count))
         {
           throw new TS.InvalidTypeException("count", count, "Argument 'count' has the wrong type in function 'TS.Linq.Extensions.skip'.");
         }//END if
 
-        if (!TS.Utils.TypeInfo.isPositiveIntegerNumber(count))
+        if (!TS.Utils.Assert.isUnsignedIntegerNumber(count))
         {
           throw new TS.ArgumentOutOfRangeException("count", count, "Argument 'count' must be a positive integer number in function 'TS.Linq.Extensions.skip'.");
         }//END if
@@ -3067,12 +3037,12 @@ module TS
         _checkEnumerable(enumerable, "TS.Linq.Extensions.take");
         TS.Utils.checkParameter(count, "count", "TS.Linq.Extensions.take");
 
-        if (!TS.Utils.TypeInfo.isNumber(count))
+        if (!TS.Utils.Assert.isNumber(count))
         {
           throw new TS.InvalidTypeException("count", count, "Argument 'count' has the wrong type in function 'TS.Linq.Extensions.take'.");
         }//END if
 
-        if (!TS.Utils.TypeInfo.isPositiveIntegerNumber(count))
+        if (!TS.Utils.Assert.isUnsignedIntegerNumber(count))
         {
           throw new TS.ArgumentOutOfRangeException("count", count, "Argument 'count' must be a positive integer number in function 'TS.Linq.Extensions.take'.");
         }//END if
@@ -3256,12 +3226,12 @@ module TS
         TS.Utils.checkFunctionParameter(selector, "selector", "TS.Linq.Extensions.thenBy");
 
 
-        if (TS.Utils.TypeInfo.isNullOrUndefined(enumerable.getPartitionEnumerator))
+        if (TS.Utils.Assert.isNullOrUndefined(enumerable.getPartitionEnumerator))
         {
           throw new TS.InvalidTypeException("enumerable", enumerable, "Argument enumerable must be of type 'IOrderedEnumerable' in function 'TS.Linq.Extensions.thenBy'.");
         }//END if
 
-        if (TS.Utils.TypeInfo.isNullOrUndefined(comparer))
+        if (TS.Utils.Assert.isNullOrUndefined(comparer))
         {
           //
           // Use the  default comparsion operator.
@@ -3335,12 +3305,12 @@ module TS
         TS.Utils.checkParameter(selector, "selector", "TS.Linq.Extensions.thenByDescending");
         TS.Utils.checkFunctionParameter(selector, "selector", "TS.Linq.Extensions.thenByDescending");
 
-        if (TS.Utils.TypeInfo.isNullOrUndefined(enumerable.getPartitionEnumerator))
+        if (TS.Utils.Assert.isNullOrUndefined(enumerable.getPartitionEnumerator))
         {
           throw new TS.InvalidTypeException("enumerable", enumerable, "Argument enumerable must be of type 'IOrderedEnumerable' in function 'TS.Linq.Extensions.thenByDescending'.");
         }//END if
 
-        if (TS.Utils.TypeInfo.isNullOrUndefined(comparer))
+        if (TS.Utils.Assert.isNullOrUndefined(comparer))
         {
           //
           // Use the  default comparsion operator.

@@ -347,6 +347,33 @@ module TS_Exception_test
   });
 
 
+  QUnit.test("TS.InvalidFormatException", function (assert)
+  {
+    var ExceptionMessage = "Invalid format exception message";
+
+    assert.throws(function ()
+    {
+      throw new TS.InvalidFormatException("ArgName", "NOP", ExceptionMessage);
+    }, new TS.InvalidFormatException("ArgName", "NOP", ExceptionMessage), "Should raise an exception instance that matched with the expected instance.");
+
+    assert.throws(function ()
+    {
+      throw new TS.InvalidFormatException("ArgName", "NOP", ExceptionMessage, GetInnerException());
+    },
+      function (err)
+      {
+        if (err.message == ExceptionMessage)
+        {
+          if (CheckInnerException(err))
+          {
+            return true;
+          }//END if
+        }//END if
+        return false;
+      }, "Should raise an exception instance of the expected type with an inner exception.");
+  });
+
+
   QUnit.test("TS.InvalidTypeException", function (assert)
   {
     var ExceptionMessage = "Invalid type exception message";
@@ -451,12 +478,12 @@ module TS_Exception_test
   */
   function CheckInnerException(exception: TS.Exception): boolean
   {
-    if (TS.Utils.TypeInfo.isNullOrUndefined(TS.Exception))
+    if (TS.Utils.Assert.isNullOrUndefined(TS.Exception))
     {
       return false;
     }//END if
 
-    if (TS.Utils.TypeInfo.isNullOrUndefined(exception.innerException))
+    if (TS.Utils.Assert.isNullOrUndefined(exception.innerException))
     {
       return false;
     }//END if

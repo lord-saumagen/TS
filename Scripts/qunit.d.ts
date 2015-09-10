@@ -177,6 +177,7 @@ interface QUnitAssert {
 	*/
 	deepEqual(actual: any, expected: any, message?: string): any;
 
+  async(): () => void;
 	/** 
 	* A non-strict comparison assertion, roughly equivalent to JUnit assertEquals.
 	*

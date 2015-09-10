@@ -1,4 +1,5 @@
-﻿module TS
+﻿/// <reference path="ilist.ts" />
+module TS
 {
   "use strict";
 
@@ -69,9 +70,9 @@
       }//END if
       else
       {
-        if (typeof (TS.Utils.TypeInfo) == "undefined")
+        if (typeof (TS.Utils.Assert) == "undefined")
         {
-          _missingArray.push("TS.Utils.TypeInfo");
+          _missingArray.push("TS.Utils.Assert");
         }
       }//END else
 
@@ -86,7 +87,7 @@
     *  @class
     *        
     *  @classdesc This class subclasses the Enumerable<T> class and implements the 
-    *             IList<T> interface which resembles the .NET counterpart as far 
+    *             IList<T> interface which mimics the .NET counterpart as far 
     *             as possible in TypeScript.
     * 
     *  @see {@link http://msdn.microsoft.com/en-us/library/system.collections.ilist(v=vs.110).aspx | MSDN}
@@ -95,6 +96,10 @@
     {
       private _listArray: Array<T>;
       private _allowNull: boolean;
+
+     /**
+      * @implements TS.Collections.IList.allowNull
+      */
       public get allowNull(): boolean
       {
         return this._allowNull;
@@ -121,9 +126,9 @@
         TS.Utils.checkBooleanParameter(allowNull, "allowNull", "constructor of TS.Collections.List");
         TS.Utils.checkConstructorCall(this, TS.Collections.List);
         
-        if (!TS.Utils.TypeInfo.isNullOrUndefined(array))
+        if (!TS.Utils.Assert.isNullOrUndefined(array))
         {
-          if (TS.Utils.TypeInfo.isArray(array))
+          if (TS.Utils.Assert.isArray(array))
           {
             if (!allowNull && (array.indexOf(null) > -1))
             {
@@ -191,14 +196,14 @@
       {
         if (this._allowNull)
         {
-          if (TS.Utils.TypeInfo.isUndefined(item))
+          if (TS.Utils.Assert.isUndefined(item))
           {
             return false;
           }//END if
         }//END if
         else
         {
-          if (TS.Utils.TypeInfo.isNullOrUndefined(item))
+          if (TS.Utils.Assert.isNullOrUndefined(item))
           {
             return false;
           }//END if
@@ -231,12 +236,12 @@
         var _index: number;
 
         TS.Utils.checkParameter(targetArray, "targetArray", "TS.Collections.List.copyTo");
-        if (!TS.Utils.TypeInfo.isArray(targetArray))
+        if (!TS.Utils.Assert.isArray(targetArray))
         {
           throw new TS.InvalidTypeException("targetArray", targetArray, "Argument 'targetArray' must be a valid array in function 'TS.Collections.List.copyTo'."); 
         }//END if
 
-        TS.Utils.checkPositivIntegerNumberParameter(destIndex, "destIndex", "TS.Collections.List.copyTo");
+        TS.Utils.checkUnsignedIntegerNumberParameter(destIndex, "destIndex", "TS.Collections.List.copyTo");
         if (targetArray.length < destIndex)
         {
          
@@ -299,7 +304,7 @@
           TS.Utils.checkParameter(item, "item", "TS.Collections.List.indexOf");
         }//END else
 
-        TS.Utils.checkPositivIntegerNumberParameter(index, "index", "TS.Collections.List.indexOf");
+        TS.Utils.checkUnsignedIntegerNumberParameter(index, "index", "TS.Collections.List.indexOf");
         return this._listArray.indexOf(item, index);      
       }
 
@@ -328,7 +333,7 @@
           TS.Utils.checkParameter(item, "item", "TS.Collections.List.insert");
         }//END else
 
-        TS.Utils.checkPositivIntegerNumberParameter(index, "index", "TS.Collections.List.insert");
+        TS.Utils.checkUnsignedIntegerNumberParameter(index, "index", "TS.Collections.List.insert");
 
         if (index > this.count())
         {
@@ -353,7 +358,7 @@
       {
         var _index: number;
 
-        if (TS.Utils.TypeInfo.isUndefined(item))
+        if (TS.Utils.Assert.isUndefined(item))
         {
           return this;
         }//END if

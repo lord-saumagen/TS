@@ -12,7 +12,7 @@
 
       constructor(callback: () => IEnumerator<TSource>)
       {
-        if (Utils.TypeInfo.isNullOrUndefined(callback))
+        if (Utils.Assert.isNullOrUndefined(callback))
         {
           throw new TS.ArgumentNullOrUndefinedException("callback", "Argument 'callback' must not be null or undefined in the constructor of 'TEnumerable'.");
         }//END if

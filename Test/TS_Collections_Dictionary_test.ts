@@ -250,7 +250,7 @@ module TS_Collections_Dictionary_test
 
     _dict.copyTo(_targetArray, 4);
 
-    assert.ok(_targetArray.length == 8, "Should copy all elements twice to the target array.");
+    assert.ok(_targetArray.length == 8, "Should copy all elements a second time to the target array.");
 
     assert.throws(() =>
     {
@@ -458,7 +458,7 @@ module TS_Collections_Dictionary_test
     assert.deepEqual(_dict.values.toArray(), ["1", "2", "3", "4"], "Should return the expected values.");
   });
 
-  class SortTest
+  export class SortTest
   {
     constructor(public color: string, public number: number, public location: string)
     {

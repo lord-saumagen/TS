@@ -1,4 +1,5 @@
-﻿module TS
+﻿/// <reference path="arrayenumerator.ts" />
+module TS
 {
   "use strict";
 
@@ -18,9 +19,9 @@
         _missingArray.push("TS.Utils");
       }
 
-      if (TS.Utils.TypeInfo == undefined)
+      if (TS.Utils.Assert == undefined)
       {
-        _missingArray.push("TS.Utils.TypeInfo");
+        _missingArray.push("TS.Utils.Assert");
       }
 
       if (TS.Exception == undefined)
@@ -57,7 +58,7 @@
 
       constructor(dataArray: Array<TSource>)
       {
-        if (Utils.TypeInfo.isNullOrUndefined(dataArray))
+        if (Utils.Assert.isNullOrUndefined(dataArray))
         {
           throw new ArgumentNullOrUndefinedException("dataArray", "Argument 'dataArray' must not be null or undefined in the constructor of 'TArrayEnumerable'.");
         }//END if

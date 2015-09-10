@@ -22,32 +22,43 @@
     <Content Include="Documentation\google66e3e0757876dccf.html" />
     <Content Include="Documentation\index.css" />
     <Content Include="Documentation\index.html" />
+    <Content Include="Documentation\OSL_V3.0.html" />
     <Content Include="Documentation\tsc_version.png" />
     <Content Include="README.md" />
-    <Content Include="Documentation\OSL_V3.0.html" />
     <None Include="git-local.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\qunit-1.15.0.css" />
     <Content Include="Scripts\qunit-1.15.0.js" />
+    <Content Include="Scripts\qunit-1.18.0.css" />
+    <Content Include="Scripts\qunit-1.18.0.js" />
     <Content Include="Scripts\qunit-once.js" />
+    <Content Include="Test\Data\AES_CFB_8Bit_Test_Vectors.txt" />
+    <Content Include="Test\Data\Customers_JSONScript.js" />
+    <Content Include="Test\Data\Get_AL_JSONScript.js" />
+    <Content Include="Test\Data\Get_IL_JSONScript.js" />
+    <Content Include="Test\Data\Get_NY_JSONScript.js" />
+    <Content Include="Test\Data\Get_Orange_Count_CA_JSONScript.js" />
+    <Content Include="Test\Data\Get_USStateList_JSONScript.js" />
+    <Content Include="Test\Data\MM_JSONScript.js" />
+    <Content Include="Test\Data\Orders_JSONScript.js" />
+    <Content Include="Test\Data\Person400_JSONScript.js" />
+    <Content Include="Test\Data\Willhaben_JSONScript.js" />
     <Content Include="Test\TestSuite.html" />
-    <Content Include="Test\TS_Collections_Dictionary_test.html" />
     <Content Include="Test\TS_Collections_Dictionary_test_plainjs.js" />
-    <Content Include="Test\TS_Linq_Enumerable_test.html" />
-    <Content Include="Test\TS_Linq_Exception_test.html" />
+    <Content Include="Test\TS_Collections_List_test_plainjs.js" />
+    <Content Include="Test\TS_Encoding_test_plainjs.js" />
     <Content Include="Test\TS_Linq_Extensions_test_plainjs.js" />
-    <Content Include="Test\TS_Encoding_test.html" />
-    <Content Include="Test\TS_Security_SHA1_InitFail_test.html" />
-    <Content Include="Test\TS_Collections_List_test.html" />
-    <Content Include="Test\TS_Security_test.html" />
-    <Content Include="Test\TS_Utils_test.html" />
+    <Content Include="Test\TS_Security_AES_CBC_test_plainjs.js" />
+    <Content Include="Test\TS_Security_AES_CFB_test_plainjs.js" />
+    <Content Include="Test\TS_Security_AES_CTR_test_plainjs.js" />
+    <Content Include="Test\TS_Security_AES_OFB_test_plainjs.js" />
+    <Content Include="Test\TS_Security_AES_test_plainjs.js" />
+    <Content Include="Test\TS_Security_Counter_test.html" />
+    <Content Include="Test\TS_Security_testSuite.html" />
     <Content Include="Test\TS_Utils_test_plainjs.js" />
-    <Content Include="Test\TS_Utils_TypeInfo_test.html" />
-    <Content Include="Test\TS_Exception_test.html" />
-    <Content Include="Test\TS_Linq_Extensions_test.html" />
-    <Content Include="Test\TS_Utils_TypeInfo_test_plainjs.js" />
+    <Content Include="Test\TS_Utils_Assert_test_plainjs.js" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -56,7 +67,7 @@
     <TypeScriptCompile Include="Collections\IDictionary.ts" />
     <TypeScriptCompile Include="Encoding\Encoding.ts" />
     <TypeScriptCompile Include="Encoding\HTML.ts" />
-    <TypeScriptCompile Include="Encoding\UTF8.ts" />
+    <TypeScriptCompile Include="Encoding\UTF.ts" />
     <TypeScriptCompile Include="Exception\Exception.ts" />
     <TypeScriptCompile Include="Linq\ArrayEnumerable.ts" />
     <TypeScriptCompile Include="Linq\ArrayEnumerator.ts" />
@@ -74,22 +85,23 @@
     <TypeScriptCompile Include="Linq\OrderedEnumerable.ts" />
     <TypeScriptCompile Include="Scripts\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\qunit.d.ts" />
+    <TypeScriptCompile Include="Security\AbstractStreamCipher.ts" />
+    <TypeScriptCompile Include="Security\AES_CBC.ts" />
+    <TypeScriptCompile Include="Security\AES.ts" />
+    <TypeScriptCompile Include="Security\AES_CBC_Stream.ts" />
+    <TypeScriptCompile Include="Security\AES_CFB.ts" />
+    <TypeScriptCompile Include="Security\AES_CFB_Stream.ts" />
+    <TypeScriptCompile Include="Security\AES_CTR_Stream.ts" />
+    <TypeScriptCompile Include="Security\AES_OFB_Stream.ts" />
+    <TypeScriptCompile Include="Security\AES_Stream.ts" />
+    <TypeScriptCompile Include="Security\AES_CTR.ts" />
+    <TypeScriptCompile Include="Security\AES_OFB.ts" />
+    <TypeScriptCompile Include="Security\Counter.ts" />
+    <TypeScriptCompile Include="Security\Cryptography.ts" />
+    <TypeScriptCompile Include="Security\RandomNumberGenertor.ts" />
     <TypeScriptCompile Include="Security\Security.ts" />
     <TypeScriptCompile Include="Security\SHA224.ts" />
     <TypeScriptCompile Include="Security\SHA256.ts" />
-    <TypeScriptCompile Include="Test\TS_Collections_Dictionary_test.ts" />
-    <TypeScriptCompile Include="Test\TS_Linq_Enumerable_test.ts" />
-    <TypeScriptCompile Include="Test\TS_Linq_Exception_test.ts" />
-    <TypeScriptCompile Include="Test\TS_Encoding_test.ts" />
-    <TypeScriptCompile Include="Test\TS_Linq_test_common.ts" />
-    <TypeScriptCompile Include="Test\TS_Security_test.ts" />
-    <TypeScriptCompile Include="Test\TS_Collections_List_test.ts" />
-    <Content Include="Test\TS_Collections_List_test_plainjs.js" />
-    <TypeScriptCompile Include="Test\TS_Utils_test.ts" />
-    <TypeScriptCompile Include="Test\TS_Utils_TypeInfo_test.ts" />
-    <TypeScriptCompile Include="Test\TS_Exception_test.ts" />
-    <TypeScriptCompile Include="Test\TS_Linq_Extensions_test.ts" />
-    <TypeScriptCompile Include="TS.ts" />
     <TypeScriptCompile Include="Encoding\Base64.ts" />
     <TypeScriptCompile Include="Security\SHA1.ts" />
     <TypeScriptCompile Include="Collections\Dictionary.ts" />
@@ -97,11 +109,31 @@
     <TypeScriptCompile Include="Collections\IList.ts" />
     <TypeScriptCompile Include="Collections\KeyValuePair.ts" />
     <TypeScriptCompile Include="Collections\List.ts" />
+    <TypeScriptCompile Include="Security\State.ts" />
+    <TypeScriptCompile Include="Test\TS_Security_AES_CBC_test.ts" />
+    <TypeScriptCompile Include="Test\TS_Security_AES_CFB_test.ts" />
+    <TypeScriptCompile Include="Test\TS_Security_AES_CTR_test.ts" />
+    <TypeScriptCompile Include="Test\TS_Security_AES_OFB_test.ts" />
+    <TypeScriptCompile Include="Test\TS_Security_AES_test.ts" />
+    <TypeScriptCompile Include="Test\TS_Collections_Dictionary_test.ts" />
+    <TypeScriptCompile Include="Test\TS_Collections_List_test.ts" />
+    <TypeScriptCompile Include="Test\TS_Encoding_test.ts" />
+    <TypeScriptCompile Include="Test\TS_Exception_test.ts" />
+    <TypeScriptCompile Include="Test\TS_Linq_Enumerable_test.ts" />
+    <TypeScriptCompile Include="Test\TS_Linq_Exception_test.ts" />
+    <TypeScriptCompile Include="Test\TS_Linq_Extensions_test.ts" />
+    <TypeScriptCompile Include="Test\TS_Linq_test_common.ts" />
+    <TypeScriptCompile Include="Test\TS_Security_Counter_test.ts" />
+    <TypeScriptCompile Include="Test\TS_Security_Hash_test.ts" />
+    <TypeScriptCompile Include="Test\TS_Security_RandomNumberGenerator_test.ts" />
+    <TypeScriptCompile Include="Test\TS_Utils_test.ts" />
+    <TypeScriptCompile Include="Test\TS_Utils_Assert_test.ts" />
     <TypeScriptCompile Include="TypeCode\Set.ts" />
     <TypeScriptCompile Include="TypeCode\TypeCode.ts" />
     <TypeScriptCompile Include="TypeCode\UInt64.ts" />
+    <TypeScriptCompile Include="TypeCode\Word.ts" />
     <TypeScriptCompile Include="Utils\Observer.ts" />
-    <TypeScriptCompile Include="Utils\TypeInfo.ts" />
+    <TypeScriptCompile Include="Utils\Assert.ts" />
     <TypeScriptCompile Include="Utils\Utils.ts" />
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +175,10 @@
     <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <PublishDatabases>false</PublishDatabases>
+    <TypeScriptGeneratesDeclarations>True</TypeScriptGeneratesDeclarations>
+    <TypeScriptCompileOnSaveEnabled>False</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptRemoveComments>true</TypeScriptRemoveComments>

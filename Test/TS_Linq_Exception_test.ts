@@ -97,12 +97,12 @@ module TS_Linq_Exception_test
   */
   function CheckInnerException(exception: TS.Exception): boolean
   {
-    if (TS.Utils.TypeInfo.isNullOrUndefined(TS.Exception))
+    if (TS.Utils.Assert.isNullOrUndefined(TS.Exception))
     {
       return false;
     }//END if
 
-    if (TS.Utils.TypeInfo.isNullOrUndefined(exception.innerException))
+    if (TS.Utils.Assert.isNullOrUndefined(exception.innerException))
     {
       return false;
     }//END if

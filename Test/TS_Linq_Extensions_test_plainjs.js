@@ -1,5 +1,4 @@
-﻿
-"use strict";
+﻿"use strict";
 var TS_Linq_Extensions_test;
 (function (TS_Linq_Extensions_test)
 {

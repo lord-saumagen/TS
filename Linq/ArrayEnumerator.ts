@@ -18,9 +18,9 @@
         _missingArray.push("TS.Utils");
       }
 
-      if (TS.Utils.TypeInfo == undefined)
+      if (TS.Utils.Assert == undefined)
       {
-        _missingArray.push("TS.Utils.TypeInfo");
+        _missingArray.push("TS.Utils.Assert");
       }
 
       if (TS.Exception == undefined)
@@ -59,7 +59,7 @@
       */
       constructor(dataArray: Array<TSource>)
       {
-        if (TS.Utils.TypeInfo.isNullOrUndefined(dataArray))
+        if (TS.Utils.Assert.isNullOrUndefined(dataArray))
         {
           throw new TS.ArgumentNullOrUndefinedException("dataArray", "Argument 'dataArray' must not be null or undefined in the constructor or 'TArrayEnumerator'.");
         }//END if

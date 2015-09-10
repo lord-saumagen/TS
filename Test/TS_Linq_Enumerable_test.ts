@@ -16,9 +16,9 @@ var getMM: () => Array<any> = MM.getData;
 var getCustomers: () => Array<TS_Linq_test_common.ICustomer> = Customers.getData;
 var getOrders: () => Array<TS_Linq_test_common.IOrders> = Orders.getData;
 
-var personEnumerable: TS.Linq.Enumerable<any>
-var nyEnumerable: TS.Linq.Enumerable<any>
-var mmEnumerable: TS.Linq.Enumerable<any>
+var personEnumerable: TS.Linq.Enumerable<any>;
+var nyEnumerable: TS.Linq.Enumerable<any>;
+var mmEnumerable: TS.Linq.Enumerable<any>;
 var customersEnumerable: TS.Linq.Enumerable<TS_Linq_test_common.ICustomer>;
 var ordersEnumerable: TS.Linq.Enumerable<TS_Linq_test_common.IOrders>;
 
@@ -594,17 +594,6 @@ module TS_Linq_Enumerable_test
     assert.equal(_resultProductEnumerableStorageRoom.count(), 4, "Should return 4 elements for the executed expression with elementSelector.");
     assert.equal(_resultProductEnumerableStorageRoom.where(Item => Item.key == "EURO").single().count(), 5, "Should return 5 elements in group 'EURO'");
     assert.equal(_resultProductEnumerableStorageRoom.where(Item => Item.key == "YEN").single().count(), 4, "Should return 4 elements in group 'YEN'");
-
-    //_resultProductEnumerableStorageRoomConcat = _productEnumerable.groupBy(item => unifyCurrency(item.Currency), null, (key, group) => { return { Key: key, RoomConcat: TS.Linq.Extensions.toArray(group.select(gr => gr.Storage.Room)).join(",") }; });
-    //assert.equal(_resultProductEnumerableStorageRoomConcat.count(), 4, "Should return the 4 elements for the executed expression with resultSelector.");
-    //assert.equal(_resultProductEnumerableStorageRoomConcat.where(Item => Item.Key == "EURO").single().RoomConcat, "STR 001,STR 002,STR 002,STR 002,STR 003", "Should return the expected room list for the executed expression with resultSelector.");
-    //assert.equal(_resultProductEnumerableStorageRoomConcat.where(Item => Item.Key == "YEN").single().RoomConcat, "STR 001,STR 002,STR 003,STR 003", "Should return the expected room list for the executed expression with resultSelector.");
-
-
-    //EURO: STR 001, STR 002, STR 002, STR 002, STR 003
-    //DOLLAR: STR 001, STR 002
-    //YEN: STR 001, STR 002, STR 003, STR 003
-    //GBP: STR 002, STR 002, STR 003
 
 
     assert.throws(() =>

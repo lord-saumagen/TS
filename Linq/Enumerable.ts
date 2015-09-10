@@ -1,4 +1,9 @@
-﻿module TS
+﻿/// <reference path="../exception/exception.ts" />
+/// <reference path="exception.ts" />
+/// <reference path="enumerator.ts" />
+/// <reference path="extensions.ts" />
+/// <reference path="cyclegenerator.ts" />
+module TS
 {
   "use strict";
 
@@ -59,9 +64,9 @@
         _missingArray.push("TS.Utils");
       }
 
-      if (TS.Utils.TypeInfo == undefined)
+      if (TS.Utils.Assert == undefined)
       {
-        _missingArray.push("TS.Utils.TypeInfo");
+        _missingArray.push("TS.Utils.Assert");
       }
 
       if (_missingArray.length > 0)
@@ -106,56 +111,50 @@
       *    That callback is used to get the iterator for the underlying
       *    data source. 
       *
-      * @throws TS.ArgumentNullOrUndefinedException
-      *  
+      * @throws {TS.ArgumentNullOrUndefinedException}
+      * @throws {TS.InvalidOperationException}
+      * @throws {TS.InvalidTypeException}
       */
       constructor(callback: () => IEnumerator<T>)
       {
         var _referenceCheck: () => void;
         _referenceCheck = referenceCheck;
         _referenceCheck();
-
-        if (TS.Utils.TypeInfo.isNullOrUndefined(callback))
-        {
-          throw new TS.ArgumentNullOrUndefinedException("callback", "Argument 'callback' must not be null or undefined in the constructor of 'Enumerable'.");
-        }//END if
+        
+        TS.Utils.checkConstructorCall(this, TS.Linq.Enumerable);
+        TS.Utils.checkParameter(callback, "callback", "TS.Linq.Enumerable.constructor");
+        TS.Utils.checkFunctionParameter(callback, "callback", "TS.Linq.Enumerable.constructor");
 
         this._callback = callback;
       }
 
 
       /**
-      *  @description
-      *    Applies an accumulator function over a sequence.
+      * @description Applies an accumulator function over a sequence.
       *
-      *    Immediate execution.
+      *   Immediate execution.
       *
-      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.aggregate.aspx | MSDN}
+      * @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.aggregate.aspx | MSDN}
       *
-      *  @returns TSource, the aggregation result.
+      * @returns {TSource} The aggregation result.
       *
-      *  @throws TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws TS.Linq.EmptyEnumerableException
-      *
-      *  @throws TS.InvalidTypeException.
+      * @throws {TS.ArgumentNullOrUndefinedException}
+      * @throws {TS.Linq.EmptyEnumerableException}
+      * @throws {TS.InvalidTypeException}
       */
       public aggregate(accumulator: (first: T, second: T) => T): T
       /**
-      *  @description
-      *    Applies an accumulator function over a sequence. The specified seed value is used as the initial accumulator value.
+      * @description Applies an accumulator function over a sequence. The specified seed value is used as the initial accumulator value.
       *
-      *    Immediate execution.
+      *   Immediate execution.
       *
-      *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.aggregate.aspx | MSDN}
+      * @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.aggregate.aspx | MSDN}
       *
-      *  @returns TSource, the aggregation result.
+      * @returns {TSource} The aggregation result.
       *
-      *  @throws TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws TS.Linq.EmptyEnumerableException
-      *
-      *  @throws TS.InvalidTypeException.
+      * @throws {TS.ArgumentNullOrUndefinedException}
+      * @throws {TS.Linq.EmptyEnumerableException}
+      * @throws {TS.InvalidTypeException}
       */
       public aggregate<TSource, TAccumulate>(accumulator: (first: TAccumulate, second: TSource) => TAccumulate, seed: TAccumulate): TAccumulate
       public aggregate<TSource, TAccumulate>(accumulator: (first: TAccumulate, second: TSource) => TAccumulate, seed?: any): TAccumulate
@@ -165,18 +164,16 @@
 
 
       /**
-      *  @description
-      *    Determines whether all elements of a sequence satisfy a condition.
+      *  @description Determines whether all elements of a sequence satisfy a condition.
       *
       *    Immediate execution.
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/bb548541.aspx | MSDN}
       *
-      *  @returns Boolean
+      *  @returns {Boolean}
       *
-      *  @throws TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws TS.InvalidTypeException
+      *  @throws {TS.ArgumentNullOrUndefinedException}
+      *  @throws {TS.InvalidTypeException}
       */
       public all(predicate: (item: T) => boolean): boolean
       {
@@ -185,33 +182,29 @@
 
 
       /**
-      *  @description
-      *    Determines whether any element of a sequence satisfies a condition.
+      *  @description Determines whether any element of a sequence satisfies a condition.
       *
       *    Immediate execution.
       *
       *  @see {@link  http://msdn.microsoft.com/en-us/library/system.linq.enumerable.any.aspx | MSDN}
       *
-      *  @returns Boolean
+      *  @returns {Boolean}
       *
-      *  @throws TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws TS.InvalidTypeException
+      *  @throws {TS.ArgumentNullOrUndefinedException}
+      *  @throws {TS.InvalidTypeException}
       */
       public any(predicate: (item: T) => boolean): boolean
       /**
-      *  @description
-      *    Determines whether a sequence contains any element(s).
+      * @description Determines whether a sequence contains any element(s).
       *
-      *    Immediate execution.
+      *   Immediate execution.
       *
-      *  @see {@link  http://msdn.microsoft.com/en-us/library/system.linq.enumerable.any.aspx | MSDN}
+      * @see {@link  http://msdn.microsoft.com/en-us/library/system.linq.enumerable.any.aspx | MSDN}
       *
-      *  @returns Boolean
+      * @returns {Boolean}
       *
-      *  @throws TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws TS.InvalidTypeException
+      * @throws {TS.ArgumentNullOrUndefinedException}
+      * @throws {TS.InvalidTypeException}
       */
       public any(): boolean
       public any(predicate?: (item: T) => boolean): boolean
@@ -221,21 +214,18 @@
 
 
       /**
-      *  @description
-      *    Calculates and returns the average of all elements of the 
-      *    current enumerable.
+      *  @description Calculates and returns the average of all elements of the 
+      *               current enumerable.
       *
       *    Immediate execution.
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/bb354760.aspx | MSDN}
       *
-      *  @number number: the average of all items in the enumerable.
+      *  @returns {Number] The average of all items in the enumerable.
       *
-      *  @throws TS.Linq.EmptyEnumerableException
-      *
-      *  @throws TS.InvalidTypeException
-      *
-      *  @throws TS.OverflowException
+      *  @throws {TS.Linq.EmptyEnumerableException}
+      *  @throws {TS.InvalidTypeException}
+      *  @throws {TS.OverflowException}
       */
       public average(): number
       {
@@ -252,7 +242,7 @@
 
         while (_enumerator.moveNext())
         {
-          if (!TS.Utils.TypeInfo.isNumber(_enumerator.current))
+          if (!TS.Utils.Assert.isNumber(_enumerator.current))
           {
             _enumerator.dispose();
             throw new TS.InvalidTypeException("this", this, "The LINQ operation 'average' is only applicable on enumerables of type 'Enumerable<number>'.");
@@ -402,9 +392,9 @@
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.defaultifempty.aspx | MSDN}
       *
-      *  @retuns Enumerable<T>, the result enumerable.
+      *  @retuns {Enumerable<T>} The result enumerable.
       *
-      *  @throws TS.ArgumentNullOrUndefinedException
+      *  @throws {TS.ArgumentNullOrUndefinedException}
       */
       public defaultIfEmpty(defaultConstructor: { new (): T; }): Enumerable<T>
       {
@@ -413,10 +403,9 @@
 
 
       /**
-      *  @description
-      *    Returns distinct elements from a sequence.
-      *    Uses javascript strict comparsion operator
-      *    'strict equality (===)' to achieve distinction.
+      *  @description Returns distinct elements from a sequence.
+      *               Uses javascript strict comparsion operator
+      *               'strict equality (===)' to achieve distinction.
       *
       *    Deffered execution
       *
@@ -427,21 +416,18 @@
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.distinct.aspx | MSDN}
       *
       *  @retuns Enumerable<T>, the result enumerable.
-      *
       */
       public distinct(): Enumerable<T>
       /**
-      *  @description
-      *    Returns distinct elements from a sequence.
-      *    Uses the function defined in argument 'equalityComparer'
-      *    to achieve distinction.
+      *  @description Returns distinct elements from a sequence.
+      *               Uses the function defined in argument 'equalityComparer'
+      *               to achieve distinction.
       *
       *    Deffered execution
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/system.linq.enumerable.distinct.aspx | MSDN}
       *
-      *  @retuns Enumerable<T>, the result enumerable.
-      *
+      *  @retuns {Enumerable<T>] The result enumerable.
       */
       public distinct(equalityComparer: (first: T, second: T) => boolean): Enumerable<T>
       public distinct(equalityComparer?: (first: T, second: T) => boolean): Enumerable<T>
@@ -462,11 +448,10 @@
       *
       *  @see {@link http://referencesource.microsoft.com/#System.Core/System/Linq/Enumerable.cs | MSDN}
       *
-      *  @retuns T, the result elemement.
+      *  @retuns {T} The result elemement.
       *
-      *  @throws TS.ArgumentOutOfRangeException
-      *
-      *  @throws TS.IndexOutOfRangeException
+      *  @throws {TS.ArgumentOutOfRangeException}
+      *  @throws {TS.IndexOutOfRangeException}
       */
       public elementAt(index: number): T
       {
@@ -475,9 +460,8 @@
 
 
       /**
-      *  @description
-      *    Returns the element at a specified index in a sequence or 
-      *    a default value if the index is out of range.
+      *  @description Returns the element at a specified index in a sequence or 
+      *               a default value if the index is out of range.
       *
       *    Immediate execution.
       *
@@ -488,11 +472,10 @@
       *
       *  @see {@link http://msdn.microsoft.com/en-us/library/bb494386.aspx | MSDN}
       *
-      *  @retuns T, the result elemement.
+      *  @retuns {T} The result elemement.
       *
-      *  @throws TS.ArgumentNullOrUndefinedException
-      *
-      *  @throws TS.ArgumentOutOfRangeException
+      *  @throws {TS.ArgumentNullOrUndefinedException}
+      *  @throws {TS.ArgumentOutOfRangeException}
       *
       */
       public elemementAtOrDefault(index: number, defaultConstructor: { new (): T }): T
@@ -578,7 +561,7 @@
       */
       public first(predicate?: (item: T) => boolean): T
       {
-        if (TS.Utils.TypeInfo.isNullOrUndefined(predicate))
+        if (TS.Utils.Assert.isNullOrUndefined(predicate))
         {
           return Extensions.first(this);
         }//END if
@@ -612,7 +595,7 @@
       */
       public firstOrDefault(defaultConstructor: { new (): T; }, predicate?: (item: T) => boolean): T
       {
-        if (TS.Utils.TypeInfo.isNullOrUndefined(predicate))
+        if (TS.Utils.Assert.isNullOrUndefined(predicate))
         {
           return Extensions.firstOrDefault(this, defaultConstructor);
         }//END if
@@ -880,7 +863,7 @@
 
         while (_enumerator.moveNext())
         {
-          if (!TS.Utils.TypeInfo.isNumber(_enumerator.current))
+          if (!TS.Utils.Assert.isNumber(_enumerator.current))
           {
             _enumerator.dispose();
             throw new TS.InvalidTypeException("this", this, "The LINQ operation 'max' is only applicable on enumerables of type 'Enumerable<number>'.");
@@ -923,7 +906,7 @@
 
         while (_enumerator.moveNext())
         {
-          if (!TS.Utils.TypeInfo.isNumber(_enumerator.current))
+          if (!TS.Utils.Assert.isNumber(_enumerator.current))
           {
             _enumerator.dispose();
             throw new TS.InvalidTypeException("this", this, "The LINQ operation 'min' is only applicable on enumerables of type 'Enumerable<number>'.");
@@ -1309,7 +1292,7 @@
 
         while (_enumerator.moveNext())
         {
-          if (!TS.Utils.TypeInfo.isNumber(_enumerator.current))
+          if (!TS.Utils.Assert.isNumber(_enumerator.current))
           {
             _enumerator.dispose();
             throw new TS.InvalidTypeException("this", this, "The LINQ operation 'sum' is only applicable on enumerables of type 'Enumerable<number>'.");
@@ -1378,12 +1361,29 @@
       *  @returns Array<TSource>, the resulting array.
       *
       *  @throws TS.ArgumentNullOrUndefinedException
-      *
       *  @throws TS.InvalidTypeException
       */
       public toArray(): Array<T>
       {
         return Extensions.toArray(this);
+      }
+
+
+     /**
+      *  @description Casts the 'enumerable' to a TS.Collections.List<T>.
+      *
+      *    Immediate execution.
+      *
+      *  @see {@link https://msdn.microsoft.com/en-us/library/bb342261 | MSDN}
+      *
+      *  @returns TS.Collections.List<TSource>, the resulting List.
+      *
+      *  @throws TS.ArgumentNullOrUndefinedException
+      *  @throws TS.InvalidTypeException
+      */
+      public toList(): TS.Collections.List<T>
+      {
+        return Extensions.toList<T>(this);
       }
 
 
@@ -1402,7 +1402,6 @@
       *  @returns Enumerable<TSource>, the resulting enumerable.
       *
       *  @throws TS.ArgumentNullOrUndefinedException
-      *
       *  @throws TS.InvalidTypeException
       */
       public union(secondEnumerable: Enumerable<T>): Enumerable<T>
@@ -1422,7 +1421,6 @@
       *  @returns Enumerable<TSource>, the resulting enumerable.
       *
       *  @throws TS.ArgumentNullOrUndefinedException
-      *
       *  @throws TS.InvalidTypeException
       */
       public where(predicate: (item: T) => boolean): Enumerable<T>

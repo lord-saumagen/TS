@@ -36,7 +36,7 @@
       */
       constructor(dataArray: Array<TSource>)
       {
-        if (Utils.TypeInfo.isNullOrUndefined(dataArray))
+        if (Utils.Assert.isNullOrUndefined(dataArray))
         {
           throw new ArgumentNullOrUndefinedException("dataArray", "Argument 'dataArray' must not be null or undefined in the constructor or 'RandomGenerator'.");
         }//END if

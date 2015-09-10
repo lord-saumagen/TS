@@ -99,22 +99,22 @@ module TS_Collections_List_test
     assert.throws(() =>
     {
       _list.copyTo(null);
-    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw TS.ArgumentNullOrUndefinedException a when called with a null 'targetArray' argument.");
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a TS.ArgumentNullOrUndefinedException when called with a null 'targetArray' argument.");
 
     assert.throws(() =>
     {
       _list.copyTo(_undefined);
-    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw TS.ArgumentNullOrUndefinedException a when called with an undefined 'targetArray' argument.");
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should a throw TS.ArgumentNullOrUndefinedException when called with an undefined 'targetArray' argument.");
 
     assert.throws(() =>
     {
       _list.copyTo(_testArray, 99);
-    }, (err) => ((err.name == "TS.ArgumentOutOfRangeException") ? true : false), "Should throw TS.ArgumentOutOfRangeException a when called with a null 'destIndex' argument out of the range or the target array.");
+    }, (err) => ((err.name == "TS.ArgumentOutOfRangeException") ? true : false), "Should throw a TS.ArgumentOutOfRangeException when called with a null 'destIndex' argument out of the range or the target array.");
 
     assert.throws(() =>
     {
       _list.copyTo(_testArray, null);
-    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw TS.ArgumentNullOrUndefinedException a when called with a null 'destIndex' argument.");
+    }, (err) => ((err.name == "TS.ArgumentNullOrUndefinedException") ? true : false), "Should throw a TS.ArgumentNullOrUndefinedException when called with a null 'destIndex' argument.");
   });
 
 
