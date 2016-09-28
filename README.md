@@ -1,3 +1,15 @@
+## Please note that there is a successor project available.
+The project is hosted at github and started with the TypeScript LINQ implementation. Theres is also a npm package available of that implementation. By the time of this writing the package is in version 1.0.0 and is named ** typescript-linq**. The npm package has it's own test project which is hostet at github as well.   
+The new project uses JavaScript features which are not available in JavaScript versions prior to ECMAScript 2015. The LINQ implementation is a complete rewrite and not backward compatible. You should consider to use that new LINQ implementation if you are planning to use it in one of the latest Chrome or Firefox browsers or the latest Node.js runtime. Currently there is no microsoft browser supporting ECMAScript 2015. Please follow the links below for further information.
+
+Lord Saumagen, 2016-09-28.
+
+[ECMAScript 2015](http://www.ecma-international.org/ecma-262/6.0/)   
+[New LINQ implementation](https://github.com/lord-saumagen/TypeScript-LINQ)   
+[npm package](https://www.npmjs.com/package/typescript-linq)   
+[Test project for the npm package](https://github.com/lord-saumagen/TypeScript-LINQ-Node-Test)   
+
+
 #TS - A TypeScript module collection
 
 This project is a collection of some TypeScript modules which I wrote. Most of them are reprogrammed modules which are already available in some other JavaScript libraries. I don't like that plain JavaScript libraries very much, because often enough they come with a bad coding style. I have the hope and vision that there will be  more libraries which are written in TypeScript in the first place in the future. My hope is, that this will bring a more professional coding style to the JavaScript community.
